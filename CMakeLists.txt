@@ -13,5 +13,8 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(SFML_TEST src/main.cpp)
+add_executable(SFML_TEST 
+    "src/main.cpp"
+    "src/window.cpp")
+
 target_link_libraries(SFML_TEST PRIVATE SFML::Graphics)

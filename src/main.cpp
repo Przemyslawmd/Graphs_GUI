@@ -1,20 +1,14 @@
 
 #include <iostream>
 
-#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
+
+#include "window.h"
 
 
 int main(void)
 {
-    sf::Window window(sf::VideoMode({ 800, 600 }), "My Window");
-    
-    while(window.isOpen()) {
-        while(const std::optional event = window.pollEvent()) {
-            if (event->is<sf::Event::Closed>()) {
-                window.close();
-            }
-        }
-    }
-    return 0;
+    Window window;
+    window.run();
 }
 
