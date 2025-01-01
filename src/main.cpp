@@ -1,8 +1,4 @@
 
-#include <iostream>
-
-#include <SFML/Graphics.hpp>
-
 #include "window.h"
 
 
