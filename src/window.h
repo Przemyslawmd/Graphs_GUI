@@ -12,13 +12,20 @@ class Window
 public:
     Window();
 
+    void init();
     void run();
 
     void drawCircle(float radius, float x_pos, float y_pos);
+    void prepareMainMenu();
+    void prepareTexts();
 
 private:
     std::unique_ptr<sf::RenderWindow> window;
     std::vector<sf::CircleShape> shapes;
+    std::vector<sf::RectangleShape> menus;
+    std::vector<sf::Text> titles;
+
+    sf::Font font;
 };
 
 #endif

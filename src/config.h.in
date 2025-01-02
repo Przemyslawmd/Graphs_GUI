@@ -1,0 +1,4 @@
+
+#pragma once
+
+#define RESOURCES "${PROJECT_SOURCE_DIR}/src/resources/"
