@@ -26,8 +26,7 @@ public:
     void run();
 
     void drawCircle(float radius, float x_pos, float y_pos);
-    void prepareMainMenu();
-    void prepareTexts();
+    void prepareMenu();
 
 private:
     std::tuple<int, float, float> isMouseOverCircle(const sf::Vector2i& position);

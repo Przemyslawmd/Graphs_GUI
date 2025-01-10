@@ -19,8 +19,7 @@ Window::Window()
 
 void Window::init()
 {
-    prepareMainMenu();
-    prepareTexts();
+    prepareMenu();
     hold.isHeld = false;
 }
 
@@ -77,37 +76,27 @@ void Window::run()
 void Window::drawCircle(float radius, float x, float y)
 {
     sf::CircleShape circle(radius, 100);
-    circle.setPosition({x, y});
+    circle.setPosition({ x, y });
     circle.setFillColor(sf::Color::Blue);
     circles.push_back(circle);
 }
 
 
-void Window::prepareMainMenu()
-{
-    for (const auto& [key, value] : Menu) {
-        auto& menu = menus.emplace_back( sf::Vector2f{ value.width, value.height });
-        menu.setPosition({ value.posX, value.posY });
-        menu.setFillColor(sf::Color::White);
-    }
-}
-
-
-void Window::prepareTexts()
+void Window::prepareMenu()
 {
     if (!font.openFromFile(std::string(RESOURCES) + "Arial.ttf")) {
         return;
     }
 
-    titles.emplace_back(font, "Add Node", 15);
-    titles[0].setFillColor(sf::Color::Black);
-    const auto& data_1 = Menu.at("AddNode");
-    titles[0].setPosition({ data_1.posX + 10.f, data_1.posY + 2.f });
+    for (const auto& [key, value] : Menu) {
+        auto& menu = menus.emplace_back( sf::Vector2f{ value.width, value.height });
+        menu.setPosition({ value.posX, value.posY });
+        menu.setFillColor(sf::Color::White);
 
-    titles.emplace_back(font, "Add Line", 15);
-    titles[1].setFillColor(sf::Color::Black);
-    const auto& data_2 = Menu.at("AddLine");
-    titles[1].setPosition({ data_2.posX + 10.f, data_2.posY + 2.f });
+        auto& title = titles.emplace_back(font, key, 15);
+        title.setFillColor(sf::Color::Black);
+        title.setPosition({ value.posX + 10.f, value.posY + 2.f });
+    }
 }
 
 
@@ -116,10 +105,10 @@ std::tuple<int, float, float> Window::isMouseOverCircle(const sf::Vector2i& mous
     for (size_t i = 0; i < circles.size(); i++) {
         float radius = circles[i].getRadius();
         sf::Vector2f circlePos = circles[i].getPosition();
-        float circleCenterX = circlePos.x + radius;
-        float circleCenterY = circlePos.y + radius;
-        float shiftX = mousePos.x - circleCenterX;
-        float shiftY = mousePos.y - circleCenterY;
+        float centerX = circlePos.x + radius;
+        float centerY = circlePos.y + radius;
+        float shiftX = mousePos.x - centerX;
+        float shiftY = mousePos.y - centerY;
         int distance = sqrt(pow(shiftX, 2) + pow(shiftY, 2));
         if (distance <= radius) {
             return { i, shiftX, shiftY };
