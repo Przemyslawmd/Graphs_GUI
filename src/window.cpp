@@ -14,7 +14,6 @@ constexpr float menu_A_y_begin = 80;
 constexpr float menu_A_y_end = 80;
 
 
-
 Window::Window()
 {
     sf::ContextSettings settings;
@@ -27,6 +26,7 @@ void Window::init()
 {
     prepareMainMenu();
     prepareTexts();
+    hold.isHeld = false;
 }
 
 
@@ -36,17 +36,31 @@ void Window::run()
         while(const std::optional event = window->pollEvent()) {
             if (event->is<sf::Event::Closed>()) {
                 window->close();
+                continue;
             }
             if (event->is<sf::Event::MouseButtonPressed>()) {
                 sf::Vector2i position = sf::Mouse::getPosition(*window);
                 if (position.x <= 80.f && position.y <= 20.f) {
                     drawCircle(20, 10, 20);
+                    continue;
                 }
-                int x = isMouseOverCircle(position);
-                if (x >= 0) {
-                    std::cout << "Mouse is over circle" << std::endl;
+                hold.index = isMouseOverCircle(position);
+                if (hold.index >= 0) {
+                    hold.isHeld = true;
                 }
-
+                continue;
+            }
+            if (event->is<sf::Event::MouseMoved>() && hold.isHeld) {
+                auto eventVal = event.value();
+                auto mouseEvent = eventVal.getIf<sf::Event::MouseMoved>();
+                float x = mouseEvent->position.x;
+                float y = mouseEvent->position.y;
+                shapes[hold.index].setPosition({ x, y });
+                continue;
+            }
+            if (event->is<sf::Event::MouseButtonReleased>()) {
+                hold.isHeld = false;
+                hold.index = -1;
             }
         }
         window->clear(sf::Color::Red);

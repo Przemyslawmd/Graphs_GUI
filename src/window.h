@@ -7,6 +7,13 @@
 #include <SFML/Graphics.hpp>
 
 
+struct Hold
+{
+    bool isHeld;
+    int index;
+};
+
+
 class Window
 {
 public:
@@ -28,6 +35,7 @@ private:
     std::vector<sf::Text> titles;
 
     sf::Font font;
+    Hold hold;
 };
 
 #endif
