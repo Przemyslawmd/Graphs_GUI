@@ -11,9 +11,9 @@
 struct Hold
 {
     bool isHeld;
+    int index;
     float shiftX;   // distance between the mouse X position and the center of shape
     float shiftY;   // distance between the mouse Y position and the center of shape
-    int index;
 };
 
 
@@ -30,10 +30,10 @@ public:
     void prepareTexts();
 
 private:
-    std::tuple<int, int, int> isMouseOverCircle(const sf::Vector2i& position);
+    std::tuple<int, float, float> isMouseOverCircle(const sf::Vector2i& position);
 
     std::unique_ptr<sf::RenderWindow> window;
-    std::vector<sf::CircleShape> shapes;
+    std::vector<sf::CircleShape> circles;
     std::vector<sf::RectangleShape> menus;
     std::vector<sf::Text> titles;
 

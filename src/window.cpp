@@ -46,24 +46,21 @@ void Window::run()
                 }
                 auto [index, shiftX, shiftY] = isMouseOverCircle(position);
                 if (index >= 0) {
-                    hold.isHeld = true;
-                    hold.index = index;
-                    hold.shiftX = shiftX;
-                    hold.shiftY = shiftY;
+                    hold = { true, index, shiftX, shiftY };
                 }
+                continue;
+            }
+            if (event->is<sf::Event::MouseButtonReleased>()) {
+                hold = { false, -1, 0, 0 };
                 continue;
             }
             if (event->is<sf::Event::MouseMoved>() && hold.isHeld) {
                 auto mouseEvent = event.value().getIf<sf::Event::MouseMoved>();
                 float x = mouseEvent->position.x;
                 float y = mouseEvent->position.y;
-                float radius = shapes[hold.index].getRadius();
-                shapes[hold.index].setPosition({ x - radius - hold.shiftX, y - radius - hold.shiftY });
+                float radius = circles[hold.index].getRadius();
+                circles[hold.index].setPosition({ x - radius - hold.shiftX, y - radius - hold.shiftY });
                 continue;
-            }
-            if (event->is<sf::Event::MouseButtonReleased>()) {
-                hold.isHeld = false;
-                hold.index = -1;
             }
         }
         window->clear(sf::Color::Red);
@@ -74,8 +71,8 @@ void Window::run()
         for (const auto& title : titles) {
             window->draw(title);
         }
-        for (const auto& shape : shapes) {
-            window->draw(shape);
+        for (const auto& circle : circles) {
+            window->draw(circle);
         }
         window->display();
     }
@@ -87,7 +84,7 @@ void Window::drawCircle(float radius, float x, float y)
     sf::CircleShape circle(radius, 100);
     circle.setPosition({x, y});
     circle.setFillColor(sf::Color::Blue);
-    shapes.push_back(circle);
+    circles.push_back(circle);
 }
 
 
@@ -96,6 +93,10 @@ void Window::prepareMainMenu()
     menus.emplace_back( sf::Vector2f{ 80.f, 20.f });
     menus[0].setPosition({ 0.f, 0.f });
     menus[0].setFillColor(sf::Color::White);
+
+    menus.emplace_back( sf::Vector2f{ 80.f, 20.f });
+    menus[1].setPosition({ 80.f, 0.f });
+    menus[1].setFillColor(sf::Color::White);
 }
 
 
@@ -108,18 +109,22 @@ void Window::prepareTexts()
     titles.emplace_back(font, "Add Node", 15);
     titles[0].setFillColor(sf::Color::Black);
     titles[0].setPosition({ 10.f, 2.f });
+
+    titles.emplace_back(font, "Add Line", 15);
+    titles[1].setFillColor(sf::Color::Black);
+    titles[1].setPosition({ 90.f, 2.f });
 }
 
 
-std::tuple<int, int, int> Window::isMouseOverCircle(const sf::Vector2i& mousePos)
+std::tuple<int, float, float> Window::isMouseOverCircle(const sf::Vector2i& mousePos)
 {
-    for (size_t i = 0; i < shapes.size(); i++) {
-        float radius = shapes[i].getRadius();
-        sf::Vector2f shapePos = shapes[i].getPosition();
-        float shapeCenterX = shapePos.x + radius;
-        float shapeCenterY = shapePos.y + radius;
-        float shiftX = mousePos.x - shapeCenterX;
-        float shiftY = mousePos.y - shapeCenterY;
+    for (size_t i = 0; i < circles.size(); i++) {
+        float radius = circles[i].getRadius();
+        sf::Vector2f circlePos = circles[i].getPosition();
+        float circleCenterX = circlePos.x + radius;
+        float circleCenterY = circlePos.y + radius;
+        float shiftX = mousePos.x - circleCenterX;
+        float shiftY = mousePos.y - circleCenterY;
         int distance = sqrt(pow(shiftX, 2) + pow(shiftY, 2));
         if (distance <= radius) {
             return { i, shiftX, shiftY };
