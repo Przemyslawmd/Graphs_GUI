@@ -1,17 +1,12 @@
 
-#include <iostream>
 #include <string>
 
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics.hpp>
 
-#include "window.h"
 #include "config.h"
-
-constexpr float menu_A_x_begin = 0;
-constexpr float menu_A_x_end = 80;
-constexpr float menu_A_y_begin = 80;
-constexpr float menu_A_y_end = 80;
+#include "menu.h"
+#include "window.h"
 
 
 Window::Window()
@@ -40,7 +35,7 @@ void Window::run()
             }
             if (event->is<sf::Event::MouseButtonPressed>()) {
                 sf::Vector2i position = sf::Mouse::getPosition(*window);
-                if (position.x <= 80.f && position.y <= 20.f) {
+                if (isAddNodeMenu(position)) {
                     drawCircle(20, 10, 20);
                     continue;
                 }
@@ -90,13 +85,11 @@ void Window::drawCircle(float radius, float x, float y)
 
 void Window::prepareMainMenu()
 {
-    menus.emplace_back( sf::Vector2f{ 80.f, 20.f });
-    menus[0].setPosition({ 0.f, 0.f });
-    menus[0].setFillColor(sf::Color::White);
-
-    menus.emplace_back( sf::Vector2f{ 80.f, 20.f });
-    menus[1].setPosition({ 80.f, 0.f });
-    menus[1].setFillColor(sf::Color::White);
+    for (const auto& [key, value] : Menu) {
+        auto& menu = menus.emplace_back( sf::Vector2f{ value.width, value.height });
+        menu.setPosition({ value.posX, value.posY });
+        menu.setFillColor(sf::Color::White);
+    }
 }
 
 
@@ -108,11 +101,13 @@ void Window::prepareTexts()
 
     titles.emplace_back(font, "Add Node", 15);
     titles[0].setFillColor(sf::Color::Black);
-    titles[0].setPosition({ 10.f, 2.f });
+    const auto& data_1 = Menu.at("AddNode");
+    titles[0].setPosition({ data_1.posX + 10.f, data_1.posY + 2.f });
 
     titles.emplace_back(font, "Add Line", 15);
     titles[1].setFillColor(sf::Color::Black);
-    titles[1].setPosition({ 90.f, 2.f });
+    const auto& data_2 = Menu.at("AddLine");
+    titles[1].setPosition({ data_2.posX + 10.f, data_2.posY + 2.f });
 }
 
 
