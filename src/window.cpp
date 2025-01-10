@@ -75,10 +75,9 @@ void Window::run()
 
 void Window::drawCircle(float radius, float x, float y)
 {
-    sf::CircleShape circle(radius, 100);
+    auto& circle = circles.emplace_back(radius, 100);
     circle.setPosition({ x, y });
     circle.setFillColor(sf::Color::Blue);
-    circles.push_back(circle);
 }
 
 
@@ -92,7 +91,6 @@ void Window::prepareMenu()
         auto& menu = menus.emplace_back( sf::Vector2f{ value.width, value.height });
         menu.setPosition({ value.posX, value.posY });
         menu.setFillColor(sf::Color::White);
-
         auto& title = titles.emplace_back(font, key, 15);
         title.setFillColor(sf::Color::Black);
         title.setPosition({ value.posX + 10.f, value.posY + 2.f });
@@ -105,10 +103,8 @@ std::tuple<int, float, float> Window::isMouseOverCircle(const sf::Vector2i& mous
     for (size_t i = 0; i < circles.size(); i++) {
         float radius = circles[i].getRadius();
         sf::Vector2f circlePos = circles[i].getPosition();
-        float centerX = circlePos.x + radius;
-        float centerY = circlePos.y + radius;
-        float shiftX = mousePos.x - centerX;
-        float shiftY = mousePos.y - centerY;
+        float shiftX = mousePos.x - circlePos.x - radius;
+        float shiftY = mousePos.y - circlePos.y - radius;
         int distance = sqrt(pow(shiftX, 2) + pow(shiftY, 2));
         if (distance <= radius) {
             return { i, shiftX, shiftY };
