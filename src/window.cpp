@@ -44,18 +44,21 @@ void Window::run()
                     drawCircle(20, 10, 20);
                     continue;
                 }
-                hold.index = isMouseOverCircle(position);
-                if (hold.index >= 0) {
+                auto [index, shiftX, shiftY] = isMouseOverCircle(position);
+                if (index >= 0) {
                     hold.isHeld = true;
+                    hold.index = index;
+                    hold.shiftX = shiftX;
+                    hold.shiftY = shiftY;
                 }
                 continue;
             }
             if (event->is<sf::Event::MouseMoved>() && hold.isHeld) {
-                auto eventVal = event.value();
-                auto mouseEvent = eventVal.getIf<sf::Event::MouseMoved>();
+                auto mouseEvent = event.value().getIf<sf::Event::MouseMoved>();
                 float x = mouseEvent->position.x;
                 float y = mouseEvent->position.y;
-                shapes[hold.index].setPosition({ x, y });
+                float radius = shapes[hold.index].getRadius();
+                shapes[hold.index].setPosition({ x - radius - hold.shiftX, y - radius - hold.shiftY });
                 continue;
             }
             if (event->is<sf::Event::MouseButtonReleased>()) {
@@ -108,20 +111,20 @@ void Window::prepareTexts()
 }
 
 
-int Window::isMouseOverCircle(const sf::Vector2i& mousePos)
+std::tuple<int, int, int> Window::isMouseOverCircle(const sf::Vector2i& mousePos)
 {
     for (size_t i = 0; i < shapes.size(); i++) {
         float radius = shapes[i].getRadius();
         sf::Vector2f shapePos = shapes[i].getPosition();
         float shapeCenterX = shapePos.x + radius;
         float shapeCenterY = shapePos.y + radius;
-        float distanceX = mousePos.x - shapeCenterX;
-        float distanceY = mousePos.y - shapeCenterY;
-        int distance = sqrt(pow(distanceX, 2) + pow(distanceY, 2));
+        float shiftX = mousePos.x - shapeCenterX;
+        float shiftY = mousePos.y - shapeCenterY;
+        int distance = sqrt(pow(shiftX, 2) + pow(shiftY, 2));
         if (distance <= radius) {
-            return i;
+            return { i, shiftX, shiftY };
         }
     }
-    return -1;
+    return { -1, 0, 0 };
 }
 

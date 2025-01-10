@@ -3,6 +3,7 @@
 #define STRUCTURES_GUI_WINDOW_H
 
 #include <memory>
+#include <tuple>
 
 #include <SFML/Graphics.hpp>
 
@@ -10,6 +11,8 @@
 struct Hold
 {
     bool isHeld;
+    float shiftX;   // distance between the mouse X position and the center of shape
+    float shiftY;   // distance between the mouse Y position and the center of shape
     int index;
 };
 
@@ -27,7 +30,7 @@ public:
     void prepareTexts();
 
 private:
-    int isMouseOverCircle(const sf::Vector2i& position);
+    std::tuple<int, int, int> isMouseOverCircle(const sf::Vector2i& position);
 
     std::unique_ptr<sf::RenderWindow> window;
     std::vector<sf::CircleShape> shapes;
