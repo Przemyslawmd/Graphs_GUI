@@ -37,19 +37,23 @@ void Window::run()
             if (event->is<sf::Event::Closed>()) {
                 window->close();
             }
-
             if (event->is<sf::Event::MouseButtonPressed>()) {
                 sf::Vector2i position = sf::Mouse::getPosition(*window);
                 if (position.x <= 80.f && position.y <= 20.f) {
                     drawCircle(20, 10, 20);
                 }
+                int x = isMouseOverCircle(position);
+                if (x >= 0) {
+                    std::cout << "Mouse is over circle" << std::endl;
+                }
+
             }
         }
         window->clear(sf::Color::Red);
 
         for (const auto& menu : menus) {
             window->draw(menu);
-        }        
+        }
         for (const auto& title : titles) {
             window->draw(title);
         }
@@ -86,6 +90,24 @@ void Window::prepareTexts()
 
     titles.emplace_back(font, "Add Node", 15);
     titles[0].setFillColor(sf::Color::Black);
-    titles[0].setPosition({ 10.f, 2.f });    
+    titles[0].setPosition({ 10.f, 2.f });
+}
+
+
+int Window::isMouseOverCircle(const sf::Vector2i& mousePos)
+{
+    for (size_t i = 0; i < shapes.size(); i++) {
+        float radius = shapes[i].getRadius();
+        sf::Vector2f shapePos = shapes[i].getPosition();
+        float shapeCenterX = shapePos.x + radius;
+        float shapeCenterY = shapePos.y + radius;
+        float distanceX = mousePos.x - shapeCenterX;
+        float distanceY = mousePos.y - shapeCenterY;
+        int distance = sqrt(pow(distanceX, 2) + pow(distanceY, 2));
+        if (distance <= radius) {
+            return i;
+        }
+    }
+    return -1;
 }
 

@@ -20,6 +20,8 @@ public:
     void prepareTexts();
 
 private:
+    int isMouseOverCircle(const sf::Vector2i& position);
+
     std::unique_ptr<sf::RenderWindow> window;
     std::vector<sf::CircleShape> shapes;
     std::vector<sf::RectangleShape> menus;
