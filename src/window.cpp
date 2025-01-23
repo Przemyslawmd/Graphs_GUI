@@ -9,6 +9,10 @@
 #include "window.h"
 
 
+constexpr size_t initialCircleX = 10;
+constexpr size_t initialCircleY = 30;
+
+
 Window::Window()
 {
     sf::ContextSettings settings;
@@ -35,7 +39,7 @@ void Window::run()
             if (event->is<sf::Event::MouseButtonPressed>()) {
                 sf::Vector2i position = sf::Mouse::getPosition(*window);
                 if (isAddNodeMenu(position)) {
-                    drawCircle(20, 10, 20);
+                    createCircle(20);
                     continue;
                 }
                 auto [index, shiftX, shiftY] = isMouseOverCircle(position);
@@ -68,15 +72,16 @@ void Window::run()
         for (const auto& circle : circles) {
             window->draw(circle);
         }
+
         window->display();
     }
 }
 
 
-void Window::drawCircle(float radius, float x, float y)
+void Window::createCircle(float radius)
 {
     auto& circle = circles.emplace_back(radius, 100);
-    circle.setPosition({ x, y });
+    circle.setPosition({ initialCircleX, initialCircleY });
     circle.setFillColor(sf::Color::Blue);
 }
 

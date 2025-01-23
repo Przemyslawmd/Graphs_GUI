@@ -25,7 +25,7 @@ public:
     void init();
     void run();
 
-    void drawCircle(float radius, float x_pos, float y_pos);
+    void createCircle(float radius);
     void prepareMenu();
 
 private:
