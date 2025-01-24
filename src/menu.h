@@ -30,10 +30,23 @@ static const std::map<Indicator, Data> Menu =
 };
 
 
-static bool isAddNodeMenu(const sf::Vector2i& pos)
+static bool isPosOverMenu(const sf::Vector2i& pos, const Data& menu) 
+{
+    return pos.x > menu.posX && pos.x < menu.posX + menu.width && pos.y > menu.posY && pos.y < menu.posY + menu.height;
+}
+
+
+static bool isPosOverAddNodeMenu(const sf::Vector2i& pos)
 {
     const auto& menu = Menu.at(Indicator::ADD_NODE); 
-    return pos.x > menu.posX && pos.x < menu.posX + menu.width && pos.y > menu.posY && pos.y < menu.posY + menu.height;
+    return isPosOverMenu(pos, menu);
+}
+
+
+static bool isPosOverConnectNodesMenu(const sf::Vector2i& pos)
+{
+    const auto& menu = Menu.at(Indicator::CONNECT_NODES); 
+    return isPosOverMenu(pos, menu);
 }
 
 #endif

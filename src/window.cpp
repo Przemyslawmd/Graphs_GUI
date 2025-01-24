@@ -64,7 +64,7 @@ void Window::run()
 void Window::handleMousePress()
 {
     sf::Vector2i position = sf::Mouse::getPosition(*window);
-    if (isAddNodeMenu(position)) {
+    if (isPosOverAddNodeMenu(position)) {
         createCircle(20);
         return;
     }
