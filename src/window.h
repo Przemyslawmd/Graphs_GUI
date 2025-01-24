@@ -35,6 +35,7 @@ public:
     void run();
 
     void createCircle(float radius);
+    void createConnection();
     void prepareMenu();
 
 private:
@@ -48,6 +49,7 @@ private:
     std::unique_ptr<sf::RenderWindow> window;
     std::vector<Circle> circles;
     std::vector<sf::RectangleShape> menus;
+    std::vector<sf::RectangleShape> lines;
     std::vector<sf::Text> titles;
 
     sf::Font font;

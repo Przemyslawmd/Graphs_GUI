@@ -6,10 +6,13 @@
 
 #include "config.h"
 #include "menu.h"
+#include "utils.h"
 #include "window.h"
 
 constexpr size_t initialCircleX = 10;
 constexpr size_t initialCircleY = 30;
+
+constexpr float PI = 3.14159265;
 
 
 Window::Window()
@@ -53,6 +56,9 @@ void Window::run()
         for (const auto& title : titles) {
             window->draw(title);
         }
+        for (const auto& line : lines) {
+            window->draw(line);
+        }
         for (const auto& circle : circles) {
             window->draw(circle.shape);
         }
@@ -66,6 +72,10 @@ void Window::handleMousePress()
     sf::Vector2i position = sf::Mouse::getPosition(*window);
     if (isPosOverAddNodeMenu(position)) {
         createCircle(20);
+        return;
+    }
+    if (isPosOverConnectNodesMenu(position)) {
+        createConnection();
         return;
     }
     auto [index, shiftX, shiftY] = isMouseOverCircle(position);
@@ -110,6 +120,50 @@ void Window::createCircle(float radius)
     auto& circle = circles.emplace_back(Circle{ sf::CircleShape{ radius, 100 }, false });
     circle.shape.setPosition({ initialCircleX, initialCircleY });
     circle.shape.setFillColor({ 51, 153, 255 });
+}
+
+
+void Window::createConnection()
+{
+    std::vector<size_t> indicated;
+    for (size_t i = 0; i < circles.size(); i++) {
+        if (circles[i].isIndicated) {
+            indicated.push_back(i);
+        }
+    }
+    if (indicated.size() != 2) {
+        return;
+    }
+
+    size_t index_1 = indicated[0];
+    size_t index_2 = indicated[1];
+    sf::Vector2f pos_1 = circles[index_1].shape.getPosition();
+    sf::Vector2f pos_2 = circles[index_2].shape.getPosition();
+
+    float distance_x = abs(pos_1.x - pos_2.x);
+    float distance_y = abs(pos_1.y - pos_2.y);
+    float length = sqrt(pow(distance_x, 2) + pow(distance_y, 2));
+    auto& line = lines.emplace_back(sf::Vector2f{ length, 3 });
+
+    float radius = circles[index_1].shape.getRadius();
+    line.setPosition({ pos_1.x + radius, pos_1.y + radius });
+
+    float angle = atan(distance_y / distance_x) * 180 / PI;
+    Quarter quarter = findQuarter(pos_1.x, pos_1.y, pos_2.x, pos_2.y);
+    if (quarter == Quarter::ONE) {
+        line.rotate(sf::degrees(angle));
+    }
+    else if (quarter == Quarter::TWO) {
+        line.rotate(sf::degrees(180 - angle));
+    }
+    else if (quarter == Quarter::THREE) {
+        line.rotate(sf::degrees(180 + angle));
+    }
+    else if (quarter == Quarter::FOUR) {
+        line.rotate(sf::degrees(360 - angle));
+    }
+
+    line.setFillColor({ 51, 153, 255 });
 }
 
 
