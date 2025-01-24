@@ -11,11 +11,11 @@
 
 struct Hold
 {
-    bool isHeld;    // is mouse pressed
-    bool isMoved;   // is there move between press and release, to recognize click without moving
+    bool isHeld;    // is mouse button pressed
+    bool isMoved;   // is there move between mouse button press and release, to recognize click without moving
     int index;      // index of held object in its container
-    float shiftX;   // distance between the mouse X position and the center of shape
-    float shiftY;   // distance between the mouse Y position and the center of shape
+    float shiftX;   // distance between the mouse X position and the center of held object
+    float shiftY;   // distance between the mouse Y position and the center of held object
 };
 
 
