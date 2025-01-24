@@ -123,7 +123,7 @@ void Window::prepareMenu()
         auto& menu = menus.emplace_back( sf::Vector2f{ value.width, value.height });
         menu.setPosition({ value.posX, value.posY });
         menu.setFillColor(sf::Color::White);
-        auto& title = titles.emplace_back(font, key, 15);
+        auto& title = titles.emplace_back(font, value.title, 15);
         title.setFillColor(sf::Color::Black);
         title.setPosition({ value.posX + 10.f, value.posY + 2.f });
     }

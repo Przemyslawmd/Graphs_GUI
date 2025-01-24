@@ -6,25 +6,33 @@
 #include <string>
 
 
-struct MenuData
+enum class Indicator
 {
-    float width;
-    float height;
-    float posX;
-    float posY;
+    ADD_NODE,
+    CONNECT_NODES
 };
 
 
-static const std::map<std::string, MenuData> Menu = 
+struct Data
 {
-    { "Add Node", { 80.f, 20.f, 0.f, 0.f }},
-    { "Add Line", { 80.f, 20.f, 80.f, 0.f }}
+    const float width;
+    const float height;
+    const float posX;
+    const float posY;
+    const std::string title;
+};
+
+
+static const std::map<Indicator, Data> Menu = 
+{
+    { Indicator::ADD_NODE, { 80.f, 20.f, 0.f, 0.f, "Add Node" }},
+    { Indicator::CONNECT_NODES, { 80.f, 20.f, 80.f, 0.f, "Connect Nodes" }}
 };
 
 
 static bool isAddNodeMenu(const sf::Vector2i& pos)
 {
-    const auto& menu = Menu.at("Add Node"); 
+    const auto& menu = Menu.at(Indicator::ADD_NODE); 
     return pos.x > menu.posX && pos.x < menu.posX + menu.width && pos.y > menu.posY && pos.y < menu.posY + menu.height;
 }
 
