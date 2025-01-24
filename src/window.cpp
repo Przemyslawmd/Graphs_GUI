@@ -7,7 +7,6 @@
 #include "config.h"
 #include "menu.h"
 #include "window.h"
-#include <iostream>
 
 constexpr size_t initialCircleX = 10;
 constexpr size_t initialCircleY = 30;
@@ -34,20 +33,16 @@ void Window::run()
         while(const std::optional event = window->pollEvent()) {
             if (event->is<sf::Event::Closed>()) {
                 window->close();
-                continue;
             }
-            if (event->is<sf::Event::MouseButtonPressed>()) {
+            else if (event->is<sf::Event::MouseButtonPressed>()) {
                 handleMousePress();
-                continue;
             }
-            if (event->is<sf::Event::MouseButtonReleased>() && hold.isHeld) {
+            else if (event->is<sf::Event::MouseButtonReleased>() && hold.isHeld) {
                 handleMouseRelease();
                 hold = { false, false, -1, 0, 0 };
-                continue;
             }
-            if (event->is<sf::Event::MouseMoved>() && hold.isHeld) {
+            else if (event->is<sf::Event::MouseMoved>() && hold.isHeld) {
                 handleMouseMove(event);
-                continue;
             }
         }
         window->clear(sf::Color::White);
@@ -85,7 +80,7 @@ void Window::handleMouseRelease()
     if (hold.isMoved) {
         return;
     }
-    
+
     auto& shape = circles[hold.index].shape;
     if (circles[hold.index].isIndicated == false) {
         shape.setOutlineColor(sf::Color::Black);
