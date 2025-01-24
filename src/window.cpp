@@ -37,44 +37,16 @@ void Window::run()
                 continue;
             }
             if (event->is<sf::Event::MouseButtonPressed>()) {
-                sf::Vector2i position = sf::Mouse::getPosition(*window);
-                if (isAddNodeMenu(position)) {
-                    createCircle(20);
-                    continue;
-                }
-                auto [index, shiftX, shiftY] = isMouseOverCircle(position);
-                if (index >= 0) {
-                    hold = { true, false, index, shiftX, shiftY };
-                }
+                handleMousePress();
                 continue;
             }
-            
-            if (event->is<sf::Event::MouseButtonReleased>()) {
-                if (hold.isHeld == true && hold.isMoved == false && circles[hold.index].isIndicated == false) {
-                    circles[hold.index].shape.setOutlineColor(sf::Color::Black);
-                    circles[hold.index].shape.setOutlineThickness(3.0f);
-                    circles[hold.index].isIndicated = true;
-                    hold = { false, false, -1, 0, 0 };
-                    continue;
-                }
-                if (hold.isHeld == true && hold.isMoved == false && circles[hold.index].isIndicated == true) {
-                    circles[hold.index].shape.setOutlineThickness(0);
-                    circles[hold.index].isIndicated = false;
-                    hold = { false, false, -1, 0, 0 };
-                    continue;
-                }
-                sf::Vector2i position = sf::Mouse::getPosition(*window);
-                
+            if (event->is<sf::Event::MouseButtonReleased>() && hold.isHeld) {
+                handleMouseRelease();
                 hold = { false, false, -1, 0, 0 };
                 continue;
             }
             if (event->is<sf::Event::MouseMoved>() && hold.isHeld) {
-                auto mouseEvent = event.value().getIf<sf::Event::MouseMoved>();
-                float x = mouseEvent->position.x;
-                float y = mouseEvent->position.y;
-                float radius = circles[hold.index].shape.getRadius();
-                circles[hold.index].shape.setPosition({ x - radius - hold.shiftX, y - radius - hold.shiftY });
-                hold.isMoved = true;
+                handleMouseMove(event);
                 continue;
             }
         }
@@ -91,6 +63,50 @@ void Window::run()
         }
         window->display();
     }
+}
+
+
+void Window::handleMousePress()
+{
+    sf::Vector2i position = sf::Mouse::getPosition(*window);
+    if (isAddNodeMenu(position)) {
+        createCircle(20);
+        return;
+    }
+    auto [index, shiftX, shiftY] = isMouseOverCircle(position);
+    if (index >= 0) {
+        hold = { true, false, index, shiftX, shiftY };
+    }
+}
+
+
+void Window::handleMouseRelease()
+{
+    if (hold.isMoved) {
+        return;
+    }
+    
+    auto& shape = circles[hold.index].shape;
+    if (circles[hold.index].isIndicated == false) {
+        shape.setOutlineColor(sf::Color::Black);
+        shape.setOutlineThickness(3.0f);
+        circles[hold.index].isIndicated = true;
+    }
+    else if (circles[hold.index].isIndicated == true) {
+        shape.setOutlineThickness(0);
+        circles[hold.index].isIndicated = false;
+    }
+}
+
+
+void Window::handleMouseMove(const std::optional<sf::Event> event)
+{
+    auto mouseEvent = event.value().getIf<sf::Event::MouseMoved>();
+    float x = mouseEvent->position.x;
+    float y = mouseEvent->position.y;
+    float radius = circles[hold.index].shape.getRadius();
+    circles[hold.index].shape.setPosition({ x - radius - hold.shiftX, y - radius - hold.shiftY });
+    hold.isMoved = true;
 }
 
 
@@ -122,8 +138,9 @@ void Window::prepareMenu()
 std::tuple<int, float, float> Window::isMouseOverCircle(const sf::Vector2i& mousePos)
 {
     for (size_t i = 0; i < circles.size(); i++) {
-        float radius = circles[i].shape.getRadius();
-        sf::Vector2f circlePos = circles[i].shape.getPosition();
+        const auto& shape = circles[i].shape;
+        float radius = shape.getRadius();
+        sf::Vector2f circlePos = shape.getPosition();
         float shiftX = mousePos.x - circlePos.x - radius;
         float shiftY = mousePos.y - circlePos.y - radius;
         int distance = sqrt(pow(shiftX, 2) + pow(shiftY, 2));
