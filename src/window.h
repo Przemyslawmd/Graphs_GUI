@@ -29,10 +29,8 @@ public:
     void init();
     void run();
 
-    void createConnection();
-    void prepareMenu();
-
 private:
+    void prepareMenu();
 
     void handleMousePress();
     void handleMouseRelease();
@@ -44,7 +42,6 @@ private:
     std::unique_ptr<Model> model;
 
     std::vector<sf::RectangleShape> menus;
-    std::vector<sf::RectangleShape> lines;
     std::vector<sf::Text> titles;
 
     sf::Font font;

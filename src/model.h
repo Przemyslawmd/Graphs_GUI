@@ -19,11 +19,15 @@ class Model
 public:
     Model() = default;
 
-    void createCircle(float radius);
+    void createNode(float radius);
     std::vector<Node>& getNodes();
+
+    void createConnection();
+    std::vector<sf::RectangleShape>& getConnections();
 
 private:
     std::vector<Node> nodes;
+    std::vector<sf::RectangleShape> lines;
 };
 
 #endif 
