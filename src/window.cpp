@@ -9,8 +9,6 @@
 #include "utils.h"
 #include "window.h"
 
-constexpr size_t initialCircleX = 10;
-constexpr size_t initialCircleY = 30;
 
 constexpr float PI = 3.14159265;
 
@@ -20,6 +18,7 @@ Window::Window()
     sf::ContextSettings settings;
     settings.antiAliasingLevel = 8;
     window = std::make_unique<sf::RenderWindow>(sf::VideoMode({ 1400, 900 }, sf::Style::Titlebar ) , "", sf::State::Windowed, settings);
+    model = std::make_unique<Model>();
 }
 
 
@@ -59,7 +58,7 @@ void Window::run()
         for (const auto& line : lines) {
             window->draw(line);
         }
-        for (const auto& circle : circles) {
+        for (const auto& circle : model->getNodes()) {
             window->draw(circle.shape);
         }
         window->display();
@@ -71,7 +70,7 @@ void Window::handleMousePress()
 {
     sf::Vector2i position = sf::Mouse::getPosition(*window);
     if (isPosOverAddNodeMenu(position)) {
-        createCircle(20);
+        model->createCircle(20);
         return;
     }
     if (isPosOverConnectNodesMenu(position)) {
@@ -91,6 +90,7 @@ void Window::handleMouseRelease()
         return;
     }
 
+    auto& circles = model->getNodes(); 
     auto& shape = circles[hold.index].shape;
     if (circles[hold.index].isIndicated == false) {
         shape.setOutlineColor(sf::Color::Black);
@@ -109,25 +109,17 @@ void Window::handleMouseMove(const std::optional<sf::Event> event)
     auto mouseEvent = event.value().getIf<sf::Event::MouseMoved>();
     float x = mouseEvent->position.x;
     float y = mouseEvent->position.y;
-    float radius = circles[hold.index].shape.getRadius();
-    circles[hold.index].shape.setPosition({ x - radius - hold.shiftX, y - radius - hold.shiftY });
+    float radius = model->getNodes()[hold.index].shape.getRadius();
+    model->getNodes()[hold.index].shape.setPosition({ x - radius - hold.shiftX, y - radius - hold.shiftY });
     hold.isMoved = true;
-}
-
-
-void Window::createCircle(float radius)
-{
-    auto& circle = circles.emplace_back(Circle{ sf::CircleShape{ radius, 100 }, false });
-    circle.shape.setPosition({ initialCircleX, initialCircleY });
-    circle.shape.setFillColor({ 51, 153, 255 });
 }
 
 
 void Window::createConnection()
 {
     std::vector<size_t> indicated;
-    for (size_t i = 0; i < circles.size(); i++) {
-        if (circles[i].isIndicated) {
+    for (size_t i = 0; i < model->getNodes().size(); i++) {
+        if (model->getNodes()[i].isIndicated) {
             indicated.push_back(i);
         }
     }
@@ -137,15 +129,15 @@ void Window::createConnection()
 
     size_t index_1 = indicated[0];
     size_t index_2 = indicated[1];
-    sf::Vector2f pos_1 = circles[index_1].shape.getPosition();
-    sf::Vector2f pos_2 = circles[index_2].shape.getPosition();
+    sf::Vector2f pos_1 = model->getNodes()[index_1].shape.getPosition();
+    sf::Vector2f pos_2 = model->getNodes()[index_2].shape.getPosition();
 
     float distance_x = abs(pos_1.x - pos_2.x);
     float distance_y = abs(pos_1.y - pos_2.y);
     float length = sqrt(pow(distance_x, 2) + pow(distance_y, 2));
     auto& line = lines.emplace_back(sf::Vector2f{ length, 3 });
 
-    float radius = circles[index_1].shape.getRadius();
+    float radius = model->getNodes()[index_1].shape.getRadius();
     line.setPosition({ pos_1.x + radius, pos_1.y + radius });
 
     float angle = atan(distance_y / distance_x) * 180 / PI;
@@ -186,8 +178,8 @@ void Window::prepareMenu()
 
 std::tuple<int, float, float> Window::isMouseOverCircle(const sf::Vector2i& mousePos)
 {
-    for (size_t i = 0; i < circles.size(); i++) {
-        const auto& shape = circles[i].shape;
+    for (size_t i = 0; i < model->getNodes().size(); i++) {
+        const auto& shape = model->getNodes()[i].shape;
         float radius = shape.getRadius();
         sf::Vector2f circlePos = shape.getPosition();
         float shiftX = mousePos.x - circlePos.x - radius;

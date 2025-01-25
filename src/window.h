@@ -8,6 +8,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "model.h"
+
 
 struct Hold
 {
@@ -19,13 +21,6 @@ struct Hold
 };
 
 
-struct Circle 
-{
-    sf::CircleShape shape;
-    bool isIndicated;
-};
-
-
 class Window
 {
 public:
@@ -34,7 +29,6 @@ public:
     void init();
     void run();
 
-    void createCircle(float radius);
     void createConnection();
     void prepareMenu();
 
@@ -47,7 +41,8 @@ private:
     std::tuple<int, float, float> isMouseOverCircle(const sf::Vector2i& position);
 
     std::unique_ptr<sf::RenderWindow> window;
-    std::vector<Circle> circles;
+    std::unique_ptr<Model> model;
+
     std::vector<sf::RectangleShape> menus;
     std::vector<sf::RectangleShape> lines;
     std::vector<sf::Text> titles;
