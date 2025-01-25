@@ -1,6 +1,6 @@
 
-#ifndef STRUCTURES_GUI_MENU_H
-#define STRUCTURES_GUI_MENU_H
+#ifndef GUI_GRAPHS_MENU_H
+#define GUI_GRAPHS_MENU_H
 
 #include <map>
 #include <string>
@@ -30,23 +30,23 @@ static const std::map<Indicator, Data> Menu =
 };
 
 
-static bool isPosOverMenu(const sf::Vector2i& pos, const Data& menu) 
+static bool isOverMenu(const sf::Vector2i& pos, const Data& menu) 
 {
     return pos.x > menu.posX && pos.x < menu.posX + menu.width && pos.y > menu.posY && pos.y < menu.posY + menu.height;
 }
 
 
-static bool isPosOverAddNodeMenu(const sf::Vector2i& pos)
+static bool isOverAddNodeMenu(const sf::Vector2i& pos)
 {
     const auto& menu = Menu.at(Indicator::ADD_NODE); 
-    return isPosOverMenu(pos, menu);
+    return isOverMenu(pos, menu);
 }
 
 
-static bool isPosOverConnectNodesMenu(const sf::Vector2i& pos)
+static bool isOverConnectNodesMenu(const sf::Vector2i& pos)
 {
     const auto& menu = Menu.at(Indicator::CONNECT_NODES); 
-    return isPosOverMenu(pos, menu);
+    return isOverMenu(pos, menu);
 }
 
 #endif

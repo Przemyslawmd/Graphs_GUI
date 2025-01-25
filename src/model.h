@@ -1,6 +1,6 @@
 
-#ifndef GUI_GRAPHS_WINDOW_H
-#define GUI_GRAPHS_WINDOW_H
+#ifndef GUI_GRAPHS_MODEL_H
+#define GUI_GRAPHS_MODEL_H
 
 #include <memory>
 

@@ -1,6 +1,6 @@
 
-#ifndef STRUCTURES_GUI_WINDOW_H
-#define STRUCTURES_GUI_WINDOW_H
+#ifndef GUI_GRAPHS_WINDOW_H
+#define GUI_GRAPHS_WINDOW_H
 
 #include <memory>
 #include <optional>

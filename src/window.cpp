@@ -2,7 +2,6 @@
 #include <string>
 
 #include <SFML/System/Vector2.hpp>
-#include <SFML/Graphics.hpp>
 
 #include "config.h"
 #include "menu.h"
@@ -65,11 +64,11 @@ void Window::run()
 void Window::handleMousePress()
 {
     sf::Vector2i position = sf::Mouse::getPosition(*window);
-    if (isPosOverAddNodeMenu(position)) {
+    if (isOverAddNodeMenu(position)) {
         model->createNode(20);
         return;
     }
-    if (isPosOverConnectNodesMenu(position)) {
+    if (isOverConnectNodesMenu(position)) {
         model->createConnection();
         return;
     }
@@ -86,16 +85,16 @@ void Window::handleMouseRelease()
         return;
     }
 
-    auto& circles = model->getNodes(); 
-    auto& shape = circles[hold.index].shape;
-    if (circles[hold.index].isIndicated == false) {
+    auto& nodes = model->getNodes(); 
+    auto& shape = nodes[hold.index].shape;
+    if (nodes[hold.index].isIndicated == false) {
         shape.setOutlineColor(sf::Color::Black);
         shape.setOutlineThickness(3.0f);
-        circles[hold.index].isIndicated = true;
+        nodes[hold.index].isIndicated = true;
     }
-    else if (circles[hold.index].isIndicated == true) {
+    else if (nodes[hold.index].isIndicated == true) {
         shape.setOutlineThickness(0);
-        circles[hold.index].isIndicated = false;
+        nodes[hold.index].isIndicated = false;
     }
 }
 
@@ -105,8 +104,9 @@ void Window::handleMouseMove(const std::optional<sf::Event> event)
     auto mouseEvent = event.value().getIf<sf::Event::MouseMoved>();
     float x = mouseEvent->position.x;
     float y = mouseEvent->position.y;
-    float radius = model->getNodes()[hold.index].shape.getRadius();
-    model->getNodes()[hold.index].shape.setPosition({ x - radius - hold.shiftX, y - radius - hold.shiftY });
+    auto& nodes = model->getNodes();
+    float radius = nodes[hold.index].shape.getRadius();
+    nodes[hold.index].shape.setPosition({ x - radius - hold.shiftX, y - radius - hold.shiftY });
     hold.isMoved = true;
 }
 
@@ -130,8 +130,9 @@ void Window::prepareMenu()
 
 std::tuple<int, float, float> Window::isMouseOverCircle(const sf::Vector2i& mousePos)
 {
-    for (size_t i = 0; i < model->getNodes().size(); i++) {
-        const auto& shape = model->getNodes()[i].shape;
+    auto& nodes = model->getNodes();
+    for (size_t i = 0; i < nodes.size(); i++) {
+        const auto& shape = nodes[i].shape;
         float radius = shape.getRadius();
         sf::Vector2f circlePos = shape.getPosition();
         float shiftX = mousePos.x - circlePos.x - radius;

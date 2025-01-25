@@ -1,4 +1,7 @@
 
+#ifndef GUI_GRAPHS_UTILS_H
+#define GUI_GRAPHS_UTILS_H
+
 enum class Quarter 
 {
     ONE,
@@ -23,3 +26,6 @@ static Quarter findQuarter(float x_1, float y_1, float x_2, float y_2)
         return Quarter::FOUR;
     }
 }
+
+#endif
+
