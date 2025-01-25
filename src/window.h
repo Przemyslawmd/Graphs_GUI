@@ -36,7 +36,7 @@ private:
     void handleMouseRelease();
     void handleMouseMove(const std::optional<sf::Event> event);
 
-    std::tuple<int, float, float> isMouseOverCircle(const sf::Vector2i& position);
+    std::tuple<int, float, float> isMouseOverNode(const sf::Vector2i& position);
 
     std::unique_ptr<sf::RenderWindow> window;
     std::unique_ptr<Model> model;

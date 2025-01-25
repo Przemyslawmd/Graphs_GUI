@@ -53,8 +53,8 @@ void Window::run()
         for (const auto& line : model->getConnections()) {
             window->draw(line);
         }
-        for (const auto& circle : model->getNodes()) {
-            window->draw(circle.shape);
+        for (const auto& node : model->getNodes()) {
+            window->draw(node.shape);
         }
         window->display();
     }
@@ -72,7 +72,7 @@ void Window::handleMousePress()
         model->createConnection();
         return;
     }
-    auto [index, shiftX, shiftY] = isMouseOverCircle(position);
+    auto [index, shiftX, shiftY] = isMouseOverNode(position);
     if (index >= 0) {
         hold = { true, false, index, shiftX, shiftY };
     }
@@ -121,6 +121,8 @@ void Window::prepareMenu()
         auto& menu = menus.emplace_back( sf::Vector2f{ value.width, value.height });
         menu.setPosition({ value.posX, value.posY });
         menu.setFillColor(sf::Color::White);
+        menu.setOutlineThickness(2);
+        menu.setOutlineColor(sf::Color::Black);
         auto& title = titles.emplace_back(font, value.title, 15);
         title.setFillColor(sf::Color::Black);
         title.setPosition({ value.posX + 10.f, value.posY + 2.f });
@@ -128,7 +130,7 @@ void Window::prepareMenu()
 }
 
 
-std::tuple<int, float, float> Window::isMouseOverCircle(const sf::Vector2i& mousePos)
+std::tuple<int, float, float> Window::isMouseOverNode(const sf::Vector2i& mousePos)
 {
     auto& nodes = model->getNodes();
     for (size_t i = 0; i < nodes.size(); i++) {

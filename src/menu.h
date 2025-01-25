@@ -6,6 +6,10 @@
 #include <string>
 
 
+constexpr float MENU_HEIGHT = 22.f;
+constexpr float MENU_POS_Y = 5.f;
+
+
 enum class Indicator
 {
     ADD_NODE,
@@ -25,8 +29,8 @@ struct Data
 
 static const std::map<Indicator, Data> Menu = 
 {
-    { Indicator::ADD_NODE, { 80.f, 20.f, 0.f, 0.f, "Add Node" }},
-    { Indicator::CONNECT_NODES, { 80.f, 20.f, 80.f, 0.f, "Connect Nodes" }}
+    { Indicator::ADD_NODE, { 80.f, MENU_HEIGHT, 5.f, MENU_POS_Y, "Add Node" }},
+    { Indicator::CONNECT_NODES, { 120.f, MENU_HEIGHT, 85.f, MENU_POS_Y, "Connect Nodes" }}
 };
 
 
