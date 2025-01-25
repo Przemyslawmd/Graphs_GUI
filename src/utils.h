@@ -2,30 +2,23 @@
 #ifndef GUI_GRAPHS_UTILS_H
 #define GUI_GRAPHS_UTILS_H
 
-enum class Quarter 
-{
-    ONE,
-    TWO,
-    THREE,
-    FOUR
-};
 
-
-static Quarter findQuarter(float x_1, float y_1, float x_2, float y_2)
+static float adjustAngleForQuarter(const sf::Vector2f& pos_1, const sf::Vector2f& pos_2, float angle)
 {
-    if (x_1 <= x_2 && y_1 <= y_2) {
-        return Quarter::ONE;
+    if (pos_1.x <= pos_2.x && pos_1.y <= pos_2.y) {
+        return angle;
     }
-    if (x_1 > x_2 && y_1 <= y_2) {
-        return Quarter::TWO;
+    if (pos_1.x > pos_2.x && pos_1.y <= pos_2.y) {
+        return 180 - angle;
     }
-    if (x_1 > x_2 && y_1 > y_2) {
-        return Quarter::THREE;
+    if (pos_1.x > pos_2.x && pos_1.y > pos_2.y) {
+        return 180 + angle;
     }
-    if (x_1 <= x_2 && y_1 > y_2) {
-        return Quarter::FOUR;
+    if (pos_1.x <= pos_2.x && pos_1.y > pos_2.y) {
+        return 360 - angle;
     }
 }
+
 
 #endif
 

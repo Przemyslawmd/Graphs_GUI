@@ -43,25 +43,14 @@ void Model::createConnection()
     float distance_x = abs(pos_1.x - pos_2.x);
     float distance_y = abs(pos_1.y - pos_2.y);
     float length = sqrt(pow(distance_x, 2) + pow(distance_y, 2));
-    auto& line = lines.emplace_back(sf::Vector2f{ length, 3 });
+    auto& line = connections.emplace_back(sf::Vector2f{ length, 3 });
 
     float radius = nodes[index_1].shape.getRadius();
     line.setPosition({ pos_1.x + radius, pos_1.y + radius });
 
     float angle = atan(distance_y / distance_x) * 180 / PI;
-    Quarter quarter = findQuarter(pos_1.x, pos_1.y, pos_2.x, pos_2.y);
-    if (quarter == Quarter::ONE) {
-        line.rotate(sf::degrees(angle));
-    }
-    else if (quarter == Quarter::TWO) {
-        line.rotate(sf::degrees(180 - angle));
-    }
-    else if (quarter == Quarter::THREE) {
-        line.rotate(sf::degrees(180 + angle));
-    }
-    else if (quarter == Quarter::FOUR) {
-        line.rotate(sf::degrees(360 - angle));
-    }
+    angle = adjustAngleForQuarter(pos_1, pos_2, angle);
+    line.rotate(sf::degrees(angle));
 
     line.setFillColor({ 51, 153, 255 });
 }
@@ -69,5 +58,6 @@ void Model::createConnection()
 
 std::vector<sf::RectangleShape>& Model::getConnections()
 {
-    return lines;
+    return connections;
 }
+

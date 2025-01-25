@@ -27,7 +27,7 @@ public:
 
 private:
     std::vector<Node> nodes;
-    std::vector<sf::RectangleShape> lines;
+    std::vector<sf::RectangleShape> connections;
 };
 
 #endif 
