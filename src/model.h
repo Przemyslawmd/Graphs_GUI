@@ -25,6 +25,8 @@ public:
     void createConnection();
     std::vector<sf::RectangleShape>& getConnections();
 
+    void removeAll();
+
 private:
     std::vector<Node> nodes;
     std::vector<sf::RectangleShape> connections;

@@ -7,13 +7,15 @@
 
 
 constexpr float MENU_HEIGHT = 22.f;
+constexpr float MENU_WIDTH = 120.f;
 constexpr float MENU_POS_Y = 5.f;
 
 
 enum class Indicator
 {
     ADD_NODE,
-    CONNECT_NODES
+    CONNECT_NODES,
+    REMOVE_ALL
 };
 
 
@@ -23,14 +25,16 @@ struct Data
     const float height;
     const float posX;
     const float posY;
+    const float posTitle;
     const std::string title;
 };
 
 
 static const std::map<Indicator, Data> Menu = 
 {
-    { Indicator::ADD_NODE, { 80.f, MENU_HEIGHT, 5.f, MENU_POS_Y, "Add Node" }},
-    { Indicator::CONNECT_NODES, { 120.f, MENU_HEIGHT, 85.f, MENU_POS_Y, "Connect Nodes" }}
+    { Indicator::ADD_NODE,      { MENU_WIDTH, MENU_HEIGHT, 10.f,  MENU_POS_Y, 35.f,  "Add Node" }},
+    { Indicator::CONNECT_NODES, { MENU_WIDTH, MENU_HEIGHT, 130.f, MENU_POS_Y, 140.f, "Connect Nodes" }},
+    { Indicator::REMOVE_ALL,    { MENU_WIDTH, MENU_HEIGHT, 250.f, MENU_POS_Y, 270.f, "Remove All" }}
 };
 
 
@@ -50,6 +54,13 @@ static bool isOverAddNodeMenu(const sf::Vector2i& pos)
 static bool isOverConnectNodesMenu(const sf::Vector2i& pos)
 {
     const auto& menu = Menu.at(Indicator::CONNECT_NODES); 
+    return isOverMenu(pos, menu);
+}
+
+
+static bool isOverRemoveAllMenu(const sf::Vector2i& pos)
+{
+    const auto& menu = Menu.at(Indicator::REMOVE_ALL);
     return isOverMenu(pos, menu);
 }
 

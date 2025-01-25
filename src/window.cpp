@@ -72,6 +72,10 @@ void Window::handleMousePress()
         model->createConnection();
         return;
     }
+    if (isOverRemoveAllMenu(position)) {
+        model->removeAll();
+        return;
+    }
     auto [index, shiftX, shiftY] = isMouseOverNode(position);
     if (index >= 0) {
         hold = { true, false, index, shiftX, shiftY };
@@ -125,7 +129,7 @@ void Window::prepareMenu()
         menu.setOutlineColor(sf::Color::Black);
         auto& title = titles.emplace_back(font, value.title, 15);
         title.setFillColor(sf::Color::Black);
-        title.setPosition({ value.posX + 10.f, value.posY + 2.f });
+        title.setPosition({ value.posTitle, value.posY + 2.f });
     }
 }
 

@@ -9,17 +9,17 @@ constexpr size_t initialNodeY = 30;
 constexpr float PI = 3.14159265;
 
 
-std::vector<Node>& Model::getNodes()
-{
-    return nodes;
-}
-
-
 void Model::createNode(float radius)
 {
     auto& node = nodes.emplace_back(Node{ sf::CircleShape{ radius, 100 }, false });
     node.shape.setPosition({ initialNodeX, initialNodeY });
     node.shape.setFillColor({ 51, 153, 255 });
+}
+
+
+std::vector<Node>& Model::getNodes()
+{
+    return nodes;
 }
 
 
@@ -59,5 +59,12 @@ void Model::createConnection()
 std::vector<sf::RectangleShape>& Model::getConnections()
 {
     return connections;
+}
+
+
+void Model::removeAll()
+{
+    nodes.clear();
+    connections.clear();
 }
 
