@@ -50,8 +50,8 @@ void Window::run()
         for (const auto& title : titles) {
             window->draw(title);
         }
-        for (const auto& line : model->getConnections()) {
-            window->draw(line);
+        for (const auto& connection : model->getConnections()) {
+            window->draw(connection.line);
         }
         for (const auto& node : model->getNodes()) {
             window->draw(node.shape);
@@ -111,6 +111,9 @@ void Window::handleMouseMove(const std::optional<sf::Event> event)
     auto& nodes = model->getNodes();
     float radius = nodes[hold.index].shape.getRadius();
     nodes[hold.index].shape.setPosition({ x - radius - hold.shiftX, y - radius - hold.shiftY });
+    for (size_t i = 0; i < nodes[hold.index].connections.size(); i++) {
+        model->moveConnection(i);
+    }
     hold.isMoved = true;
 }
 
