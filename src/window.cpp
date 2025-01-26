@@ -109,10 +109,13 @@ void Window::handleMouseMove(const std::optional<sf::Event> event)
     float x = mouseEvent->position.x;
     float y = mouseEvent->position.y;
     auto& nodes = model->getNodes();
-    float radius = nodes[hold.index].shape.getRadius();
-    nodes[hold.index].shape.setPosition({ x - radius - hold.shiftX, y - radius - hold.shiftY });
-    for (size_t i = 0; i < nodes[hold.index].connections.size(); i++) {
-        model->moveConnection(i);
+    auto& heldNode = nodes[hold.index];
+    
+    float radius = heldNode.shape.getRadius();
+    heldNode.shape.setPosition({ x - radius - hold.shiftX, y - radius - hold.shiftY });
+
+    for (size_t i = 0; i < heldNode.connections.size(); i++) {
+        model->moveConnection(heldNode.connections[i]);
     }
     hold.isMoved = true;
 }

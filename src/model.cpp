@@ -37,7 +37,7 @@ void Model::createConnection()
     }
 
     size_t node_1 = indicated[0];
-    size_t node_2 = indicated[1];    
+    size_t node_2 = indicated[1];
     sf::Vector2f pos_1 = nodes[node_1].shape.getPosition();
     sf::Vector2f pos_2 = nodes[node_2].shape.getPosition();
     float length  = calculateConnectionLength(pos_1, pos_2);
