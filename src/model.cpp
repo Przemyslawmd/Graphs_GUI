@@ -24,7 +24,7 @@ std::vector<Node>& Model::getNodes()
 }
 
 
-void Model::createConnection()
+Message Model::createConnection()
 {
     std::vector<size_t> indicated;
     for (size_t i = 0; i < nodes.size(); i++) {
@@ -33,7 +33,7 @@ void Model::createConnection()
         }
     }
     if (indicated.size() != 2) {
-        return;
+        return Message::NODES_COUNT_CONNECTION_ERROR;
     }
 
     size_t node_1 = indicated[0];
@@ -54,6 +54,7 @@ void Model::createConnection()
     size_t connection_index = connections.size() - 1;
     nodes[node_1].connections.push_back(connection_index);
     nodes[node_2].connections.push_back(connection_index);
+    return Message::OK;
 }
 
 

@@ -20,6 +20,7 @@ Window::Window()
 void Window::init()
 {
     prepareMenu();
+    prepareMessageArea();
     hold.isHeld = false;
 }
 
@@ -56,6 +57,8 @@ void Window::run()
         for (const auto& node : model->getNodes()) {
             window->draw(node.shape);
         }
+        window->draw(messageArea);
+        window->draw(messages[0]);
         window->display();
     }
 }
@@ -63,13 +66,17 @@ void Window::run()
 
 void Window::handleMousePress()
 {
+    messages[0].setString("");
     sf::Vector2i position = sf::Mouse::getPosition(*window);
     if (isOverAddNodeMenu(position)) {
         model->createNode(20);
         return;
     }
     if (isOverConnectNodesMenu(position)) {
-        model->createConnection();
+        auto message = model->createConnection();
+        if (message != Message::OK) {
+            messages[0].setString(MessageStr.at(message));
+        }
         return;
     }
     if (isOverRemoveAllMenu(position)) {
@@ -131,12 +138,25 @@ void Window::prepareMenu()
         auto& menu = menus.emplace_back( sf::Vector2f{ value.width, value.height });
         menu.setPosition({ value.posX, value.posY });
         menu.setFillColor(sf::Color::White);
-        menu.setOutlineThickness(2);
+        menu.setOutlineThickness(1);
         menu.setOutlineColor(sf::Color::Black);
         auto& title = titles.emplace_back(font, value.title, 15);
         title.setFillColor(sf::Color::Black);
         title.setPosition({ value.posTitle, value.posY + 2.f });
     }
+}
+
+
+void Window::prepareMessageArea()
+{
+    messageArea = sf::RectangleShape{ sf::Vector2f{ 1360, 40 }};
+    messageArea.setPosition( sf::Vector2f{ 20.f, 840.f });
+    messageArea.setOutlineThickness(1);
+    messageArea.setOutlineColor(sf::Color::Black);
+
+    messages.emplace_back( font, "", 15 );
+    messages[0].setPosition(sf::Vector2f{ 30.f, 850.f });
+    messages[0].setFillColor(sf::Color::Black);
 }
 
 

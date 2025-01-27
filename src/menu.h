@@ -32,9 +32,9 @@ struct Data
 
 static const std::map<Indicator, Data> Menu = 
 {
-    { Indicator::ADD_NODE,      { MENU_WIDTH, MENU_HEIGHT, 10.f,  MENU_POS_Y, 35.f,  "Add Node" }},
-    { Indicator::CONNECT_NODES, { MENU_WIDTH, MENU_HEIGHT, 130.f, MENU_POS_Y, 140.f, "Connect Nodes" }},
-    { Indicator::REMOVE_ALL,    { MENU_WIDTH, MENU_HEIGHT, 250.f, MENU_POS_Y, 270.f, "Remove All" }}
+    { Indicator::ADD_NODE,      { MENU_WIDTH, MENU_HEIGHT, 20.f,  MENU_POS_Y, 45.f,  "Add Node" }},
+    { Indicator::CONNECT_NODES, { MENU_WIDTH, MENU_HEIGHT, 140.f, MENU_POS_Y, 150.f, "Connect Nodes" }},
+    { Indicator::REMOVE_ALL,    { MENU_WIDTH, MENU_HEIGHT, 260.f, MENU_POS_Y, 280.f, "Remove All" }}
 };
 
 

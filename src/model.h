@@ -6,6 +6,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "message.h"
+
 
 struct Node 
 {
@@ -32,7 +34,7 @@ public:
     void createNode(float radius);
     std::vector<Node>& getNodes();
 
-    void createConnection();
+    Message createConnection();
     void moveConnection(size_t index);
     std::vector<Connection>& getConnections();
 

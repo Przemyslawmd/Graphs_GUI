@@ -31,6 +31,7 @@ public:
 
 private:
     void prepareMenu();
+    void prepareMessageArea();
 
     void handleMousePress();
     void handleMouseRelease();
@@ -42,7 +43,9 @@ private:
     std::unique_ptr<Model> model;
 
     std::vector<sf::RectangleShape> menus;
+    sf::RectangleShape messageArea;
     std::vector<sf::Text> titles;
+    std::vector<sf::Text> messages;
 
     sf::Font font;
     Hold hold;
