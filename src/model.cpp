@@ -4,14 +4,13 @@
 #include "utils.h"
 
 
-constexpr float LINE_WIDTH = 3;
 constexpr size_t INITIAL_NODE_X = 10;
 constexpr size_t INITIAL_NODE_Y = 30;
 
 
 void Model::createNode(float radius)
 {
-    auto& node = nodes.emplace_back(Node{ sf::CircleShape{ radius, 100 }, false });
+    auto& node = nodes.emplace_back( radius );
     node.shape.setPosition({ INITIAL_NODE_X, INITIAL_NODE_Y });
     node.shape.setFillColor({ 51, 153, 255 });
     node.index = nodes.size() - 1;
@@ -42,7 +41,7 @@ Message Model::createConnection()
     sf::Vector2f pos_2 = nodes[node_2].shape.getPosition();
     float length  = calculateConnectionLength(pos_1, pos_2);
 
-    auto& connection = connections.emplace_back( Connection{ sf::RectangleShape{ sf::Vector2f{ length, LINE_WIDTH }}, node_1, node_2 });
+    auto& connection = connections.emplace_back( length, node_1, node_2 );
 
     float radius = nodes[node_1].shape.getRadius();
     connection.line.setPosition({ pos_1.x + radius, pos_1.y + radius });

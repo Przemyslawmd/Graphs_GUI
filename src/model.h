@@ -9,8 +9,14 @@
 #include "message.h"
 
 
+constexpr size_t CIRCLE_POINTS = 100;
+constexpr size_t CONNECTION_LINE_WIDTH = 3;
+
+
 struct Node 
 {
+    Node(float radius) : shape{ radius, CIRCLE_POINTS }, isIndicated{ false } {}
+
     sf::CircleShape shape;
     size_t index;
     bool isIndicated;
@@ -20,6 +26,9 @@ struct Node
 
 struct Connection 
 {
+    Connection(float length, size_t node_1, size_t node_2) 
+        : line{ sf::Vector2f{ length, CONNECTION_LINE_WIDTH }}, node_1{ node_1 }, node_2{ node_2 } {}; 
+
     sf::RectangleShape line;
     size_t node_1;
     size_t node_2;
