@@ -55,7 +55,7 @@ void Window::run()
             window->draw(connection.line);
         }
         for (const auto& node : model->getNodes()) {
-            window->draw(node.shape);
+            window->draw(node.circle);
         }
         window->draw(messageArea);
         window->draw(messages[0]);
@@ -97,7 +97,7 @@ void Window::handleMouseRelease()
     }
 
     auto& nodes = model->getNodes(); 
-    auto& shape = nodes[hold.index].shape;
+    auto& shape = nodes[hold.index].circle;
     if (nodes[hold.index].isIndicated == false) {
         shape.setOutlineColor(sf::Color::Black);
         shape.setOutlineThickness(3.0f);
@@ -118,8 +118,8 @@ void Window::handleMouseMove(const std::optional<sf::Event> event)
     auto& nodes = model->getNodes();
     auto& heldNode = nodes[hold.index];
     
-    float radius = heldNode.shape.getRadius();
-    heldNode.shape.setPosition({ x - radius - hold.shiftX, y - radius - hold.shiftY });
+    float radius = heldNode.circle.getRadius();
+    heldNode.circle.setPosition({ x - radius - hold.shiftX, y - radius - hold.shiftY });
 
     for (size_t i = 0; i < heldNode.connections.size(); i++) {
         model->moveConnection(heldNode.connections[i]);
@@ -164,7 +164,7 @@ std::tuple<int, float, float> Window::isMouseOverNode(const sf::Vector2i& mouseP
 {
     auto& nodes = model->getNodes();
     for (size_t i = 0; i < nodes.size(); i++) {
-        const auto& shape = nodes[i].shape;
+        const auto& shape = nodes[i].circle;
         float radius = shape.getRadius();
         sf::Vector2f circlePos = shape.getPosition();
         float shiftX = mousePos.x - circlePos.x - radius;

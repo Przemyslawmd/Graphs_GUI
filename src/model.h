@@ -15,9 +15,9 @@ constexpr size_t CONNECTION_LINE_WIDTH = 3;
 
 struct Node 
 {
-    Node(float radius) : shape{ radius, CIRCLE_POINTS }, isIndicated{ false } {}
+    Node(float radius) : circle{ radius, CIRCLE_POINTS }, isIndicated{ false } {}
 
-    sf::CircleShape shape;
+    sf::CircleShape circle;
     size_t index;
     bool isIndicated;
     std::vector<size_t> connections;
