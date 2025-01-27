@@ -135,14 +135,14 @@ void Window::prepareMenu()
     }
 
     for (const auto& [key, value] : Menu) {
-        auto& menu = menus.emplace_back( sf::Vector2f{ value.width, value.height });
-        menu.setPosition({ value.posX, value.posY });
+        auto& menu = menus.emplace_back( sf::Vector2f{ MENU_WIDTH, MENU_HEIGHT });
+        menu.setPosition({ value.posX, MENU_POS_Y });
         menu.setFillColor(sf::Color::White);
         menu.setOutlineThickness(1);
         menu.setOutlineColor(sf::Color::Black);
         auto& title = titles.emplace_back(font, value.title, 15);
         title.setFillColor(sf::Color::Black);
-        title.setPosition({ value.posTitle, value.posY + 2.f });
+        title.setPosition({ value.posTitle, MENU_POS_Y + 2.f });
     }
 }
 

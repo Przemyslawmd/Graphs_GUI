@@ -21,10 +21,7 @@ enum class Indicator
 
 struct Data
 {
-    const float width;
-    const float height;
     const float posX;
-    const float posY;
     const float posTitle;
     const std::string title;
 };
@@ -32,15 +29,15 @@ struct Data
 
 static const std::map<Indicator, Data> Menu = 
 {
-    { Indicator::ADD_NODE,      { MENU_WIDTH, MENU_HEIGHT, 20.f,  MENU_POS_Y, 45.f,  "Add Node" }},
-    { Indicator::CONNECT_NODES, { MENU_WIDTH, MENU_HEIGHT, 140.f, MENU_POS_Y, 150.f, "Connect Nodes" }},
-    { Indicator::REMOVE_ALL,    { MENU_WIDTH, MENU_HEIGHT, 260.f, MENU_POS_Y, 280.f, "Remove All" }}
+    { Indicator::ADD_NODE,      { 20.f,  45.f,  "Add Node" }},
+    { Indicator::CONNECT_NODES, { 140.f, 150.f, "Connect Nodes" }},
+    { Indicator::REMOVE_ALL,    { 260.f, 280.f, "Remove All" }}
 };
 
 
 static bool isOverMenu(const sf::Vector2i& pos, const Data& menu) 
 {
-    return pos.x > menu.posX && pos.x < menu.posX + menu.width && pos.y > menu.posY && pos.y < menu.posY + menu.height;
+    return pos.x > menu.posX && pos.x < menu.posX + MENU_WIDTH && pos.y > MENU_POS_Y && pos.y < MENU_POS_Y + MENU_HEIGHT;
 }
 
 
