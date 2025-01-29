@@ -191,6 +191,14 @@ void Window::prepareWorkingArea()
     auto& bottom = workingArea.emplace_back( sf::Vector2f{ DEFAULT_WINDOW_WIDTH - 2 * WORKING_AREA_X_MARGIN, 1 });
     bottom.setPosition({ WORKING_AREA_X_MARGIN, DEFAULT_WINDOW_HEIGHT - WORKING_AREA_Y_MARGIN_BOTTOM });
     bottom.setFillColor(sf::Color::Black);
+
+    auto& left = workingArea.emplace_back( sf::Vector2f{ 1, DEFAULT_WINDOW_HEIGHT - WORKING_AREA_Y_MARGIN_BOTTOM - WORKING_AREA_Y_MARGIN_UP });
+    left.setPosition({ WORKING_AREA_X_MARGIN, WORKING_AREA_Y_MARGIN_UP });
+    left.setFillColor(sf::Color::Black);
+
+    auto& right = workingArea.emplace_back( sf::Vector2f{ 1, DEFAULT_WINDOW_HEIGHT - WORKING_AREA_Y_MARGIN_BOTTOM - WORKING_AREA_Y_MARGIN_UP });
+    right.setPosition({ DEFAULT_WINDOW_WIDTH - WORKING_AREA_X_MARGIN, WORKING_AREA_Y_MARGIN_UP });
+    right.setFillColor(sf::Color::Black);
 }
 
 
@@ -198,9 +206,14 @@ void Window::resizeWorkingArea()
 {
     sf::Vector2f newSize = { (float) window->getSize().x, (float) window->getSize().y };
     workingArea[0].setSize({ newSize.x - 2 * WORKING_AREA_X_MARGIN, 1 });
-    
+
     workingArea[1].setSize({ newSize.x - 2 * WORKING_AREA_X_MARGIN, 1 });
     workingArea[1].setPosition({ WORKING_AREA_X_MARGIN, newSize.y - WORKING_AREA_Y_MARGIN_BOTTOM });
+
+    workingArea[2].setSize({ 1, newSize.y - WORKING_AREA_Y_MARGIN_UP - WORKING_AREA_Y_MARGIN_BOTTOM });
+
+    workingArea[3].setSize({ 1, newSize.y  - WORKING_AREA_Y_MARGIN_UP - WORKING_AREA_Y_MARGIN_BOTTOM });
+    workingArea[3].setPosition({ newSize.x - WORKING_AREA_X_MARGIN, WORKING_AREA_Y_MARGIN_UP });
 }
 
 
