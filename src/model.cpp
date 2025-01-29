@@ -4,8 +4,8 @@
 #include "utils.h"
 
 
-constexpr size_t INITIAL_NODE_X = 10;
-constexpr size_t INITIAL_NODE_Y = 30;
+constexpr size_t INITIAL_NODE_X = 30;
+constexpr size_t INITIAL_NODE_Y = 60;
 
 
 void Model::createNode(float radius)

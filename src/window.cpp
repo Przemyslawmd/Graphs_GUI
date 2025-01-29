@@ -24,6 +24,7 @@ void Window::init()
 {
     prepareMenu();
     prepareMessageArea();
+    prepareWorkingArea();
     hold.isHeld = false;
 }
 
@@ -47,6 +48,7 @@ void Window::run()
             }
             else if (event->is<sf::Event::Resized>()) {
                 resizeMessageArea();
+                resizeWorkingArea();
             }
         }
         window->clear(sf::Color::White);
@@ -62,6 +64,9 @@ void Window::run()
         }
         for (const auto& node : model->getNodes()) {
             window->draw(node.circle);
+        }
+        for (const auto& boundary : workingArea) {
+            window->draw(boundary);
         }
         window->draw(messageArea);
         window->draw(messages[0]);
@@ -174,6 +179,28 @@ void Window::resizeMessageArea()
     messageArea.setSize({ newSize.x - 40.f, MESSAGE_AREA_HEIGHT });
     messageArea.setPosition(sf::Vector2f{ MESSAGE_AREA_X, newSize.y - MESSAGE_AREA_BOTTOM_DISTANCE });
     messages[0].setPosition(sf::Vector2f{ MESSAGE_X, newSize.y - MESSAGE_BOTTOM_DISTANCE });
+}
+
+
+void Window::prepareWorkingArea()
+{
+    auto& up = workingArea.emplace_back( sf::Vector2f{ DEFAULT_WINDOW_WIDTH - 2 * WORKING_AREA_X_MARGIN, 1 });
+    up.setPosition({ WORKING_AREA_X_MARGIN, WORKING_AREA_Y_MARGIN_UP});
+    up.setFillColor(sf::Color::Black);
+
+    auto& bottom = workingArea.emplace_back( sf::Vector2f{ DEFAULT_WINDOW_WIDTH - 2 * WORKING_AREA_X_MARGIN, 1 });
+    bottom.setPosition({ WORKING_AREA_X_MARGIN, DEFAULT_WINDOW_HEIGHT - WORKING_AREA_Y_MARGIN_BOTTOM });
+    bottom.setFillColor(sf::Color::Black);
+}
+
+
+void Window::resizeWorkingArea()
+{
+    sf::Vector2f newSize = { (float) window->getSize().x, (float) window->getSize().y };
+    workingArea[0].setSize({ newSize.x - 2 * WORKING_AREA_X_MARGIN, 1 });
+    
+    workingArea[1].setSize({ newSize.x - 2 * WORKING_AREA_X_MARGIN, 1 });
+    workingArea[1].setPosition({ WORKING_AREA_X_MARGIN, newSize.y - WORKING_AREA_Y_MARGIN_BOTTOM });
 }
 
 
