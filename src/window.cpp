@@ -15,6 +15,7 @@ Window::Window()
     settings.antiAliasingLevel = 8;
     window = std::make_unique<sf::RenderWindow>(sf::VideoMode({ DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT }, sf::Style::Titlebar ),
                                                 "", sf::State::Windowed, settings);
+    window->setVerticalSyncEnabled(true);
     model = std::make_unique<Model>();
 }
 

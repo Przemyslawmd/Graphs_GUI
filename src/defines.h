@@ -3,7 +3,7 @@
 #define GUI_GRAPHS_DEFINES_H
 
 
-constexpr int DEFAULT_WINDOW_WIDTH = 1400;
+constexpr int DEFAULT_WINDOW_WIDTH = 1600;
 constexpr int DEFAULT_WINDOW_HEIGHT = 900;
 
 
