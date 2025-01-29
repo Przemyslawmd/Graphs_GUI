@@ -32,6 +32,7 @@ public:
 private:
     void prepareMenu();
     void prepareMessageArea();
+    void resizeMessageArea();
 
     void handleMousePress();
     void handleMouseRelease();

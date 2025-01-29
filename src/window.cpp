@@ -4,6 +4,7 @@
 #include <SFML/System/Vector2.hpp>
 
 #include "config.h"
+#include "defines.h"
 #include "menu.h"
 #include "window.h"
 
@@ -12,7 +13,8 @@ Window::Window()
 {
     sf::ContextSettings settings;
     settings.antiAliasingLevel = 8;
-    window = std::make_unique<sf::RenderWindow>(sf::VideoMode({ 1400, 900 }, sf::Style::Titlebar ) , "", sf::State::Windowed, settings);
+    window = std::make_unique<sf::RenderWindow>(sf::VideoMode({ DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT }, sf::Style::Titlebar ),
+                                                "", sf::State::Windowed, settings);
     model = std::make_unique<Model>();
 }
 
@@ -41,6 +43,9 @@ void Window::run()
             }
             else if (event->is<sf::Event::MouseMoved>() && hold.isHeld) {
                 handleMouseMove(event);
+            }
+            else if (event->is<sf::Event::Resized>()) {
+                resizeMessageArea();
             }
         }
         window->clear(sf::Color::White);
@@ -149,14 +154,25 @@ void Window::prepareMenu()
 
 void Window::prepareMessageArea()
 {
-    messageArea = sf::RectangleShape{ sf::Vector2f{ 1360, 40 }};
-    messageArea.setPosition( sf::Vector2f{ 20.f, 840.f });
+    messageArea = sf::RectangleShape{ sf::Vector2f{ DEFAULT_WINDOW_WIDTH - 40.f, MESSAGE_AREA_HEIGHT }};
+    messageArea.setPosition( sf::Vector2f{ MESSAGE_AREA_X, DEFAULT_WINDOW_HEIGHT - 60.f });
     messageArea.setOutlineThickness(1);
     messageArea.setOutlineColor(sf::Color::Black);
 
     messages.emplace_back( font, "", 15 );
-    messages[0].setPosition(sf::Vector2f{ 30.f, 850.f });
+    messages[0].setPosition(sf::Vector2f{ MESSAGE_X, 850.f });
     messages[0].setFillColor(sf::Color::Black);
+}
+
+
+void Window::resizeMessageArea()
+{
+    sf::Vector2f newSize = { (float) window->getSize().x, (float) window->getSize().y };
+    sf::FloatRect newView({ 0, 0 }, newSize );
+    window->setView(sf::View(newView));
+    messageArea.setSize({ newSize.x - 40.f, MESSAGE_AREA_HEIGHT });
+    messageArea.setPosition(sf::Vector2f{ MESSAGE_AREA_X, newSize.y - MESSAGE_AREA_BOTTOM_DISTANCE });
+    messages[0].setPosition(sf::Vector2f{ MESSAGE_X, newSize.y - MESSAGE_BOTTOM_DISTANCE });
 }
 
 
