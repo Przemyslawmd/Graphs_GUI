@@ -31,12 +31,12 @@ public:
 
 private:
     void prepareMenu();
-
     void prepareMessageArea();
-    void resizeMessageArea();
-
-    void prepareWorkingArea();
-    void resizeWorkingArea();
+    void prepareGraphArea();
+    
+    void resize();
+    void resizeMessageArea(const sf::Vector2u& newSize);
+    void resizeGraphArea(const sf::Vector2u& newSize);
 
     void handleMousePress();
     void handleMouseRelease();
@@ -51,7 +51,7 @@ private:
     sf::RectangleShape messageArea;
     std::vector<sf::Text> titles;
     std::vector<sf::Text> messages;
-    std::vector<sf::RectangleShape> workingArea;
+    std::vector<sf::RectangleShape> graphArea;
 
     sf::Font font;
     Hold hold;

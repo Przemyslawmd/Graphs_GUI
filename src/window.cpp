@@ -24,7 +24,7 @@ void Window::init()
 {
     prepareMenu();
     prepareMessageArea();
-    prepareWorkingArea();
+    prepareGraphArea();
     hold.isHeld = false;
 }
 
@@ -47,8 +47,7 @@ void Window::run()
                 handleMouseMove(event);
             }
             else if (event->is<sf::Event::Resized>()) {
-                resizeMessageArea();
-                resizeWorkingArea();
+                resize();
             }
         }
         window->clear(sf::Color::White);
@@ -65,7 +64,7 @@ void Window::run()
         for (const auto& node : model->getNodes()) {
             window->draw(node.circle);
         }
-        for (const auto& boundary : workingArea) {
+        for (const auto& boundary : graphArea) {
             window->draw(boundary);
         }
         window->draw(messageArea);
@@ -179,50 +178,56 @@ void Window::prepareMessageArea()
     messages[0].setFillColor(sf::Color::Black);
 }
 
-
-void Window::resizeMessageArea()
+void Window::prepareGraphArea()
 {
-    sf::Vector2f newSize = { (float) window->getSize().x, (float) window->getSize().y };
-    sf::FloatRect newView({ 0, 0 }, newSize );
-    window->setView(sf::View(newView));
-    messageArea.setSize({ newSize.x - 40.f, MESSAGE_AREA_HEIGHT });
-    messageArea.setPosition(sf::Vector2f{ MESSAGE_AREA_X, newSize.y - MESSAGE_AREA_BOTTOM_DISTANCE });
-    messages[0].setPosition(sf::Vector2f{ MESSAGE_X, newSize.y - MESSAGE_BOTTOM_DISTANCE });
-}
-
-
-void Window::prepareWorkingArea()
-{
-    auto& up = workingArea.emplace_back( sf::Vector2f{ DEFAULT_WINDOW_WIDTH - 2 * GRAPH_AREA_X_MARGIN, 1 });
+    auto& up = graphArea.emplace_back( sf::Vector2f{ DEFAULT_WINDOW_WIDTH - 2 * GRAPH_AREA_X_MARGIN, 1 });
     up.setPosition({ GRAPH_AREA_X_MARGIN, GRAPH_AREA_Y_MARGIN_UP});
     up.setFillColor(sf::Color::Black);
 
-    auto& bottom = workingArea.emplace_back( sf::Vector2f{ DEFAULT_WINDOW_WIDTH - 2 * GRAPH_AREA_X_MARGIN, 1 });
+    auto& bottom = graphArea.emplace_back( sf::Vector2f{ DEFAULT_WINDOW_WIDTH - 2 * GRAPH_AREA_X_MARGIN, 1 });
     bottom.setPosition({ GRAPH_AREA_X_MARGIN, DEFAULT_WINDOW_HEIGHT - GRAPH_AREA_Y_MARGIN_BOTTOM });
     bottom.setFillColor(sf::Color::Black);
 
-    auto& left = workingArea.emplace_back( sf::Vector2f{ 1, DEFAULT_WINDOW_HEIGHT - GRAPH_AREA_Y_MARGIN_BOTTOM - GRAPH_AREA_Y_MARGIN_UP });
+    auto& left = graphArea.emplace_back( sf::Vector2f{ 1, DEFAULT_WINDOW_HEIGHT - GRAPH_AREA_Y_MARGIN_BOTTOM - GRAPH_AREA_Y_MARGIN_UP });
     left.setPosition({ GRAPH_AREA_X_MARGIN, GRAPH_AREA_Y_MARGIN_UP });
     left.setFillColor(sf::Color::Black);
 
-    auto& right = workingArea.emplace_back( sf::Vector2f{ 1, DEFAULT_WINDOW_HEIGHT - GRAPH_AREA_Y_MARGIN_BOTTOM - GRAPH_AREA_Y_MARGIN_UP });
+    auto& right = graphArea.emplace_back( sf::Vector2f{ 1, DEFAULT_WINDOW_HEIGHT - GRAPH_AREA_Y_MARGIN_BOTTOM - GRAPH_AREA_Y_MARGIN_UP });
     right.setPosition({ DEFAULT_WINDOW_WIDTH - GRAPH_AREA_X_MARGIN, GRAPH_AREA_Y_MARGIN_UP });
     right.setFillColor(sf::Color::Black);
 }
 
 
-void Window::resizeWorkingArea()
+void Window::resize()
 {
-    sf::Vector2f newSize = { (float) window->getSize().x, (float) window->getSize().y };
-    workingArea[0].setSize({ newSize.x - 2 * GRAPH_AREA_X_MARGIN, 1 });
+    sf::Vector2u size = { window->getSize().x, window->getSize().y };
+    sf::FloatRect newView({ 0, 0 }, { (float) size.x, (float) size.y });
+    window->setView(sf::View(newView));
 
-    workingArea[1].setSize({ newSize.x - 2 * GRAPH_AREA_X_MARGIN, 1 });
-    workingArea[1].setPosition({ GRAPH_AREA_X_MARGIN, newSize.y - GRAPH_AREA_Y_MARGIN_BOTTOM });
+    resizeMessageArea(size);
+    resizeGraphArea(size);
+}
 
-    workingArea[2].setSize({ 1, newSize.y - GRAPH_AREA_Y_MARGIN_UP - GRAPH_AREA_Y_MARGIN_BOTTOM });
 
-    workingArea[3].setSize({ 1, newSize.y  - GRAPH_AREA_Y_MARGIN_UP - GRAPH_AREA_Y_MARGIN_BOTTOM });
-    workingArea[3].setPosition({ newSize.x - GRAPH_AREA_X_MARGIN, GRAPH_AREA_Y_MARGIN_UP });
+void Window::resizeMessageArea(const sf::Vector2u& size)
+{
+    messageArea.setSize({ size.x - 40.f, MESSAGE_AREA_HEIGHT });
+    messageArea.setPosition(sf::Vector2f{ MESSAGE_AREA_X, size.y - MESSAGE_AREA_BOTTOM_DISTANCE });
+    messages[0].setPosition(sf::Vector2f{ MESSAGE_X, size.y - MESSAGE_BOTTOM_DISTANCE });
+}
+
+
+void Window::resizeGraphArea(const sf::Vector2u& size)
+{
+    graphArea[0].setSize({ size.x - 2 * GRAPH_AREA_X_MARGIN, 1 });
+
+    graphArea[1].setSize({ size.x - 2 * GRAPH_AREA_X_MARGIN, 1 });
+    graphArea[1].setPosition({ GRAPH_AREA_X_MARGIN, size.y - GRAPH_AREA_Y_MARGIN_BOTTOM });
+
+    graphArea[2].setSize({ 1, size.y - GRAPH_AREA_Y_MARGIN_UP - GRAPH_AREA_Y_MARGIN_BOTTOM });
+
+    graphArea[3].setSize({ 1, size.y  - GRAPH_AREA_Y_MARGIN_UP - GRAPH_AREA_Y_MARGIN_BOTTOM });
+    graphArea[3].setPosition({ size.x - GRAPH_AREA_X_MARGIN, GRAPH_AREA_Y_MARGIN_UP });
 }
 
 
