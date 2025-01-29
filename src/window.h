@@ -8,6 +8,7 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "button.h"
 #include "model.h"
 
 
@@ -47,9 +48,9 @@ private:
     std::unique_ptr<sf::RenderWindow> window;
     std::unique_ptr<Model> model;
 
-    std::vector<sf::RectangleShape> menus;
+    std::vector<Button> buttons;
+
     sf::RectangleShape messageArea;
-    std::vector<sf::Text> titles;
     std::vector<sf::Text> messages;
     std::vector<sf::RectangleShape> graphArea;
 

@@ -22,6 +22,9 @@ Window::Window()
 
 void Window::init()
 {
+    if (!font.openFromFile(std::string(RESOURCES) + "Arial.ttf")) {
+        return;
+    }
     prepareMenu();
     prepareMessageArea();
     prepareGraphArea();
@@ -52,11 +55,9 @@ void Window::run()
         }
         window->clear(sf::Color::White);
 
-        for (const auto& menu : menus) {
-            window->draw(menu);
-        }
-        for (const auto& title : titles) {
-            window->draw(title);
+        for (const auto& button : buttons) {
+            window->draw(button.shape);
+            window->draw(button.text);
         }
         for (const auto& connection : model->getConnections()) {
             window->draw(connection.line);
@@ -149,19 +150,14 @@ void Window::handleMouseMove(const std::optional<sf::Event> event)
 
 void Window::prepareMenu()
 {
-    if (!font.openFromFile(std::string(RESOURCES) + "Arial.ttf")) {
-        return;
-    }
-
-    for (const auto& [key, value] : Menu) {
-        auto& menu = menus.emplace_back( sf::Vector2f{ MENU_WIDTH, MENU_HEIGHT });
-        menu.setPosition({ value.posX, MENU_POS_Y });
-        menu.setFillColor(sf::Color::White);
-        menu.setOutlineThickness(1);
-        menu.setOutlineColor(sf::Color::Black);
-        auto& title = titles.emplace_back(font, value.title, 15);
-        title.setFillColor(sf::Color::Black);
-        title.setPosition({ value.posTitle, MENU_POS_Y + 2.f });
+    for (const auto& [key, value] : buttonsData) {
+        auto& menu = buttons.emplace_back( MENU_WIDTH, MENU_HEIGHT, font, value.title);
+        menu.shape.setPosition({ value.posX, MENU_POS_Y });
+        menu.shape.setFillColor(sf::Color::White);
+        menu.shape.setOutlineThickness(1);
+        menu.shape.setOutlineColor(sf::Color::Black);
+        menu.text.setFillColor(sf::Color::Black);
+        menu.text.setPosition({ value.posTitle, MENU_POS_Y + 2.f });
     }
 }
 
