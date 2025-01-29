@@ -126,9 +126,18 @@ void Window::handleMouseMove(const std::optional<sf::Event> event)
     auto mouseEvent = event.value().getIf<sf::Event::MouseMoved>();
     float x = mouseEvent->position.x;
     float y = mouseEvent->position.y;
+
+    sf::Vector2u size = { window->getSize().x, window->getSize().y };
+    if (x > size.x - GRAPH_AREA_X_MARGIN - 20 || 
+        x < GRAPH_AREA_X_MARGIN + 20 || 
+        y > size.y - GRAPH_AREA_Y_MARGIN_BOTTOM - 20 ||
+        y < GRAPH_AREA_Y_MARGIN_UP + 20) {
+        return;
+    }
+     
     auto& nodes = model->getNodes();
     auto& heldNode = nodes[hold.index];
-    
+
     float radius = heldNode.circle.getRadius();
     heldNode.circle.setPosition({ x - radius - hold.shiftX, y - radius - hold.shiftY });
 
@@ -184,20 +193,20 @@ void Window::resizeMessageArea()
 
 void Window::prepareWorkingArea()
 {
-    auto& up = workingArea.emplace_back( sf::Vector2f{ DEFAULT_WINDOW_WIDTH - 2 * WORKING_AREA_X_MARGIN, 1 });
-    up.setPosition({ WORKING_AREA_X_MARGIN, WORKING_AREA_Y_MARGIN_UP});
+    auto& up = workingArea.emplace_back( sf::Vector2f{ DEFAULT_WINDOW_WIDTH - 2 * GRAPH_AREA_X_MARGIN, 1 });
+    up.setPosition({ GRAPH_AREA_X_MARGIN, GRAPH_AREA_Y_MARGIN_UP});
     up.setFillColor(sf::Color::Black);
 
-    auto& bottom = workingArea.emplace_back( sf::Vector2f{ DEFAULT_WINDOW_WIDTH - 2 * WORKING_AREA_X_MARGIN, 1 });
-    bottom.setPosition({ WORKING_AREA_X_MARGIN, DEFAULT_WINDOW_HEIGHT - WORKING_AREA_Y_MARGIN_BOTTOM });
+    auto& bottom = workingArea.emplace_back( sf::Vector2f{ DEFAULT_WINDOW_WIDTH - 2 * GRAPH_AREA_X_MARGIN, 1 });
+    bottom.setPosition({ GRAPH_AREA_X_MARGIN, DEFAULT_WINDOW_HEIGHT - GRAPH_AREA_Y_MARGIN_BOTTOM });
     bottom.setFillColor(sf::Color::Black);
 
-    auto& left = workingArea.emplace_back( sf::Vector2f{ 1, DEFAULT_WINDOW_HEIGHT - WORKING_AREA_Y_MARGIN_BOTTOM - WORKING_AREA_Y_MARGIN_UP });
-    left.setPosition({ WORKING_AREA_X_MARGIN, WORKING_AREA_Y_MARGIN_UP });
+    auto& left = workingArea.emplace_back( sf::Vector2f{ 1, DEFAULT_WINDOW_HEIGHT - GRAPH_AREA_Y_MARGIN_BOTTOM - GRAPH_AREA_Y_MARGIN_UP });
+    left.setPosition({ GRAPH_AREA_X_MARGIN, GRAPH_AREA_Y_MARGIN_UP });
     left.setFillColor(sf::Color::Black);
 
-    auto& right = workingArea.emplace_back( sf::Vector2f{ 1, DEFAULT_WINDOW_HEIGHT - WORKING_AREA_Y_MARGIN_BOTTOM - WORKING_AREA_Y_MARGIN_UP });
-    right.setPosition({ DEFAULT_WINDOW_WIDTH - WORKING_AREA_X_MARGIN, WORKING_AREA_Y_MARGIN_UP });
+    auto& right = workingArea.emplace_back( sf::Vector2f{ 1, DEFAULT_WINDOW_HEIGHT - GRAPH_AREA_Y_MARGIN_BOTTOM - GRAPH_AREA_Y_MARGIN_UP });
+    right.setPosition({ DEFAULT_WINDOW_WIDTH - GRAPH_AREA_X_MARGIN, GRAPH_AREA_Y_MARGIN_UP });
     right.setFillColor(sf::Color::Black);
 }
 
@@ -205,15 +214,15 @@ void Window::prepareWorkingArea()
 void Window::resizeWorkingArea()
 {
     sf::Vector2f newSize = { (float) window->getSize().x, (float) window->getSize().y };
-    workingArea[0].setSize({ newSize.x - 2 * WORKING_AREA_X_MARGIN, 1 });
+    workingArea[0].setSize({ newSize.x - 2 * GRAPH_AREA_X_MARGIN, 1 });
 
-    workingArea[1].setSize({ newSize.x - 2 * WORKING_AREA_X_MARGIN, 1 });
-    workingArea[1].setPosition({ WORKING_AREA_X_MARGIN, newSize.y - WORKING_AREA_Y_MARGIN_BOTTOM });
+    workingArea[1].setSize({ newSize.x - 2 * GRAPH_AREA_X_MARGIN, 1 });
+    workingArea[1].setPosition({ GRAPH_AREA_X_MARGIN, newSize.y - GRAPH_AREA_Y_MARGIN_BOTTOM });
 
-    workingArea[2].setSize({ 1, newSize.y - WORKING_AREA_Y_MARGIN_UP - WORKING_AREA_Y_MARGIN_BOTTOM });
+    workingArea[2].setSize({ 1, newSize.y - GRAPH_AREA_Y_MARGIN_UP - GRAPH_AREA_Y_MARGIN_BOTTOM });
 
-    workingArea[3].setSize({ 1, newSize.y  - WORKING_AREA_Y_MARGIN_UP - WORKING_AREA_Y_MARGIN_BOTTOM });
-    workingArea[3].setPosition({ newSize.x - WORKING_AREA_X_MARGIN, WORKING_AREA_Y_MARGIN_UP });
+    workingArea[3].setSize({ 1, newSize.y  - GRAPH_AREA_Y_MARGIN_UP - GRAPH_AREA_Y_MARGIN_BOTTOM });
+    workingArea[3].setPosition({ newSize.x - GRAPH_AREA_X_MARGIN, GRAPH_AREA_Y_MARGIN_UP });
 }
 
 
