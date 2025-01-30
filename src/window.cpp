@@ -129,8 +129,8 @@ void Window::handleMouseMove(const std::optional<sf::Event> event)
     sf::Vector2u size = { window->getSize().x, window->getSize().y };
     if (x > size.x - MARGIN_X - 20 || 
         x < MARGIN_X + 20 || 
-        y > size.y - GRAPH_AREA_Y_MARGIN_BOTTOM - 20 ||
-        y < GRAPH_AREA_Y_MARGIN_UP + 20) {
+        y > size.y - MARGIN_BOTTOM_GRAPHS - 20 ||
+        y < MARGIN_UP_GRAPHS + 20) {
         return;
     }
 
@@ -163,33 +163,37 @@ void Window::prepareMenu()
 
 void Window::prepareLines()
 {
-    lines.emplace(Line::MESSAGE_UP, sf::Vector2f{ DEFAULT_WINDOW_WIDTH - 40.f, 1 });
-    lines.at(Line::MESSAGE_UP).setPosition( { MARGIN_X, DEFAULT_WINDOW_HEIGHT - 60.f });
+    sf::Vector2u size = { window->getSize().x, window->getSize().y };
 
-    lines.emplace(Line::MESSAGE_BOTTOM, sf::Vector2f{ DEFAULT_WINDOW_WIDTH - 40.f, 1 });
-    lines.at(Line::MESSAGE_BOTTOM).setPosition( { MARGIN_X, DEFAULT_WINDOW_HEIGHT + 40.f - 60.f });
-
+    lines.emplace(Line::MESSAGE_UP, sf::Vector2f{ size.x - 40.f, 1 });
+    lines.emplace(Line::MESSAGE_BOTTOM, sf::Vector2f{ size.x - 40.f, 1 });
     lines.emplace(Line::MESSAGE_LEFT, sf::Vector2f{ 1, MESSAGE_AREA_HEIGHT });
-    lines.at(Line::MESSAGE_LEFT).setPosition( { MARGIN_X, DEFAULT_WINDOW_HEIGHT - 60.f });
-
     lines.emplace(Line::MESSAGE_RIGHT, sf::Vector2f{ 1, MESSAGE_AREA_HEIGHT });
-    lines.at(Line::MESSAGE_RIGHT).setPosition( {  DEFAULT_WINDOW_WIDTH - MARGIN_X, DEFAULT_WINDOW_HEIGHT - 60.f });
 
-    lines.emplace(Line::GRAPHS_UP, sf::Vector2f{ DEFAULT_WINDOW_WIDTH - 2 * MARGIN_X, 1 });
-    lines.at(Line::GRAPHS_UP).setPosition({ MARGIN_X, GRAPH_AREA_Y_MARGIN_UP});
+    lines.emplace(Line::GRAPHS_UP, sf::Vector2f{ size.x - 2 * MARGIN_X, 1 });
+    lines.emplace(Line::GRAPHS_BOTTOM, sf::Vector2f{ size.x - 2 * MARGIN_X, 1 });
+    lines.emplace(Line::GRAPHS_LEFT, sf::Vector2f{ 1, size.y - MARGIN_BOTTOM_GRAPHS - MARGIN_UP_GRAPHS });
+    lines.emplace(Line::GRAPHS_RIGHT, sf::Vector2f{ 1, size.y - MARGIN_BOTTOM_GRAPHS - MARGIN_UP_GRAPHS });
 
-    lines.emplace(Line::GRAPHS_BOTTOM, sf::Vector2f{ DEFAULT_WINDOW_WIDTH - 2 * MARGIN_X, 1 });
-    lines.at(Line::GRAPHS_BOTTOM).setPosition({ MARGIN_X, DEFAULT_WINDOW_HEIGHT - GRAPH_AREA_Y_MARGIN_BOTTOM });
+    setLinesPositions(size);
 
-    lines.emplace(Line::GRAPHS_LEFT, sf::Vector2f{ 1, DEFAULT_WINDOW_HEIGHT - GRAPH_AREA_Y_MARGIN_BOTTOM - GRAPH_AREA_Y_MARGIN_UP });
-    lines.at(Line::GRAPHS_LEFT).setPosition({ MARGIN_X, GRAPH_AREA_Y_MARGIN_UP });
- 
-    lines.emplace(Line::GRAPHS_RIGHT, sf::Vector2f{ 1, DEFAULT_WINDOW_HEIGHT - GRAPH_AREA_Y_MARGIN_BOTTOM - GRAPH_AREA_Y_MARGIN_UP });
-    lines.at(Line::GRAPHS_RIGHT).setPosition({ DEFAULT_WINDOW_WIDTH - MARGIN_X, GRAPH_AREA_Y_MARGIN_UP });
- 
     for (auto& [_, line] : lines) {
         line.setFillColor(sf::Color::Black);
     }
+}
+
+
+void Window::setLinesPositions(const sf::Vector2u& size)
+{
+    lines.at(Line::MESSAGE_UP).setPosition( { MARGIN_X, size.y - 60.f });
+    lines.at(Line::MESSAGE_BOTTOM).setPosition( { MARGIN_X, size.y + 40.f - 60.f });
+    lines.at(Line::MESSAGE_LEFT).setPosition( { MARGIN_X, size.y - 60.f });
+    lines.at(Line::MESSAGE_RIGHT).setPosition( { size.x - MARGIN_X, size.y - 60.f });
+
+    lines.at(Line::GRAPHS_UP).setPosition({ MARGIN_X, MARGIN_UP_GRAPHS });
+    lines.at(Line::GRAPHS_BOTTOM).setPosition({ MARGIN_X, size.y - MARGIN_BOTTOM_GRAPHS });
+    lines.at(Line::GRAPHS_LEFT).setPosition({ MARGIN_X, MARGIN_UP_GRAPHS });
+    lines.at(Line::GRAPHS_RIGHT).setPosition({ size.x - MARGIN_X, MARGIN_UP_GRAPHS });
 }
 
 
@@ -199,30 +203,19 @@ void Window::resize()
     sf::FloatRect newView({ 0, 0 }, { (float) size.x, (float) size.y });
     window->setView(sf::View(newView));
     resizeLines(size);
+    setLinesPositions(size);
 }
 
 
 void Window::resizeLines(const sf::Vector2u& size)
 {
     lines.at(Line::MESSAGE_UP).setSize({ size.x - 2 * MARGIN_X, 1 });
-    lines.at(Line::MESSAGE_UP).setPosition({ MARGIN_X, size.y - 60.f });
-
     lines.at(Line::MESSAGE_BOTTOM).setSize({ size.x - 2 * MARGIN_X, 1 });
-    lines.at(Line::MESSAGE_BOTTOM).setPosition({ MARGIN_X, size.y + 40.f - 60.f  });
-
-    lines.at(Line::MESSAGE_LEFT).setPosition({ MARGIN_X, size.y - 60.f });
-
-    lines.at(Line::MESSAGE_RIGHT).setPosition({ size.x - MARGIN_X, size.y - 60.f });
 
     lines.at(Line::GRAPHS_UP).setSize({ size.x - 2 * MARGIN_X, 1 });
-
     lines.at(Line::GRAPHS_BOTTOM).setSize({ size.x - 2 * MARGIN_X, 1 });
-    lines.at(Line::GRAPHS_BOTTOM).setPosition({ MARGIN_X, size.y - GRAPH_AREA_Y_MARGIN_BOTTOM });
-
-    lines.at(Line::GRAPHS_LEFT).setSize({ 1, size.y - GRAPH_AREA_Y_MARGIN_UP - GRAPH_AREA_Y_MARGIN_BOTTOM });
-
-    lines.at(Line::GRAPHS_RIGHT).setSize({ 1, size.y - GRAPH_AREA_Y_MARGIN_UP - GRAPH_AREA_Y_MARGIN_BOTTOM });
-    lines.at(Line::GRAPHS_RIGHT).setPosition({ size.x - MARGIN_X, GRAPH_AREA_Y_MARGIN_UP });
+    lines.at(Line::GRAPHS_LEFT).setSize({ 1, size.y - MARGIN_UP_GRAPHS - MARGIN_BOTTOM_GRAPHS });
+    lines.at(Line::GRAPHS_RIGHT).setSize({ 1, size.y - MARGIN_UP_GRAPHS - MARGIN_BOTTOM_GRAPHS });
 }
 
 

@@ -26,6 +26,7 @@ public:
 private:
     void prepareMenu();
     void prepareLines();
+    void setLinesPositions(const sf::Vector2u& position);
 
     void resize();
     void resizeLines(const sf::Vector2u& newSize);

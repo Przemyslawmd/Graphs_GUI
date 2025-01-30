@@ -7,15 +7,14 @@ constexpr int DEFAULT_WINDOW_WIDTH = 1600;
 constexpr int DEFAULT_WINDOW_HEIGHT = 900;
 
 constexpr float MARGIN_X = 20.f;
+constexpr float MARGIN_UP_GRAPHS = 50.f;
+constexpr float MARGIN_BOTTOM_GRAPHS = 80.f;
 
 constexpr float MESSAGE_AREA_HEIGHT = 40.f;
 constexpr float MESSAGE_AREA_BOTTOM_DISTANCE = 60.f;
 
 constexpr float MESSAGE_X = 30.f;
 constexpr float MESSAGE_BOTTOM_DISTANCE = 50.f;
-
-constexpr float GRAPH_AREA_Y_MARGIN_UP = 50.f;
-constexpr float GRAPH_AREA_Y_MARGIN_BOTTOM = 80.f;
 
 
 enum class Line 
