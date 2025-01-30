@@ -2,6 +2,7 @@
 #ifndef GUI_GRAPHS_WINDOW_H
 #define GUI_GRAPHS_WINDOW_H
 
+#include <map>
 #include <memory>
 #include <optional>
 #include <tuple>
@@ -9,6 +10,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "button.h"
+#include "defines.h"
 #include "model.h"
 #include "hold.h"
 
@@ -23,12 +25,10 @@ public:
 
 private:
     void prepareMenu();
-    void prepareMessageArea();
-    void prepareGraphArea();
-    
+    void prepareLines();
+
     void resize();
-    void resizeMessageArea(const sf::Vector2u& newSize);
-    void resizeGraphArea(const sf::Vector2u& newSize);
+    void resizeLines(const sf::Vector2u& newSize);
 
     void handleMousePress();
     void handleMouseRelease();
@@ -41,11 +41,9 @@ private:
     std::unique_ptr<Hold> hold;
 
     std::vector<Button> buttons;
+    std::map<Line, sf::RectangleShape> lines;
 
-    sf::RectangleShape messageArea;
     std::vector<sf::Text> messages;
-    std::vector<sf::RectangleShape> graphArea;
-
     sf::Font font;
 };
 
