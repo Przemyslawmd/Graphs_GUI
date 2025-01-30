@@ -67,7 +67,9 @@ void Window::run()
         for (const auto& [_, line] : lines) {
             window->draw(line);
         }
-        //window->draw(messages[0]);
+        if (message) {
+            window->draw(*message);
+        }
         window->display();
     }
 }
@@ -75,16 +77,16 @@ void Window::run()
 
 void Window::handleMousePress()
 {
-    //messages[0].setString("");
+    message.release();
     sf::Vector2i position = sf::Mouse::getPosition(*window);
     if (isOverAddNodeMenu(position)) {
         model->createNode(20);
         return;
     }
     if (isOverConnectNodesMenu(position)) {
-        auto message = model->createConnection();
-        if (message != Message::OK) {
-            messages[0].setString(MessageStr.at(message));
+        auto result = model->createConnection();
+        if (result != Message::OK) {
+            setMessage(MessageStr.at(result));
         }
         return;
     }
@@ -165,8 +167,8 @@ void Window::prepareLines()
 {
     sf::Vector2u size = { window->getSize().x, window->getSize().y };
 
-    lines.emplace(Line::MESSAGE_UP, sf::Vector2f{ size.x - 40.f, 1 });
-    lines.emplace(Line::MESSAGE_BOTTOM, sf::Vector2f{ size.x - 40.f, 1 });
+    lines.emplace(Line::MESSAGE_UP, sf::Vector2f{ size.x - 2 * MARGIN_X, 1 });
+    lines.emplace(Line::MESSAGE_BOTTOM, sf::Vector2f{ size.x - 2 * MARGIN_X, 1 });
     lines.emplace(Line::MESSAGE_LEFT, sf::Vector2f{ 1, MESSAGE_AREA_HEIGHT });
     lines.emplace(Line::MESSAGE_RIGHT, sf::Vector2f{ 1, MESSAGE_AREA_HEIGHT });
 
@@ -204,6 +206,11 @@ void Window::resize()
     window->setView(sf::View(newView));
     resizeLines(size);
     setLinesPositions(size);
+
+    if (message) {
+        const auto& pos = lines.at(Line::MESSAGE_LEFT).getPosition();
+        message->setPosition({ pos.x + 10, pos.y + 10 });
+    }
 }
 
 
@@ -234,5 +241,14 @@ std::tuple<int, float, float> Window::isMouseOverNode(const sf::Vector2i& mouseP
         }
     }
     return { -1, 0, 0 };
+}
+
+
+void Window::setMessage(const std::string& text)
+{
+    message = std::make_unique<sf::Text>(font, text, 15);
+    const auto& pos = lines.at(Line::MESSAGE_LEFT).getPosition();
+    message->setPosition({ pos.x + 10, pos.y + 10 });
+    message->setFillColor(sf::Color::Black);
 }
 

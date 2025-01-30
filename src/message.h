@@ -17,7 +17,7 @@ enum class Message
 
 static const std::map<Message, std::string> MessageStr = 
 {
-    { Message::NODES_COUNT_CONNECTION_ERROR, { "Select two nodes by clicking the mouse button to make a connection" }},
+    { Message::NODES_COUNT_CONNECTION_ERROR, { "To make a connection select two nodes by clicking the mouse button" }},
     { Message::CONNECTION_EXISTS, { "Connection exists for selected nodes" }}
 };
 

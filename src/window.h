@@ -31,6 +31,8 @@ private:
     void resize();
     void resizeLines(const sf::Vector2u& newSize);
 
+    void setMessage(const std::string& message);
+
     void handleMousePress();
     void handleMouseRelease();
     void handleMouseMove(const std::optional<sf::Event> event);
@@ -40,11 +42,11 @@ private:
     std::unique_ptr<sf::RenderWindow> window;
     std::unique_ptr<Model> model;
     std::unique_ptr<Hold> hold;
+    std::unique_ptr<sf::Text> message;
 
     std::vector<Button> buttons;
     std::map<Line, sf::RectangleShape> lines;
 
-    std::vector<sf::Text> messages;
     sf::Font font;
 };
 
