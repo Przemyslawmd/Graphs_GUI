@@ -15,8 +15,8 @@ Window::Window()
     settings.antiAliasingLevel = 8;
     window = std::make_unique<sf::RenderWindow>(sf::VideoMode({ DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT }, sf::Style::Titlebar ),
                                                 "", sf::State::Windowed, settings);
-    window->setVerticalSyncEnabled(true);
     model = std::make_unique<Model>();
+    hold = std::make_unique<Hold>();
 }
 
 
@@ -28,7 +28,7 @@ void Window::init()
     prepareMenu();
     prepareMessageArea();
     prepareGraphArea();
-    hold.isHeld = false;
+    window->setVerticalSyncEnabled(true);
 }
 
 
@@ -42,11 +42,11 @@ void Window::run()
             else if (event->is<sf::Event::MouseButtonPressed>()) {
                 handleMousePress();
             }
-            else if (event->is<sf::Event::MouseButtonReleased>() && hold.isHeld) {
+            else if (event->is<sf::Event::MouseButtonReleased>() && hold->isHeld) {
                 handleMouseRelease();
-                hold = { false, false, -1, 0, 0 };
+                hold->reset();
             }
-            else if (event->is<sf::Event::MouseMoved>() && hold.isHeld) {
+            else if (event->is<sf::Event::MouseMoved>() && hold->isHeld) {
                 handleMouseMove(event);
             }
             else if (event->is<sf::Event::Resized>()) {
@@ -96,27 +96,28 @@ void Window::handleMousePress()
     }
     auto [index, shiftX, shiftY] = isMouseOverNode(position);
     if (index >= 0) {
-        hold = { true, false, index, shiftX, shiftY };
+        hold->activate(index, shiftX, shiftY);
     }
 }
 
 
 void Window::handleMouseRelease()
 {
-    if (hold.isMoved) {
+    if (hold->isMoved) {
         return;
     }
 
     auto& nodes = model->getNodes(); 
-    auto& shape = nodes[hold.index].circle;
-    if (nodes[hold.index].isIndicated == false) {
+    const size_t index = hold->index;
+    auto& shape = nodes[index].circle;
+    if (nodes[index].isIndicated == false) {
         shape.setOutlineColor(sf::Color::Black);
         shape.setOutlineThickness(3.0f);
-        nodes[hold.index].isIndicated = true;
+        nodes[index].isIndicated = true;
     }
-    else if (nodes[hold.index].isIndicated == true) {
+    else if (nodes[index].isIndicated == true) {
         shape.setOutlineThickness(0);
-        nodes[hold.index].isIndicated = false;
+        nodes[index].isIndicated = false;
     }
 }
 
@@ -134,17 +135,17 @@ void Window::handleMouseMove(const std::optional<sf::Event> event)
         y < GRAPH_AREA_Y_MARGIN_UP + 20) {
         return;
     }
-     
+
     auto& nodes = model->getNodes();
-    auto& heldNode = nodes[hold.index];
+    auto& heldNode = nodes[hold->index];
 
     float radius = heldNode.circle.getRadius();
-    heldNode.circle.setPosition({ x - radius - hold.shiftX, y - radius - hold.shiftY });
+    heldNode.circle.setPosition({ x - radius - hold->shiftX, y - radius - hold->shiftY });
 
     for (size_t i = 0; i < heldNode.connections.size(); i++) {
         model->moveConnection(heldNode.connections[i]);
     }
-    hold.isMoved = true;
+    hold->isMoved = true;
 }
 
 

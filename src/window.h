@@ -10,16 +10,7 @@
 
 #include "button.h"
 #include "model.h"
-
-
-struct Hold
-{
-    bool isHeld;    // is mouse button pressed
-    bool isMoved;   // is there move between mouse button press and release, to recognize click without moving
-    int index;      // index of held object in its container
-    float shiftX;   // distance between the mouse X position and the center of held object
-    float shiftY;   // distance between the mouse Y position and the center of held object
-};
+#include "hold.h"
 
 
 class Window
@@ -47,6 +38,7 @@ private:
 
     std::unique_ptr<sf::RenderWindow> window;
     std::unique_ptr<Model> model;
+    std::unique_ptr<Hold> hold;
 
     std::vector<Button> buttons;
 
@@ -55,7 +47,6 @@ private:
     std::vector<sf::RectangleShape> graphArea;
 
     sf::Font font;
-    Hold hold;
 };
 
 #endif 
