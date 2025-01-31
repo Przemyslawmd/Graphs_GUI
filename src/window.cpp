@@ -13,8 +13,7 @@ Window::Window()
 {
     sf::ContextSettings settings;
     settings.antiAliasingLevel = 8;
-    window = std::make_unique<sf::RenderWindow>(sf::VideoMode({ DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT }, sf::Style::Titlebar ),
-                                                "", sf::State::Windowed, settings);
+    window = std::make_unique<sf::RenderWindow>(sf::VideoMode({ 1600, 900 }, sf::Style::Titlebar ), "", sf::State::Windowed, settings);
     model = std::make_unique<Model>();
     hold = std::make_unique<Hold>();
 }
@@ -108,17 +107,16 @@ void Window::handleMouseRelease()
     }
 
     auto& nodes = model->getNodes(); 
-    const size_t index = hold->index;
-    auto& shape = nodes[index].circle;
-    if (nodes[index].isIndicated == false) {
+    auto& node = nodes[hold->index];
+    auto& shape = node.circle;
+    if (node.isIndicated == false) {
         shape.setOutlineColor(sf::Color::Black);
         shape.setOutlineThickness(3.0f);
-        nodes[index].isIndicated = true;
     }
-    else if (nodes[index].isIndicated == true) {
+    else if (node.isIndicated == true) {
         shape.setOutlineThickness(0);
-        nodes[index].isIndicated = false;
     }
+    node.isIndicated = !node.isIndicated; 
 }
 
 
@@ -187,10 +185,10 @@ void Window::prepareLines()
 
 void Window::setLinesPositions(const sf::Vector2u& size)
 {
-    lines.at(Line::MESSAGE_UP).setPosition( { MARGIN_X, size.y - 60.f });
-    lines.at(Line::MESSAGE_BOTTOM).setPosition( { MARGIN_X, size.y + 40.f - 60.f });
-    lines.at(Line::MESSAGE_LEFT).setPosition( { MARGIN_X, size.y - 60.f });
-    lines.at(Line::MESSAGE_RIGHT).setPosition( { size.x - MARGIN_X, size.y - 60.f });
+    lines.at(Line::MESSAGE_UP).setPosition( { MARGIN_X, size.y - MESSAGES_UP });
+    lines.at(Line::MESSAGE_BOTTOM).setPosition( { MARGIN_X, size.y - MESSAGES_MARGIN_BOTTOM });
+    lines.at(Line::MESSAGE_LEFT).setPosition( { MARGIN_X, size.y - MESSAGES_UP });
+    lines.at(Line::MESSAGE_RIGHT).setPosition( { size.x - MARGIN_X, size.y - MESSAGES_UP });
 
     lines.at(Line::GRAPHS_UP).setPosition({ MARGIN_X, MARGIN_UP_GRAPHS });
     lines.at(Line::GRAPHS_BOTTOM).setPosition({ MARGIN_X, size.y - MARGIN_BOTTOM_GRAPHS });

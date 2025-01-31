@@ -26,10 +26,10 @@ public:
 private:
     void prepareMenu();
     void prepareLines();
-    void setLinesPositions(const sf::Vector2u& position);
+    void setLinesPositions(const sf::Vector2u& size);
 
     void resize();
-    void resizeLines(const sf::Vector2u& newSize);
+    void resizeLines(const sf::Vector2u& size);
 
     void setMessage(const std::string& message);
 

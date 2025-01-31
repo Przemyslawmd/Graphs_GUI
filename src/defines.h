@@ -3,18 +3,13 @@
 #define GUI_GRAPHS_DEFINES_H
 
 
-constexpr int DEFAULT_WINDOW_WIDTH = 1600;
-constexpr int DEFAULT_WINDOW_HEIGHT = 900;
-
 constexpr float MARGIN_X = 20.f;
 constexpr float MARGIN_UP_GRAPHS = 50.f;
 constexpr float MARGIN_BOTTOM_GRAPHS = 80.f;
 
 constexpr float MESSAGE_AREA_HEIGHT = 40.f;
-constexpr float MESSAGE_AREA_BOTTOM_DISTANCE = 60.f;
-
-constexpr float MESSAGE_X = 30.f;
-constexpr float MESSAGE_BOTTOM_DISTANCE = 50.f;
+constexpr float MESSAGES_UP = 60.f;
+constexpr float MESSAGES_MARGIN_BOTTOM = 20.f;
 
 
 enum class Line 
