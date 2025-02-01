@@ -162,19 +162,11 @@ void Window::prepareMenu()
         if (key != Indicator::NODE_VALUE_INPUT) {
             auto& button = buttons.emplace_back( MENU_WIDTH, MENU_HEIGHT, font, value.title);
             button.shape.setPosition({ value.posX, MENU_POS_Y });
-            button.shape.setOutlineThickness(2);
-            button.shape.setOutlineColor(sf::Color::Black);
-            button.shape.setFillColor({ 223, 243, 246 });
-            button.text.setFillColor(sf::Color::Black);
             button.text.setPosition({ value.posTitle, MENU_POS_Y + 2.f });
-        } 
+        }
         else {
-            inputs.emplace(key, Input{MENU_WIDTH, MENU_HEIGHT, font});
-            inputs.at(key).shape.setPosition({value.posX, MENU_POS_Y});
-            inputs.at(key).shape.setFillColor(sf::Color::White);
-            inputs.at(key).shape.setOutlineThickness(1);
-            inputs.at(key).shape.setOutlineColor(sf::Color::Black);
-            inputs.at(key).text.setFillColor(sf::Color::Black);
+            inputs.emplace(key, Input{ MENU_WIDTH, MENU_HEIGHT, font });
+            inputs.at(key).shape.setPosition({ value.posX, MENU_POS_Y });
             inputs.at(key).text.setPosition({ value.posTitle, MENU_POS_Y + 2.f });
         }
     }
@@ -205,10 +197,10 @@ void Window::prepareLines()
 
 void Window::setLinesPositions(const sf::Vector2u& size)
 {
-    lines.at(Line::MESSAGE_UP).setPosition( { MARGIN_X, size.y - MESSAGES_UP });
-    lines.at(Line::MESSAGE_BOTTOM).setPosition( { MARGIN_X, size.y - MESSAGES_MARGIN_BOTTOM });
-    lines.at(Line::MESSAGE_LEFT).setPosition( { MARGIN_X, size.y - MESSAGES_UP });
-    lines.at(Line::MESSAGE_RIGHT).setPosition( { size.x - MARGIN_X, size.y - MESSAGES_UP });
+    lines.at(Line::MESSAGE_UP).setPosition({ MARGIN_X, size.y - MESSAGES_UP });
+    lines.at(Line::MESSAGE_BOTTOM).setPosition({ MARGIN_X, size.y - MESSAGES_MARGIN_BOTTOM });
+    lines.at(Line::MESSAGE_LEFT).setPosition({ MARGIN_X, size.y - MESSAGES_UP });
+    lines.at(Line::MESSAGE_RIGHT).setPosition({ size.x - MARGIN_X, size.y - MESSAGES_UP });
 
     lines.at(Line::GRAPHS_UP).setPosition({ MARGIN_X, MARGIN_UP_GRAPHS });
     lines.at(Line::GRAPHS_BOTTOM).setPosition({ MARGIN_X, size.y - MARGIN_BOTTOM_GRAPHS });

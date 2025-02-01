@@ -19,6 +19,7 @@ add_executable(SFML_TEST
     "src/main.cpp"
     "src/window.cpp"
     "src/model.cpp"
-    "src/input.cpp")
+    "src/widgets/input.cpp"
+    "src/widgets/button.cpp")
 
 target_link_libraries(SFML_TEST PRIVATE SFML::Graphics)

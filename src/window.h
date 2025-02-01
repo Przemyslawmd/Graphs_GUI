@@ -9,11 +9,11 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "button.h"
 #include "defines.h"
-#include "input.h"
 #include "model.h"
 #include "hold.h"
+#include "widgets/button.h"
+#include "widgets/input.h"
 
 
 class Window
