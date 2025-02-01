@@ -92,3 +92,20 @@ void Model::removeAll()
     connections.clear();
 }
 
+
+std::tuple<int, float, float> Model::isMouseOverNode(const sf::Vector2i& mousePos)
+{
+    for (size_t i = 0; i < nodes.size(); i++) {
+        const auto& shape = nodes[i].circle;
+        float radius = shape.getRadius();
+        sf::Vector2f circlePos = shape.getPosition();
+        float shiftX = mousePos.x - circlePos.x - radius;
+        float shiftY = mousePos.y - circlePos.y - radius;
+        int distance = sqrt(pow(shiftX, 2) + pow(shiftY, 2));
+        if (distance <= radius) {
+            return { i, shiftX, shiftY };
+        }
+    }
+    return { -1, 0, 0 };
+}
+

@@ -10,7 +10,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "defines.h"
-#include "model.h"
+#include "graph/model.h"
 #include "hold.h"
 #include "widgets/button.h"
 #include "widgets/input.h"
@@ -38,8 +38,6 @@ private:
     void handleMouseRelease();
     void handleMouseMove(const std::optional<sf::Event> event);
     void handleTextEntered(const std::optional<sf::Event> event);
-
-    std::tuple<int, float, float> isMouseOverNode(const sf::Vector2i& position);
 
     std::unique_ptr<sf::RenderWindow> window;
     std::unique_ptr<Model> model;

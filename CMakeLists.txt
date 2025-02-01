@@ -18,7 +18,7 @@ FetchContent_MakeAvailable(SFML)
 add_executable(SFML_TEST 
     "src/main.cpp"
     "src/window.cpp"
-    "src/model.cpp"
+    "src/graph/model.cpp"
     "src/widgets/input.cpp"
     "src/widgets/button.cpp")
 

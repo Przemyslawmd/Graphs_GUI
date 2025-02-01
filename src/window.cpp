@@ -105,7 +105,7 @@ void Window::handleMousePress()
         inputs.at(Indicator::NODE_VALUE_INPUT).focus = true;
         return;
     }
-    auto [index, shiftX, shiftY] = isMouseOverNode(position);
+    auto [index, shiftX, shiftY] = model->isMouseOverNode(position);
     if (index >= 0) {
         hold->activate(index, shiftX, shiftY);
     }
@@ -248,24 +248,6 @@ void Window::resizeLines(const sf::Vector2u& size)
     lines.at(Line::GRAPHS_BOTTOM).setSize({ size.x - 2 * MARGIN_X, 1 });
     lines.at(Line::GRAPHS_LEFT).setSize({ 1, size.y - MARGIN_UP_GRAPHS - MARGIN_BOTTOM_GRAPHS });
     lines.at(Line::GRAPHS_RIGHT).setSize({ 1, size.y - MARGIN_UP_GRAPHS - MARGIN_BOTTOM_GRAPHS });
-}
-
-
-std::tuple<int, float, float> Window::isMouseOverNode(const sf::Vector2i& mousePos)
-{
-    auto& nodes = model->getNodes();
-    for (size_t i = 0; i < nodes.size(); i++) {
-        const auto& shape = nodes[i].circle;
-        float radius = shape.getRadius();
-        sf::Vector2f circlePos = shape.getPosition();
-        float shiftX = mousePos.x - circlePos.x - radius;
-        float shiftY = mousePos.y - circlePos.y - radius;
-        int distance = sqrt(pow(shiftX, 2) + pow(shiftY, 2));
-        if (distance <= radius) {
-            return { i, shiftX, shiftY };
-        }
-    }
-    return { -1, 0, 0 };
 }
 
 
