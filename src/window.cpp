@@ -69,8 +69,8 @@ void Window::run()
             window->draw(line);
         }
 
-        inputs.at(Indicator::NODE_VALUE_INPUT).checkFocus();
-        window->draw(inputs.at(Indicator::NODE_VALUE_INPUT));
+        inputs.at(Indicator::NODE_INPUT).checkFocus();
+        window->draw(inputs.at(Indicator::NODE_INPUT));
 
         if (message) {
             window->draw(*message);
@@ -83,11 +83,11 @@ void Window::run()
 void Window::handleMousePress()
 {
     message.release();
-    inputs.at(Indicator::NODE_VALUE_INPUT).focus = false;
+    inputs.at(Indicator::NODE_INPUT).focus = false;
 
     sf::Vector2i position = sf::Mouse::getPosition(*window);
     if (isOverAddNodeMenu(position)) {
-        model->createNode(20, font, inputs.at(Indicator::NODE_VALUE_INPUT).text.getString());
+        model->createNode(20, font, inputs.at(Indicator::NODE_INPUT).text.getString());
         return;
     }
     if (isOverConnectNodesMenu(position)) {
@@ -102,7 +102,7 @@ void Window::handleMousePress()
         return;
     }
     if (isOverNodeValueMenu(position)) {
-        inputs.at(Indicator::NODE_VALUE_INPUT).focus = true;
+        inputs.at(Indicator::NODE_INPUT).focus = true;
         return;
     }
     auto [index, shiftX, shiftY] = model->isMouseOverNode(position);
@@ -162,18 +162,18 @@ void Window::handleMouseMove(const std::optional<sf::Event> event)
 
 void Window::handleTextEntered(const std::optional<sf::Event> event)
 {
-    if (!inputs.at(Indicator::NODE_VALUE_INPUT).focus) {
+    if (!inputs.at(Indicator::NODE_INPUT).focus) {
         return;
     }
     auto textEvent = event->getIf<sf::Event::TextEntered>();
-    inputs.at(Indicator::NODE_VALUE_INPUT).updateText(static_cast<char>(textEvent->unicode));
+    inputs.at(Indicator::NODE_INPUT).updateText(static_cast<char>(textEvent->unicode));
 }
 
 
 void Window::prepareMenu()
 {
     for (const auto& [key, value] : buttonsData) {
-        if (key != Indicator::NODE_VALUE_INPUT) {
+        if (key != Indicator::NODE_INPUT) {
             auto& button = buttons.emplace_back( MENU_WIDTH, MENU_HEIGHT, font, value.title);
             button.shape.setPosition({ value.posX, MENU_POS_Y });
             button.text.setPosition({ value.posTitle, MENU_POS_Y + 2.f });

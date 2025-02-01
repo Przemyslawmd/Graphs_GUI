@@ -30,7 +30,7 @@ enum class Indicator
     ADD_NODE,
     CONNECT_NODES,
     REMOVE_ALL,
-    NODE_VALUE_INPUT
+    NODE_INPUT
 };
 
 
