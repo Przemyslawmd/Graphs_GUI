@@ -15,14 +15,16 @@ constexpr size_t CONNECTION_LINE_WIDTH = 3;
 
 struct Node : public sf::Drawable
 {
-    Node(float radius) : circle{ radius, CIRCLE_POINTS }, isIndicated{ false } {}
+    Node(float radius, sf::Font& font) : circle{ radius, CIRCLE_POINTS }, isIndicated{ false }, value(font) {}
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override
     {
         target.draw(circle);
+        target.draw(value);
     }
 
     sf::CircleShape circle;
+    sf::Text value;
     size_t index;
     bool isIndicated;
     std::vector<size_t> connections;
@@ -50,7 +52,7 @@ class Model
 public:
     Model() = default;
 
-    void createNode(float radius);
+    void createNode(float radius, sf::Font&, const std::string&);
     std::vector<Node>& getNodes();
 
     Message createConnection();

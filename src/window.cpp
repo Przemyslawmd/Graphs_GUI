@@ -87,7 +87,7 @@ void Window::handleMousePress()
 
     sf::Vector2i position = sf::Mouse::getPosition(*window);
     if (isOverAddNodeMenu(position)) {
-        model->createNode(20);
+        model->createNode(20, font, inputs.at(Indicator::NODE_VALUE_INPUT).text.getString());
         return;
     }
     if (isOverConnectNodesMenu(position)) {
@@ -151,6 +151,7 @@ void Window::handleMouseMove(const std::optional<sf::Event> event)
 
     float radius = heldNode.circle.getRadius();
     heldNode.circle.setPosition({ x - radius - hold->shiftX, y - radius - hold->shiftY });
+    heldNode.value.setPosition({ x - radius - hold->shiftX + 15, y - radius - hold->shiftY + 12 });
 
     for (size_t i = 0; i < heldNode.connections.size(); i++) {
         model->moveConnection(heldNode.connections[i]);

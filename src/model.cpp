@@ -8,11 +8,15 @@ constexpr size_t INITIAL_NODE_X = 30;
 constexpr size_t INITIAL_NODE_Y = 60;
 
 
-void Model::createNode(float radius)
+void Model::createNode(float radius, sf::Font& font, const std::string& value)
 {
-    auto& node = nodes.emplace_back( radius );
+    auto& node = nodes.emplace_back( radius, font );
     node.circle.setPosition({ INITIAL_NODE_X, INITIAL_NODE_Y });
     node.circle.setFillColor({ 51, 153, 255 });
+    node.value.setPosition({ INITIAL_NODE_X + 15, INITIAL_NODE_Y + 12 });
+    node.value.setFillColor(sf::Color::Black);
+    node.value.setCharacterSize(14);
+    node.value.setString(value);
     node.index = nodes.size() - 1;
 }
 
