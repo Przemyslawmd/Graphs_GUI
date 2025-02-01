@@ -13,9 +13,14 @@ constexpr size_t CIRCLE_POINTS = 100;
 constexpr size_t CONNECTION_LINE_WIDTH = 3;
 
 
-struct Node 
+struct Node : public sf::Drawable
 {
     Node(float radius) : circle{ radius, CIRCLE_POINTS }, isIndicated{ false } {}
+
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const override
+    {
+        target.draw(circle);
+    }
 
     sf::CircleShape circle;
     size_t index;
@@ -24,11 +29,16 @@ struct Node
 };
 
 
-struct Connection 
+struct Connection : public sf::Drawable
 {
     Connection(float length, size_t node_1, size_t node_2) 
         : line{ sf::Vector2f{ length, CONNECTION_LINE_WIDTH }}, node_1{ node_1 }, node_2{ node_2 } {}; 
 
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const override
+    {
+        target.draw(line);
+    }
+    
     sf::RectangleShape line;
     size_t node_1;
     size_t node_2;
