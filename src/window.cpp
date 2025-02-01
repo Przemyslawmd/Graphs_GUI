@@ -56,12 +56,6 @@ void Window::run()
         for (const auto& button : buttons) {
             window->draw(button);
         }
-        for (auto& [_, input] : inputs) {
-            input.checkFocus();
-        }
-        for (const auto& [_, input] : inputs) {
-            window->draw(input);
-        }
         for (const auto& connection : model->getConnections()) {
             window->draw(connection);
         }
@@ -71,14 +65,16 @@ void Window::run()
         for (const auto& [_, line] : lines) {
             window->draw(line);
         }
+
+        inputs.at(Indicator::NODE_VALUE_INPUT).checkFocus();
+        window->draw(inputs.at(Indicator::NODE_VALUE_INPUT));
+
         if (message) {
             window->draw(*message);
         }
         window->display();
     }
 }
-
-#include <iostream>
 
 
 void Window::handleMousePress()
