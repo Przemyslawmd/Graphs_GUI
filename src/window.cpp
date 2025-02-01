@@ -50,6 +50,9 @@ void Window::run()
             else if (event->is<sf::Event::Resized>()) {
                 resize();
             }
+            else if (event->is<sf::Event::TextEntered>()) {
+                handleTextEntered(event);
+            }
         }
         window->clear(sf::Color::White);
 
@@ -156,6 +159,16 @@ void Window::handleMouseMove(const std::optional<sf::Event> event)
 }
 
 
+void Window::handleTextEntered(const std::optional<sf::Event> event)
+{
+    if (!inputs.at(Indicator::NODE_VALUE_INPUT).focus) {
+        return;
+    }
+    auto textEvent = event->getIf<sf::Event::TextEntered>();
+    inputs.at(Indicator::NODE_VALUE_INPUT).updateText(static_cast<char>(textEvent->unicode));
+}
+
+
 void Window::prepareMenu()
 {
     for (const auto& [key, value] : buttonsData) {
@@ -168,6 +181,7 @@ void Window::prepareMenu()
             inputs.emplace(key, Input{ MENU_WIDTH, MENU_HEIGHT, font });
             inputs.at(key).shape.setPosition({ value.posX, MENU_POS_Y });
             inputs.at(key).text.setPosition({ value.posTitle, MENU_POS_Y + 2.f });
+            inputs.at(key).vertical.setPosition({ value.posTitle, MENU_POS_Y + 2.f });
         }
     }
 }

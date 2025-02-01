@@ -15,11 +15,15 @@ public:
     void checkFocus();
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
+    void updateText(const char letter); 
+
     sf::RectangleShape shape;
     sf::Text text;
+    sf::Text vertical;
 
     bool focus;
-    size_t counter;
+    bool isVerticalToDraw;
+    size_t verticalCounter;
 };
 
 #endif

@@ -37,6 +37,7 @@ private:
     void handleMousePress();
     void handleMouseRelease();
     void handleMouseMove(const std::optional<sf::Event> event);
+    void handleTextEntered(const std::optional<sf::Event> event);
 
     std::tuple<int, float, float> isMouseOverNode(const sf::Vector2i& position);
 
