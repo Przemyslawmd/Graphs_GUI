@@ -15,7 +15,8 @@ enum class Indicator
 {
     ADD_NODE,
     CONNECT_NODES,
-    REMOVE_ALL
+    REMOVE_ALL,
+    NODE_NAME
 };
 
 
@@ -29,9 +30,10 @@ struct Data
 
 static const std::map<Indicator, Data> buttonsData = 
 {
-    { Indicator::ADD_NODE,      { 20.f,  45.f,  "Add Node" }},
-    { Indicator::CONNECT_NODES, { 140.f, 150.f, "Connect Nodes" }},
-    { Indicator::REMOVE_ALL,    { 260.f, 280.f, "Remove All" }}
+    { Indicator::NODE_NAME,     { 20.f,  25.f,    "" }},
+    { Indicator::ADD_NODE,      { 142.f, 172.f,  "Add Node" }},
+    { Indicator::CONNECT_NODES, { 262.f, 272.f,  "Connect Nodes" }},
+    { Indicator::REMOVE_ALL,    { 382.f, 407.f,  "Remove All" }},
 };
 
 

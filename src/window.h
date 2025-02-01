@@ -11,6 +11,7 @@
 
 #include "button.h"
 #include "defines.h"
+#include "input.h"
 #include "model.h"
 #include "hold.h"
 
@@ -45,6 +46,7 @@ private:
     std::unique_ptr<sf::Text> message;
 
     std::vector<Button> buttons;
+    std::vector<Input> inputs;
     std::map<Line, sf::RectangleShape> lines;
 
     sf::Font font;

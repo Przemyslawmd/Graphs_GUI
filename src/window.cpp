@@ -54,14 +54,21 @@ void Window::run()
         window->clear(sf::Color::White);
 
         for (const auto& button : buttons) {
-            window->draw(button.shape);
-            window->draw(button.text);
+            window->draw(button);
+        }
+        for (auto& input : inputs) {
+            input.checkInput();
+            //window->draw(input);
+        }
+        for (const auto& input : inputs) {
+            //input.checkInput()
+            window->draw(input);
         }
         for (const auto& connection : model->getConnections()) {
-            window->draw(connection.line);
+            window->draw(connection);
         }
         for (const auto& node : model->getNodes()) {
-            window->draw(node.circle);
+            window->draw(node);
         }
         for (const auto& [_, line] : lines) {
             window->draw(line);
@@ -150,13 +157,24 @@ void Window::handleMouseMove(const std::optional<sf::Event> event)
 void Window::prepareMenu()
 {
     for (const auto& [key, value] : buttonsData) {
-        auto& menu = buttons.emplace_back( MENU_WIDTH, MENU_HEIGHT, font, value.title);
-        menu.shape.setPosition({ value.posX, MENU_POS_Y });
-        menu.shape.setFillColor(sf::Color::White);
-        menu.shape.setOutlineThickness(1);
-        menu.shape.setOutlineColor(sf::Color::Black);
-        menu.text.setFillColor(sf::Color::Black);
-        menu.text.setPosition({ value.posTitle, MENU_POS_Y + 2.f });
+        if (key != Indicator::NODE_NAME) {
+            auto& button = buttons.emplace_back( MENU_WIDTH, MENU_HEIGHT, font, value.title);
+            button.shape.setPosition({ value.posX, MENU_POS_Y });
+            button.shape.setOutlineThickness(2);
+            button.shape.setOutlineColor(sf::Color::Black);
+            button.shape.setFillColor({ 223, 243, 246 });
+            button.text.setFillColor(sf::Color::Black);
+            button.text.setPosition({ value.posTitle, MENU_POS_Y + 2.f });
+        } 
+        else {
+            auto& input = inputs.emplace_back( MENU_WIDTH, MENU_HEIGHT, font);
+            input.shape.setPosition({ value.posX, MENU_POS_Y });
+            input.shape.setFillColor(sf::Color::White);
+            input.shape.setOutlineThickness(1);
+            input.shape.setOutlineColor(sf::Color::Black);
+            input.text.setFillColor(sf::Color::Black);
+            input.text.setPosition({ value.posTitle, MENU_POS_Y + 2.f });
+        }
     }
 }
 
