@@ -17,7 +17,7 @@ public:
 
     sf::RectangleShape shape;
     sf::Text text;
-    sf::Text verticalBar;
+
     bool focus;
     size_t counter;
 };

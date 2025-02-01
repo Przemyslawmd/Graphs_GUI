@@ -2,11 +2,12 @@
 #include "input.h"
 
 
-Input::Input(float width, float height, sf::Font& font) : text(font), verticalBar(font, '|'), shape({ width, height }), counter(0), focus(false)
+constexpr char VERTICAL_BAR = '|';
+
+
+Input::Input(float width, float height, sf::Font& font) : text(font), shape({ width, height }), counter(0), focus(false)
 {
     text.setCharacterSize(13);
-    verticalBar.setCharacterSize(13);
-    verticalBar.setFillColor(sf::Color::Black);
 }
 
 
@@ -16,11 +17,13 @@ void Input::checkFocus()
         return;
     }
     if (++counter == 60) {
+        auto& str = text.getString();
+        text.setString(str.substring(0, str.getSize() - 1));
         counter = 0;
         return;
     }
-    if (counter > 30) {
-        verticalBar.setPosition(sf::Vector2f{ text.getPosition().x + 1, text.getPosition().y });
+    if (counter == 30) {
+        text.setString(text.getString() + VERTICAL_BAR);
     }
 }
 
@@ -29,8 +32,5 @@ void Input::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(shape);
     target.draw(text);
-    if (counter > 30) {
-        target.draw(verticalBar);
-    }
 }
 
