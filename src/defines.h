@@ -25,5 +25,14 @@ enum class Line
 };
 
 
+enum class Indicator
+{
+    ADD_NODE,
+    CONNECT_NODES,
+    REMOVE_ALL,
+    NODE_VALUE_INPUT
+};
+
+
 #endif
 

@@ -2,7 +2,7 @@
 #include "input.h"
 
 
-Input::Input(float width, float height, sf::Font& font) : text(font), verticalBar(font, '|'), shape({ width, height }), counter(0)
+Input::Input(float width, float height, sf::Font& font) : text(font), verticalBar(font, '|'), shape({ width, height }), counter(0), focus(false)
 {
     text.setCharacterSize(13);
     verticalBar.setCharacterSize(13);
@@ -10,8 +10,11 @@ Input::Input(float width, float height, sf::Font& font) : text(font), verticalBa
 }
 
 
-void Input::checkInput()
+void Input::checkFocus()
 {
+    if (!focus) {
+        return;
+    }
     if (++counter == 60) {
         counter = 0;
         return;

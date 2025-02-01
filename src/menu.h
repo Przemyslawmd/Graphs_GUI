@@ -5,19 +5,12 @@
 #include <map>
 #include <string>
 
+#include "defines.h"
+
 
 constexpr float MENU_HEIGHT = 22.f;
 constexpr float MENU_WIDTH = 120.f;
 constexpr float MENU_POS_Y = 5.f;
-
-
-enum class Indicator
-{
-    ADD_NODE,
-    CONNECT_NODES,
-    REMOVE_ALL,
-    NODE_NAME
-};
 
 
 struct Data
@@ -30,16 +23,23 @@ struct Data
 
 static const std::map<Indicator, Data> buttonsData = 
 {
-    { Indicator::NODE_NAME,     { 20.f,  25.f,    "" }},
-    { Indicator::ADD_NODE,      { 142.f, 172.f,  "Add Node" }},
-    { Indicator::CONNECT_NODES, { 262.f, 272.f,  "Connect Nodes" }},
-    { Indicator::REMOVE_ALL,    { 382.f, 407.f,  "Remove All" }},
+    { Indicator::NODE_VALUE_INPUT, { 20.f,  25.f,    "" }},
+    { Indicator::ADD_NODE,         { 142.f, 172.f,  "Add Node" }},
+    { Indicator::CONNECT_NODES,    { 262.f, 272.f,  "Connect Nodes" }},
+    { Indicator::REMOVE_ALL,       { 382.f, 407.f,  "Remove All" }},
 };
 
 
 static bool isOverMenu(const sf::Vector2i& pos, const Data& menu) 
 {
     return pos.x > menu.posX && pos.x < menu.posX + MENU_WIDTH && pos.y > MENU_POS_Y && pos.y < MENU_POS_Y + MENU_HEIGHT;
+}
+
+
+static bool isOverNodeValueMenu(const sf::Vector2i& pos)
+{
+    const auto& menu = buttonsData.at(Indicator::NODE_VALUE_INPUT); 
+    return isOverMenu(pos, menu);
 }
 
 

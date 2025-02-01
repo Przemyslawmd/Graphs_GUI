@@ -56,12 +56,10 @@ void Window::run()
         for (const auto& button : buttons) {
             window->draw(button);
         }
-        for (auto& input : inputs) {
-            input.checkInput();
-            //window->draw(input);
+        for (auto& [_, input] : inputs) {
+            input.checkFocus();
         }
-        for (const auto& input : inputs) {
-            //input.checkInput()
+        for (const auto& [_, input] : inputs) {
             window->draw(input);
         }
         for (const auto& connection : model->getConnections()) {
@@ -80,10 +78,14 @@ void Window::run()
     }
 }
 
+#include <iostream>
+
 
 void Window::handleMousePress()
 {
     message.release();
+    inputs.at(Indicator::NODE_VALUE_INPUT).focus = false;
+
     sf::Vector2i position = sf::Mouse::getPosition(*window);
     if (isOverAddNodeMenu(position)) {
         model->createNode(20);
@@ -98,6 +100,10 @@ void Window::handleMousePress()
     }
     if (isOverRemoveAllMenu(position)) {
         model->removeAll();
+        return;
+    }
+    if (isOverNodeValueMenu(position)) {
+        inputs.at(Indicator::NODE_VALUE_INPUT).focus = true;
         return;
     }
     auto [index, shiftX, shiftY] = isMouseOverNode(position);
@@ -157,7 +163,7 @@ void Window::handleMouseMove(const std::optional<sf::Event> event)
 void Window::prepareMenu()
 {
     for (const auto& [key, value] : buttonsData) {
-        if (key != Indicator::NODE_NAME) {
+        if (key != Indicator::NODE_VALUE_INPUT) {
             auto& button = buttons.emplace_back( MENU_WIDTH, MENU_HEIGHT, font, value.title);
             button.shape.setPosition({ value.posX, MENU_POS_Y });
             button.shape.setOutlineThickness(2);
@@ -167,13 +173,13 @@ void Window::prepareMenu()
             button.text.setPosition({ value.posTitle, MENU_POS_Y + 2.f });
         } 
         else {
-            auto& input = inputs.emplace_back( MENU_WIDTH, MENU_HEIGHT, font);
-            input.shape.setPosition({ value.posX, MENU_POS_Y });
-            input.shape.setFillColor(sf::Color::White);
-            input.shape.setOutlineThickness(1);
-            input.shape.setOutlineColor(sf::Color::Black);
-            input.text.setFillColor(sf::Color::Black);
-            input.text.setPosition({ value.posTitle, MENU_POS_Y + 2.f });
+            inputs.emplace(key, Input{MENU_WIDTH, MENU_HEIGHT, font});
+            inputs.at(key).shape.setPosition({value.posX, MENU_POS_Y});
+            inputs.at(key).shape.setFillColor(sf::Color::White);
+            inputs.at(key).shape.setOutlineThickness(1);
+            inputs.at(key).shape.setOutlineColor(sf::Color::Black);
+            inputs.at(key).text.setFillColor(sf::Color::Black);
+            inputs.at(key).text.setPosition({ value.posTitle, MENU_POS_Y + 2.f });
         }
     }
 }

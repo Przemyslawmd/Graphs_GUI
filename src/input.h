@@ -12,7 +12,7 @@ class Input : public sf::Drawable
 public:
     Input(float width, float height, sf::Font& font);
 
-    void checkInput();
+    void checkFocus();
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     sf::RectangleShape shape;
