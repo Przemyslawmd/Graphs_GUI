@@ -45,7 +45,7 @@ private:
     std::unique_ptr<sf::Text> message;
 
     std::vector<Button> buttons;
-    std::map<Indicator, Input> inputs;
+    std::map<Menu, Input> inputs;
     std::map<Line, sf::RectangleShape> lines;
 
     sf::Font font;

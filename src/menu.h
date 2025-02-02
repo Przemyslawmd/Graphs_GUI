@@ -21,12 +21,12 @@ struct Data
 };
 
 
-static const std::map<Indicator, Data> buttonsData = 
+static const std::map<Menu, Data> buttonsData = 
 {
-    { Indicator::NODE_INPUT,       { 20.f,  25.f,    "" }},
-    { Indicator::ADD_NODE,         { 142.f, 172.f,  "Add Node" }},
-    { Indicator::CONNECT_NODES,    { 262.f, 272.f,  "Connect Nodes" }},
-    { Indicator::REMOVE_ALL,       { 382.f, 407.f,  "Remove All" }},
+    { Menu::NODE_INPUT,    { 20.f,  25.f,    "" }},
+    { Menu::ADD_NODE,      { 142.f, 172.f,  "Add Node" }},
+    { Menu::CONNECT_NODES, { 262.f, 272.f,  "Connect Nodes" }},
+    { Menu::REMOVE_ALL,    { 382.f, 407.f,  "Remove All" }},
 };
 
 
@@ -38,28 +38,28 @@ static bool isOverMenu(const sf::Vector2i& pos, const Data& menu)
 
 static bool isOverNodeValueMenu(const sf::Vector2i& pos)
 {
-    const auto& menu = buttonsData.at(Indicator::NODE_INPUT); 
+    const auto& menu = buttonsData.at(Menu::NODE_INPUT); 
     return isOverMenu(pos, menu);
 }
 
 
 static bool isOverAddNodeMenu(const sf::Vector2i& pos)
 {
-    const auto& menu = buttonsData.at(Indicator::ADD_NODE); 
+    const auto& menu = buttonsData.at(Menu::ADD_NODE); 
     return isOverMenu(pos, menu);
 }
 
 
 static bool isOverConnectNodesMenu(const sf::Vector2i& pos)
 {
-    const auto& menu = buttonsData.at(Indicator::CONNECT_NODES); 
+    const auto& menu = buttonsData.at(Menu::CONNECT_NODES); 
     return isOverMenu(pos, menu);
 }
 
 
 static bool isOverRemoveAllMenu(const sf::Vector2i& pos)
 {
-    const auto& menu = buttonsData.at(Indicator::REMOVE_ALL);
+    const auto& menu = buttonsData.at(Menu::REMOVE_ALL);
     return isOverMenu(pos, menu);
 }
 

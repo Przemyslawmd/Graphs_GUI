@@ -25,7 +25,7 @@ enum class Line
 };
 
 
-enum class Indicator
+enum class Menu
 {
     ADD_NODE,
     CONNECT_NODES,
