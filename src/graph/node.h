@@ -26,7 +26,6 @@ struct Node : public sf::Drawable
 
     sf::CircleShape circle;
     sf::Text value;
-    size_t index;
     bool isIndicated;
     std::vector<size_t> connections;
 };
