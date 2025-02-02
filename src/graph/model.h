@@ -15,7 +15,7 @@ class Model
 public:
     Model() = default;
 
-    void createNode(float radius, sf::Font&, const std::string&);
+    void createNode(sf::Font&, const std::string&);
     std::vector<Node>& getNodes();
 
     Message createConnection();
