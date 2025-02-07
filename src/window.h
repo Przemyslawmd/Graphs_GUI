@@ -9,6 +9,7 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "client.h"
 #include "defines.h"
 #include "graph/model.h"
 #include "hold.h"
@@ -42,6 +43,7 @@ private:
 
     std::unique_ptr<sf::RenderWindow> window;
     std::unique_ptr<Model> model;
+    std::unique_ptr<Client> client;
     std::unique_ptr<Hold> hold;
     std::unique_ptr<sf::Text> message;
 

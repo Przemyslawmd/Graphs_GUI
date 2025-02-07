@@ -14,6 +14,7 @@ Window::Window()
     sf::ContextSettings settings;
     settings.antiAliasingLevel = 8;
     window = std::make_unique<sf::RenderWindow>(sf::VideoMode({ 1600, 900 }, sf::Style::Titlebar ), "", sf::State::Windowed, settings);
+    client = std::make_unique<Client>();
     model = std::make_unique<Model>();
     hold = std::make_unique<Hold>();
 }
@@ -106,9 +107,11 @@ void Window::handleMousePress()
         return;
     }
     if (isOverBFSMenu(position)) {
+        client->BFS(model->getNodes(), model->getConnections());
         return;
     }
     if (isOverDFSMenu(position)) {
+        client->DFS(model->getNodes(), model->getConnections());
         return;
     }
     auto [index, shiftX, shiftY] = model->isMouseOverNode(position);
