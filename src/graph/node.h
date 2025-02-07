@@ -8,9 +8,9 @@ constexpr size_t CIRCLE_POINTS = 100;
 constexpr float RADIUS = 20;
 
 
-struct Node : public sf::Drawable
+struct NodeGui : public sf::Drawable
 {
-    Node(sf::Font& font) : circle{ RADIUS, CIRCLE_POINTS }, isIndicated{ false }, value(font) {}
+    NodeGui(sf::Font& font) : circle{ RADIUS, CIRCLE_POINTS }, isIndicated{ false }, value(font) {}
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override
     {

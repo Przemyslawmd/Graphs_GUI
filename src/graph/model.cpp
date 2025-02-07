@@ -19,7 +19,7 @@ void Model::createNode(sf::Font& font, const std::string& value)
 }
 
 
-std::vector<Node>& Model::getNodes()
+std::vector<NodeGui>& Model::getNodes()
 {
     return nodes;
 }

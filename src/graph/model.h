@@ -16,7 +16,7 @@ public:
     Model() = default;
 
     void createNode(sf::Font&, const std::string&);
-    std::vector<Node>& getNodes();
+    std::vector<NodeGui>& getNodes();
 
     Message createConnection();
     void moveConnection(size_t index);
@@ -27,7 +27,7 @@ public:
     std::tuple<int, float, float> isMouseOverNode(const sf::Vector2i& position);
 
 private:
-    std::vector<Node> nodes;
+    std::vector<NodeGui> nodes;
     std::vector<Connection> connections;
 };
 

@@ -15,6 +15,7 @@
 #include "widgets/button.h"
 #include "widgets/input.h"
 
+#include "graphclient.h"
 
 class Window
 {

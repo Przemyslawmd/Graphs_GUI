@@ -55,7 +55,7 @@ void Input::updateText(const char letter)
     else {
         text.setString(str + letter);
     }
-    auto& lastCharPos = text.findCharacterPos(str.getSize() - 1);
+    auto lastCharPos = text.findCharacterPos(str.getSize() - 1);
     vertical.setPosition({ lastCharPos.x + 6, lastCharPos.y - 2 });
 }
 
