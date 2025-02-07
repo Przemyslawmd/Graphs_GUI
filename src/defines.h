@@ -29,8 +29,10 @@ enum class Menu
 {
     ADD_NODE,
     CONNECT_NODES,
+    NODE_INPUT,
     REMOVE_ALL,
-    NODE_INPUT
+    TRAVERSE_BFS,
+    TRAVERSE_DFS
 };
 
 

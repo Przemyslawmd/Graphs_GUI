@@ -105,6 +105,12 @@ void Window::handleMousePress()
         inputs.at(Menu::NODE_INPUT).focus = true;
         return;
     }
+    if (isOverBFSMenu(position)) {
+        return;
+    }
+    if (isOverDFSMenu(position)) {
+        return;
+    }
     auto [index, shiftX, shiftY] = model->isMouseOverNode(position);
     if (index >= 0) {
         hold->activate(index, shiftX, shiftY);
