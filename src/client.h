@@ -15,6 +15,9 @@ class Client
 public:
     Client(); 
 
+    void addNode(char key);
+    void addEdge(char srcKey, char dstKey);
+
     void BFS(const std::vector<NodeGui>&, const std::vector<Connection>&);
     void DFS(const std::vector<NodeGui>&, const std::vector<Connection>&);
 

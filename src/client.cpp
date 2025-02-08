@@ -8,6 +8,18 @@ Client::Client()
 }
 
 
+void Client::addNode(char key)
+{
+    graphClient->addNode(key);
+}
+
+
+void Client::addEdge(char srcKey, char dstKey)
+{
+
+}
+
+
 void Client::BFS(const std::vector<NodeGui>& nodes, const std::vector<Connection>& connections)
 {
     graphClient->addNodes({ 'a', 'b', 'c' });
