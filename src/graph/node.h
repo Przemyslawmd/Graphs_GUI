@@ -10,22 +10,23 @@ constexpr float RADIUS = 20;
 
 struct NodeGui : public sf::Drawable
 {
-    NodeGui(sf::Font& font) : circle{ RADIUS, CIRCLE_POINTS }, isIndicated{ false }, value(font) {}
+    NodeGui(sf::Font& font) : circle{ RADIUS, CIRCLE_POINTS }, isIndicated{ false }, text(font) {}
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override
     {
         target.draw(circle);
-        target.draw(value);
+        target.draw(text);
     }
 
     void setPosition(const sf::Vector2f& position)
     {
         circle.setPosition(position);
-        value.setPosition({ position.x + 15, position.y + 12 });
+        text.setPosition({ position.x + 15, position.y + 12 });
     };
 
     sf::CircleShape circle;
-    sf::Text value;
+    sf::Text text;
+    char value;
     bool isIndicated;
     std::vector<size_t> connections;
 };

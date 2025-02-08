@@ -15,7 +15,7 @@ class Model
 public:
     Model() = default;
 
-    void createNode(sf::Font&, const std::string&);
+    std::tuple<Message, std::optional<char>> createNode(sf::Font&, sf::Text&);
     std::vector<NodeGui>& getNodes();
 
     Message createConnection();
