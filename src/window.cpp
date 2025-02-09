@@ -88,38 +88,22 @@ void Window::handleMousePress()
 
     sf::Vector2i position = sf::Mouse::getPosition(*window);
     if (isOverAddNodeMenu(position)) {
-        auto [result, key] = model->createNode(font, inputs.at(Menu::NODE_INPUT).text);
-        if (result != Message::OK) {
-            setMessage(MessageStr.at(result));
-            return;
-        }
-        client->addNode(key.value());
-        return;
+        createNode();
     }
-    if (isOverConnectNodesMenu(position)) {
-        auto [result, src, dst] = model->createConnection();
-        if (result != Message::OK) {
-            setMessage(MessageStr.at(result));
-            return;
-        }
-        client->addEdge(src.value(), dst.value());
-        return;
+    else if (isOverConnectNodesMenu(position)) {
+        createConnection();
     }
-    if (isOverRemoveAllMenu(position)) {
+    else if (isOverRemoveAllMenu(position)) {
         model->removeAll();
-        return;
     }
-    if (isOverNodeValueMenu(position)) {
+    else if (isOverNodeValueMenu(position)) {
         inputs.at(Menu::NODE_INPUT).focus = true;
-        return;
     }
-    if (isOverBFSMenu(position)) {
-        client->BFS(model->getNodes(), model->getConnections());
-        return;
+    else if (isOverBFSMenu(position)) {
+        traverseBFS();
     }
-    if (isOverDFSMenu(position)) {
-        client->DFS(model->getNodes(), model->getConnections());
-        return;
+    else if (isOverDFSMenu(position)) {
+        traverseDFS();
     }
     auto [index, shiftX, shiftY] = model->isMouseOverNode(position);
     if (index >= 0) {
@@ -137,14 +121,14 @@ void Window::handleMouseRelease()
     auto& nodes = model->getNodes(); 
     auto& node = nodes[hold->index];
     auto& shape = node.circle;
-    if (node.isIndicated == false) {
+    if (node.selected == false) {
         shape.setOutlineColor(sf::Color::Black);
         shape.setOutlineThickness(3.0f);
     }
-    else if (node.isIndicated == true) {
+    else if (node.selected == true) {
         shape.setOutlineThickness(0);
     }
-    node.isIndicated = !node.isIndicated; 
+    node.selected = !node.selected; 
 }
 
 
@@ -181,6 +165,52 @@ void Window::handleTextEntered(const std::optional<sf::Event> event)
     }
     auto textEvent = event->getIf<sf::Event::TextEntered>();
     inputs.at(Menu::NODE_INPUT).updateText(static_cast<char>(textEvent->unicode));
+}
+
+
+void Window::createNode()
+{
+    auto [result, key] = model->createNode(font, inputs.at(Menu::NODE_INPUT).text);
+    if (result != Message::OK) {
+        setMessage(MessageStr.at(result));
+        return;
+    }
+    client->addNode(key.value());
+}
+
+
+void Window::createConnection()
+{
+    auto [result, src, dst] = model->createConnection();
+    if (result != Message::OK) {
+        setMessage(MessageStr.at(result));
+        return;
+    }
+    client->addEdge(src.value(), dst.value());
+}
+
+
+void Window::traverseBFS()
+{
+    auto [result, key] = model->getSelectedNode();
+    if (result != Message::OK) {
+        setMessage(MessageStr.at(result));
+        return;
+    }
+    auto sequence = client->BFS(key.value());
+    setMessage("BFS Sequence: " + std::string(sequence->begin(), sequence->end()));
+}
+
+
+void Window::traverseDFS()
+{
+    auto [result, key] = model->getSelectedNode();
+    if (result != Message::OK) {
+        setMessage(MessageStr.at(result));
+        return;
+    }
+    auto sequence = client->DFS(key.value());
+    setMessage("DFS sequence: " + std::string(sequence->begin(), sequence->end()));
 }
 
 

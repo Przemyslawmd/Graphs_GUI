@@ -38,13 +38,23 @@ std::vector<NodeGui>& Model::getNodes()
 }
 
 
+std::tuple<Message, std::optional<char>> Model::getSelectedNode()
+{
+    if (checkSelectedNodes() != 1) {
+        return { Message::NODE_SELECT_ONE, std::nullopt };
+    }
+    auto node = std::find_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.selected; });
+    return { Message::OK, node->value };
+}
+
+
 std::tuple<Message, std::optional<char>, std::optional<char>> Model::createConnection()
 {
-    if (std::count_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.isIndicated; }) != 2) {
+    if (checkSelectedNodes() != 2) {
         return { Message::CONNECTION_NODES_COUNT_ERROR, std::nullopt, std::nullopt };
     }
-    auto node_1 = std::find_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.isIndicated; });
-    auto node_2 = std::find_if(nodes.rbegin(), nodes.rend(), [](const auto& node) { return node.isIndicated; });
+    auto node_1 = std::find_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.selected; });
+    auto node_2 = std::find_if(nodes.rbegin(), nodes.rend(), [](const auto& node) { return node.selected; });
 
     size_t index_1 = node_1 - nodes.begin();
     size_t index_2 = nodes.size() - 1 - (node_2 - nodes.rbegin());
@@ -121,4 +131,10 @@ std::tuple<int, float, float> Model::isMouseOverNode(const sf::Vector2i& mousePo
     }
     return { -1, 0, 0 };
 }
+
+
+size_t Model::checkSelectedNodes()
+{
+    return std::count_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.selected; });
+};
 

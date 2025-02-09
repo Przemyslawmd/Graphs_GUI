@@ -17,6 +17,7 @@ public:
 
     std::tuple<Message, std::optional<char>> createNode(sf::Font&, sf::Text&);
     std::vector<NodeGui>& getNodes();
+    std::tuple<Message, std::optional<char>> getSelectedNode();
 
     std::tuple<Message, std::optional<char>, std::optional<char>> createConnection();
     void moveConnection(size_t index);
@@ -27,6 +28,8 @@ public:
     std::tuple<int, float, float> isMouseOverNode(const sf::Vector2i& position);
 
 private:
+    size_t checkSelectedNodes();
+
     std::vector<NodeGui> nodes;
     std::vector<Connection> connections;
 };

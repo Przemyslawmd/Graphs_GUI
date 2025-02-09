@@ -41,6 +41,11 @@ private:
     void handleMouseMove(const std::optional<sf::Event> event);
     void handleTextEntered(const std::optional<sf::Event> event);
 
+    void createNode();
+    void createConnection();
+    void traverseBFS();
+    void traverseDFS();
+
     std::unique_ptr<sf::RenderWindow> window;
     std::unique_ptr<Model> model;
     std::unique_ptr<Client> client;

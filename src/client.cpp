@@ -1,10 +1,12 @@
 
 #include "client.h"
 
+#include <memory>
+
 
 Client::Client()
 {
-    graphClient = std::make_unique<GraphClient>();
+    graphClient = std::make_unique<GraphClient>(false);
 }
 
 
@@ -20,14 +22,14 @@ void Client::addEdge(char srcKey, char dstKey)
 }
 
 
-void Client::BFS(const std::vector<NodeGui>& nodes, const std::vector<Connection>& connections)
+std::unique_ptr<std::vector<char>> Client::BFS(char key)
 {
-    graphClient->addNodes({ 'a', 'b', 'c' });
+    return graphClient->traverseBFS(key);
 }
 
 
-void Client::DFS(const std::vector<NodeGui>& nodes, const std::vector<Connection>& connections)
+std::unique_ptr<std::vector<char>> Client::DFS(char key)
 {
-    graphClient->addEdges('a', { 'a', 'b', 'c' });
+    return graphClient->traverseDFS(key);
 }
 

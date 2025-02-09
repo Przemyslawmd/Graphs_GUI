@@ -2,6 +2,7 @@
 #ifndef GUI_GRAPHS_CLIENT_H
 #define GUI_GRAPHS_CLIENT_H
 
+#include <memory>
 #include <vector>
 
 #include "graph/node.h"
@@ -18,8 +19,8 @@ public:
     void addNode(char key);
     void addEdge(char srcKey, char dstKey);
 
-    void BFS(const std::vector<NodeGui>&, const std::vector<Connection>&);
-    void DFS(const std::vector<NodeGui>&, const std::vector<Connection>&);
+    std::unique_ptr<std::vector<char>> BFS(char key);
+    std::unique_ptr<std::vector<char>> DFS(char key);
 
 private:
     std::unique_ptr<GraphClient> graphClient;

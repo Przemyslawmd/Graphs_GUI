@@ -10,7 +10,7 @@ constexpr float RADIUS = 20;
 
 struct NodeGui : public sf::Drawable
 {
-    NodeGui(sf::Font& font) : circle{ RADIUS, CIRCLE_POINTS }, isIndicated{ false }, text(font) {}
+    NodeGui(sf::Font& font) : circle{ RADIUS, CIRCLE_POINTS }, selected{ false }, text(font) {}
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override
     {
@@ -27,7 +27,7 @@ struct NodeGui : public sf::Drawable
     sf::CircleShape circle;
     sf::Text text;
     char value;
-    bool isIndicated;
+    bool selected;
     std::vector<size_t> connections;
 };
 
