@@ -38,10 +38,10 @@ std::vector<NodeGui>& Model::getNodes()
 }
 
 
-Message Model::createConnection()
+std::tuple<Message, std::optional<char>, std::optional<char>> Model::createConnection()
 {
     if (std::count_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.isIndicated; }) != 2) {
-        return Message::CONNECTION_NODES_COUNT_ERROR;
+        return { Message::CONNECTION_NODES_COUNT_ERROR, std::nullopt, std::nullopt };
     }
     auto node_1 = std::find_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.isIndicated; });
     auto node_2 = std::find_if(nodes.rbegin(), nodes.rend(), [](const auto& node) { return node.isIndicated; });
@@ -51,7 +51,7 @@ Message Model::createConnection()
 
     if (std::any_of(connections.begin(), connections.end(), [index_1, index_2](const auto& con)
                    { return (con.node_1 == index_1 && con.node_2 == index_2) || (con.node_1 == index_2 && con.node_2 == index_1); })) {
-        return Message::CONNECTION_EXISTS;
+        return { Message::CONNECTION_EXISTS, std::nullopt, std::nullopt };
     }
 
     sf::Vector2f pos_1 = node_1->circle.getPosition();
@@ -69,7 +69,7 @@ Message Model::createConnection()
     size_t connection_index = connections.size() - 1;
     node_1->connections.push_back(connection_index);
     node_2->connections.push_back(connection_index);
-    return Message::OK;
+    return { Message::OK, node_1->value, node_2->value };
 }
 
 

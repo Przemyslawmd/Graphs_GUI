@@ -13,7 +13,7 @@
 class Client 
 {
 public:
-    Client(); 
+    Client();
 
     void addNode(char key);
     void addEdge(char srcKey, char dstKey);

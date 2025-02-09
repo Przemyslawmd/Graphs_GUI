@@ -18,7 +18,7 @@ public:
     std::tuple<Message, std::optional<char>> createNode(sf::Font&, sf::Text&);
     std::vector<NodeGui>& getNodes();
 
-    Message createConnection();
+    std::tuple<Message, std::optional<char>, std::optional<char>> createConnection();
     void moveConnection(size_t index);
     std::vector<Connection>& getConnections();
 

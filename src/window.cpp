@@ -88,19 +88,21 @@ void Window::handleMousePress()
 
     sf::Vector2i position = sf::Mouse::getPosition(*window);
     if (isOverAddNodeMenu(position)) {
-        auto [result, value] = model->createNode(font, inputs.at(Menu::NODE_INPUT).text);
+        auto [result, key] = model->createNode(font, inputs.at(Menu::NODE_INPUT).text);
         if (result != Message::OK) {
             setMessage(MessageStr.at(result));
             return;
         }
-        client->addNode(inputs.at(Menu::NODE_INPUT).text.getString()[0]);
+        client->addNode(key.value());
         return;
     }
     if (isOverConnectNodesMenu(position)) {
-        auto result = model->createConnection();
+        auto [result, src, dst] = model->createConnection();
         if (result != Message::OK) {
             setMessage(MessageStr.at(result));
+            return;
         }
+        client->addEdge(src.value(), dst.value());
         return;
     }
     if (isOverRemoveAllMenu(position)) {

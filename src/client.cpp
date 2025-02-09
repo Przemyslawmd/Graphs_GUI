@@ -16,7 +16,7 @@ void Client::addNode(char key)
 
 void Client::addEdge(char srcKey, char dstKey)
 {
-
+    graphClient->addEdge(srcKey, dstKey);
 }
 
 
