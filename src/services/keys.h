@@ -5,6 +5,8 @@
 #include <array>
 #include <stack>
 
+#include "../defines.h"
+
 
 class Keys
 {
@@ -17,7 +19,7 @@ public:
     void prepareKeys();
 
 private:
-    const std::array<char, 30> defaultKeys = 
+    const std::array<char, MAX_NODES> defaultKeys = 
     { 
         'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 
         'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 

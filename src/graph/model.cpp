@@ -2,12 +2,15 @@
 #include "model.h"
 
 #include "utils.h"
+#include "../defines.h"
 
 
 constexpr size_t INITIAL_NODE_X = 30;
 constexpr size_t INITIAL_NODE_Y = 60;
 
-constexpr size_t MAX_NODES = 30;
+constexpr size_t RED = 51;
+constexpr size_t GREEN = 153;
+constexpr size_t BLUE = 255;
 
 
 Model::Model()
@@ -36,7 +39,7 @@ std::tuple<Message, std::optional<char>> Model::createNode(sf::Font& font, sf::T
 
     auto& node = nodes.emplace_back(font);
     node.setPosition({ INITIAL_NODE_X, INITIAL_NODE_Y });
-    node.circle.setFillColor({ 51, 153, 255 });
+    node.circle.setFillColor({ RED, GREEN, BLUE });
     node.text.setFillColor(sf::Color::Black);
     node.text.setCharacterSize(14);
     node.text.setString(key);
@@ -87,7 +90,7 @@ std::tuple<Message, std::optional<char>, std::optional<char>> Model::createConne
 
     float angle = calculateConnectionAngle(pos_1, pos_2);
     connection.line.rotate(sf::degrees(angle));
-    connection.line.setFillColor({ 51, 153, 255 });
+    connection.line.setFillColor({ RED, GREEN, BLUE });
 
     size_t connection_index = connections.size() - 1;
     node_1->connections.push_back(connection_index);
