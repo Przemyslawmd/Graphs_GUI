@@ -8,7 +8,7 @@ constexpr char VERTICAL_BAR = '|';
 Input::Input(float width, float height, sf::Font& font) : text(font), shape({ width, height }), vertical(font, VERTICAL_BAR)
 {
     shape.setFillColor(sf::Color::White);
-    shape.setOutlineThickness(1);
+    shape.setOutlineThickness(2);
     shape.setOutlineColor(sf::Color::Black);
     text.setCharacterSize(13);
     text.setFillColor(sf::Color::Black);

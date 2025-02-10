@@ -218,12 +218,12 @@ void Window::prepareMenu()
 {
     for (const auto& [key, value] : buttonsData) {
         if (key != Menu::NODE_INPUT) {
-            auto& button = buttons.emplace_back( MENU_WIDTH, MENU_HEIGHT, font, value.title);
+            auto& button = buttons.emplace_back( value.width, MENU_HEIGHT, font, value.title);
             button.shape.setPosition({ value.posX, MENU_POS_Y });
             button.text.setPosition({ value.posTitle, MENU_POS_Y + 2.f });
         }
         else {
-            inputs.emplace(key, Input{ MENU_WIDTH, MENU_HEIGHT, font });
+            inputs.emplace(key, Input{ value.width, MENU_HEIGHT, font });
             inputs.at(key).shape.setPosition({ value.posX, MENU_POS_Y });
             inputs.at(key).text.setPosition({ value.posTitle, MENU_POS_Y + 2.f });
             inputs.at(key).vertical.setPosition({ value.posTitle, MENU_POS_Y + 2.f });

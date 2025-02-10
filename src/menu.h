@@ -9,7 +9,8 @@
 
 
 constexpr float MENU_HEIGHT = 22.f;
-constexpr float MENU_WIDTH = 120.f;
+constexpr float BUTTON_WIDTH = 120.f;
+constexpr float INPUT_WIDTH = 30.f;
 constexpr float MENU_POS_Y = 5.f;
 
 
@@ -17,24 +18,26 @@ struct Data
 {
     const float posX;
     const float posTitle;
+    const float width;
     const std::string title;
 };
 
 
 static const std::map<Menu, Data> buttonsData = 
 {
-    { Menu::NODE_INPUT,    { 20.f,  25.f,    "" }},
-    { Menu::ADD_NODE,      { 142.f, 172.f,  "Add Node" }},
-    { Menu::CONNECT_NODES, { 262.f, 272.f,  "Connect Nodes" }},
-    { Menu::REMOVE_ALL,    { 382.f, 407.f,  "Remove All" }},
-    { Menu::TRAVERSE_BFS,  { 600.f, 613.f,  "Traverse BFS" }},
-    { Menu::TRAVERSE_DFS,  { 720.f, 733.f,  "Traverse DFS" }},
+    { Menu::NODE_INPUT,    { 20.f,  25.f,  INPUT_WIDTH,  "" }},
+    { Menu::NODE_ADD,      { 52.f,  80.f,  BUTTON_WIDTH, "Add Node" }},
+    { Menu::NODE_UPDATE,   { 174.f, 190.f, BUTTON_WIDTH, "Update Node" }},
+    { Menu::CONNECT_NODES, { 320.f, 330.f, BUTTON_WIDTH, "Connect Nodes" }},
+    { Menu::REMOVE_ALL,    { 440.f, 460.f, BUTTON_WIDTH, "Remove All" }},
+    { Menu::TRAVERSE_BFS,  { 630.f, 643.f, BUTTON_WIDTH, "Traverse BFS" }},
+    { Menu::TRAVERSE_DFS,  { 750.f, 763.f, BUTTON_WIDTH, "Traverse DFS" }},
 };
 
 
 static bool isOverMenu(const sf::Vector2i& pos, const Data& menu) 
 {
-    return pos.x > menu.posX && pos.x < menu.posX + MENU_WIDTH && pos.y > MENU_POS_Y && pos.y < MENU_POS_Y + MENU_HEIGHT;
+    return pos.x > menu.posX && pos.x < menu.posX + menu.width && pos.y > MENU_POS_Y && pos.y < MENU_POS_Y + MENU_HEIGHT;
 }
 
 
@@ -47,7 +50,14 @@ static bool isOverNodeValueMenu(const sf::Vector2i& pos)
 
 static bool isOverAddNodeMenu(const sf::Vector2i& pos)
 {
-    const auto& menu = buttonsData.at(Menu::ADD_NODE); 
+    const auto& menu = buttonsData.at(Menu::NODE_ADD); 
+    return isOverMenu(pos, menu);
+}
+
+
+static bool isOverUpdateNodeMenu(const sf::Vector2i& pos)
+{
+    const auto& menu = buttonsData.at(Menu::NODE_UPDATE); 
     return isOverMenu(pos, menu);
 }
 

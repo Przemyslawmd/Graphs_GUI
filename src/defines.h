@@ -29,12 +29,13 @@ enum class Line
 
 enum class Menu
 {
-    ADD_NODE,
-    CONNECT_NODES,
+    NODE_ADD,
+    NODE_UPDATE,
     NODE_INPUT,
+    CONNECT_NODES,
     REMOVE_ALL,
     TRAVERSE_BFS,
-    TRAVERSE_DFS
+    TRAVERSE_DFS,
 };
 
 
