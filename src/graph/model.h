@@ -7,8 +7,8 @@
 
 #include "connection.h"
 #include "node.h"
+#include "keys.h"
 #include "../message.h"
-#include "../services/keys.h"
 
 
 class Model

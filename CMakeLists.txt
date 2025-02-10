@@ -29,6 +29,12 @@ add_executable(GraphsGui
     "src/widgets/input.cpp"
     "src/widgets/button.cpp")
 
-target_include_directories(GraphsGui PRIVATE GraphsLib)
+target_include_directories(
+    GraphsGui 
+    PRIVATE 
+    GraphsLib 
+    "src/services" 
+    "src/widgets" 
+    "src/graph")
 
 target_link_libraries(GraphsGui PRIVATE SFML::Graphics GraphsLib)

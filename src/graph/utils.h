@@ -20,9 +20,7 @@ static float calculateConnectionAngle(const sf::Vector2f& pos_1, const sf::Vecto
     if (pos_1.x > pos_2.x && pos_1.y > pos_2.y) {
         return 180 + angle;
     }
-    if (pos_1.x <= pos_2.x && pos_1.y > pos_2.y) {
-        return 360 - angle;
-    }
+    return 360 - angle;
 }
 
 

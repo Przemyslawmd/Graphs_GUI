@@ -1,12 +1,12 @@
 
+#include "window.h"
+
 #include <string>
 
 #include <SFML/System/Vector2.hpp>
 
 #include "config.h"
-#include "defines.h"
 #include "menu.h"
-#include "window.h"
 
 
 Window::Window()

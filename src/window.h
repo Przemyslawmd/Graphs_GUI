@@ -8,15 +8,15 @@
 #include <tuple>
 
 #include <SFML/Graphics.hpp>
+#include "graphclient.h"
 
 #include "client.h"
 #include "defines.h"
-#include "graph/model.h"
+#include "model.h"
 #include "hold.h"
-#include "widgets/button.h"
-#include "widgets/input.h"
+#include "button.h"
+#include "input.h"
 
-#include "graphclient.h"
 
 class Window
 {

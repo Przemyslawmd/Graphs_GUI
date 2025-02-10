@@ -5,10 +5,10 @@
 #include <memory>
 #include <vector>
 
-#include "graph/node.h"
-#include "graph/connection.h"
-
 #include "graphclient.h"
+
+#include "node.h"
+#include "connection.h"
 
 
 class Client 
