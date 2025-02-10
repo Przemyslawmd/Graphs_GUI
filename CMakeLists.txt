@@ -25,6 +25,7 @@ add_executable(GraphsGui
     "src/client.cpp"
     "src/window.cpp"
     "src/graph/model.cpp"
+    "src/services/keys.cpp"
     "src/widgets/input.cpp"
     "src/widgets/button.cpp")
 
