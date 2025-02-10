@@ -10,15 +10,28 @@ constexpr size_t INITIAL_NODE_Y = 60;
 constexpr size_t MAX_NODES = 30;
 
 
+Model::Model()
+{
+    keys = std::make_unique<Keys>();
+    keys->prepareKeys();
+}
+
+
 std::tuple<Message, std::optional<char>> Model::createNode(sf::Font& font, sf::Text& text)
 {
     if (nodes.size() == MAX_NODES) {
         return { Message::NODE_LIMIT, std::nullopt };
     }
 
-    const auto& str = text.getString();
-    if (str.getSize() > 1) {
+    char key;
+    if (text.getString().isEmpty()) {
+        key = keys->getKey();
+    }
+    else if (text.getString().getSize() != 1) {
         return { Message::NODE_VALUE_ERROR, std::nullopt };
+    }
+    else {
+        key = text.getString()[0];
     }
 
     auto& node = nodes.emplace_back(font);
@@ -26,8 +39,8 @@ std::tuple<Message, std::optional<char>> Model::createNode(sf::Font& font, sf::T
     node.circle.setFillColor({ 51, 153, 255 });
     node.text.setFillColor(sf::Color::Black);
     node.text.setCharacterSize(14);
-    node.text.setString(str);
-    node.value = str[0];
+    node.text.setString(key);
+    node.value = key;
     return { Message::OK, node.value };
 };
 

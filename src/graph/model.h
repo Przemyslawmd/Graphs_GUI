@@ -8,12 +8,13 @@
 #include "connection.h"
 #include "node.h"
 #include "../message.h"
+#include "../services/keys.h"
 
 
 class Model
 {
 public:
-    Model() = default;
+    Model();
 
     std::tuple<Message, std::optional<char>> createNode(sf::Font&, sf::Text&);
     std::vector<NodeGui>& getNodes();
@@ -32,6 +33,8 @@ private:
 
     std::vector<NodeGui> nodes;
     std::vector<Connection> connections;
+
+    std::unique_ptr<Keys> keys;
 };
 
 #endif 

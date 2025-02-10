@@ -14,10 +14,15 @@ public:
     char getKey();
     void giveBackKey(char);
 
-    void resetKeys();
+    void prepareKeys();
 
 private:
-    const std::array<char, 5> defaultKeys = { 'A', 'B', 'C', 'D', 'E' };
+    const std::array<char, 30> defaultKeys = 
+    { 
+        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 
+        'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 
+        'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5'
+    };
     std::stack<char> keys;
 };
 
