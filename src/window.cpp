@@ -121,14 +121,13 @@ void Window::handleMouseRelease()
         return;
     }
 
-    auto& nodes = model->getNodes(); 
-    auto& node = nodes[hold->index];
+    auto& node = model->getNodes()[hold->index];
     auto& shape = node.circle;
     if (node.selected == false) {
         shape.setOutlineColor(sf::Color::Black);
         shape.setOutlineThickness(3.0f);
     }
-    else if (node.selected == true) {
+    else {
         shape.setOutlineThickness(0);
     }
     node.selected = !node.selected; 
@@ -173,7 +172,7 @@ void Window::handleTextEntered(const std::optional<sf::Event> event)
 
 void Window::createNode()
 {
-    auto [result, key] = model->createNode(font, inputs.at(Menu::NODE_INPUT).text);
+    const auto [result, key] = model->createNode(font, inputs.at(Menu::NODE_INPUT).text);
     if (result != Message::OK) {
         setMessage(MessageStr.at(result));
         return;
@@ -184,7 +183,7 @@ void Window::createNode()
 
 void Window::removeNode()
 {
-    auto [result, key] = model->removeNode();
+    const auto [result, key] = model->removeNode();
     if (result != Message::OK) {
         setMessage(MessageStr.at(result));
         return;
@@ -195,7 +194,7 @@ void Window::removeNode()
 
 void Window::createConnection()
 {
-    auto [result, src, dst] = model->createConnection();
+    const auto [result, src, dst] = model->createConnection();
     if (result != Message::OK) {
         setMessage(MessageStr.at(result));
         return;
@@ -206,19 +205,19 @@ void Window::createConnection()
 
 void Window::traverseBFS()
 {
-    auto [result, key] = model->getSelectedNode();
+    const auto [result, key] = model->getSelectedNode();
     if (result != Message::OK) {
         setMessage(MessageStr.at(result));
         return;
     }
     auto sequence = client->BFS(key.value());
-    setMessage("BFS Sequence: " + std::string(sequence->begin(), sequence->end()));
+    setMessage("BFS sequence: " + std::string(sequence->begin(), sequence->end()));
 }
 
 
 void Window::traverseDFS()
 {
-    auto [result, key] = model->getSelectedNode();
+    const auto [result, key] = model->getSelectedNode();
     if (result != Message::OK) {
         setMessage(MessageStr.at(result));
         return;
