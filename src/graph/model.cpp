@@ -2,7 +2,7 @@
 #include "model.h"
 
 #include "utils.h"
-#include "../defines.h"
+#include "defines.h"
 
 
 constexpr size_t INITIAL_NODE_X = 30;
@@ -143,6 +143,7 @@ std::tuple<Message, std::optional<char>> Model::removeNode()
 
     std::erase_if(nodes, [key](const auto& node) { return node.value == key; });
     std::erase_if(connections, [index](const auto& conn) { return conn.node_1 == index || conn.node_2 == index; });
+    keys->giveBackKey(key);
     return { Message::OK, key };
 }
 

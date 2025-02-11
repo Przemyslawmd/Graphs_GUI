@@ -33,8 +33,6 @@ target_include_directories(
     GraphsGui 
     PRIVATE 
     GraphsLib 
-    "src/services" 
-    "src/widgets" 
-    "src/graph")
+    "src")
 
 target_link_libraries(GraphsGui PRIVATE SFML::Graphics GraphsLib)

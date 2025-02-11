@@ -7,8 +7,8 @@
 
 #include "graphclient.h"
 
-#include "node.h"
-#include "connection.h"
+#include "graph/node.h"
+#include "graph/connection.h"
 
 
 class Client 

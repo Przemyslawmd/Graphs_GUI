@@ -3,9 +3,9 @@
 #define GUI_GRAPHS_KEYS_H
 
 #include <array>
-#include <stack>
+#include <list>
 
-#include "../defines.h"
+#include "defines.h"
 
 
 class Keys
@@ -20,12 +20,12 @@ public:
 
 private:
     const std::array<char, MAX_NODES> defaultKeys = 
-    { 
+    {
         'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 
         'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 
         'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5'
     };
-    std::stack<char> keys;
+    std::list<char> keys;
 };
 
 #endif

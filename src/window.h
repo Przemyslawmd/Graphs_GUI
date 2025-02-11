@@ -12,10 +12,10 @@
 
 #include "client.h"
 #include "defines.h"
-#include "model.h"
-#include "hold.h"
-#include "button.h"
-#include "input.h"
+#include "graph/model.h"
+#include "services/hold.h"
+#include "widgets/button.h"
+#include "widgets/input.h"
 
 
 class Window
