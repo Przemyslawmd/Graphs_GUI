@@ -28,10 +28,11 @@ static const std::map<Menu, Data> buttonsData =
     { Menu::NODE_INPUT,    { 20.f,  25.f,  INPUT_WIDTH,  "" }},
     { Menu::NODE_ADD,      { 52.f,  80.f,  BUTTON_WIDTH, "Add Node" }},
     { Menu::NODE_UPDATE,   { 174.f, 190.f, BUTTON_WIDTH, "Update Node" }},
-    { Menu::CONNECT_NODES, { 320.f, 330.f, BUTTON_WIDTH, "Connect Nodes" }},
-    { Menu::REMOVE_ALL,    { 440.f, 460.f, BUTTON_WIDTH, "Remove All" }},
-    { Menu::TRAVERSE_BFS,  { 630.f, 643.f, BUTTON_WIDTH, "Traverse BFS" }},
-    { Menu::TRAVERSE_DFS,  { 750.f, 763.f, BUTTON_WIDTH, "Traverse DFS" }},
+    { Menu::CONNECT_NODES, { 340.f, 350.f, BUTTON_WIDTH, "Connect Nodes" }},
+    { Menu::REMOVE_NODE,   { 500.f, 510.f, BUTTON_WIDTH, "Remove Node" }},
+    { Menu::REMOVE_ALL,    { 620.f, 640.f, BUTTON_WIDTH, "Remove All" }},
+    { Menu::TRAVERSE_BFS,  { 810.f, 823.f, BUTTON_WIDTH, "Traverse BFS" }},
+    { Menu::TRAVERSE_DFS,  { 930.f, 943.f, BUTTON_WIDTH, "Traverse DFS" }},
 };
 
 
@@ -65,6 +66,13 @@ static bool isOverUpdateNodeMenu(const sf::Vector2i& pos)
 static bool isOverConnectNodesMenu(const sf::Vector2i& pos)
 {
     const auto& menu = buttonsData.at(Menu::CONNECT_NODES); 
+    return isOverMenu(pos, menu);
+}
+
+
+static bool isOverRemoveNodesMenu(const sf::Vector2i& pos)
+{
+    const auto& menu = buttonsData.at(Menu::REMOVE_NODE);
     return isOverMenu(pos, menu);
 }
 

@@ -33,6 +33,7 @@ enum class Menu
     NODE_UPDATE,
     NODE_INPUT,
     CONNECT_NODES,
+    REMOVE_NODE,
     REMOVE_ALL,
     TRAVERSE_BFS,
     TRAVERSE_DFS,
