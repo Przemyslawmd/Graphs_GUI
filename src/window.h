@@ -42,6 +42,7 @@ private:
     void handleTextEntered(const std::optional<sf::Event> event);
 
     void createNode();
+    void removeNode();
     void createConnection();
     void traverseBFS();
     void traverseDFS();

@@ -42,56 +42,56 @@ static bool isOverMenu(const sf::Vector2i& pos, const Data& menu)
 }
 
 
-static bool isOverNodeValueMenu(const sf::Vector2i& pos)
+static bool isOverNodeInput(const sf::Vector2i& pos)
 {
     const auto& menu = buttonsData.at(Menu::NODE_INPUT); 
     return isOverMenu(pos, menu);
 }
 
 
-static bool isOverAddNodeMenu(const sf::Vector2i& pos)
+static bool isOverAddNode(const sf::Vector2i& pos)
 {
     const auto& menu = buttonsData.at(Menu::NODE_ADD); 
     return isOverMenu(pos, menu);
 }
 
 
-static bool isOverUpdateNodeMenu(const sf::Vector2i& pos)
+static bool isOverUpdateNode(const sf::Vector2i& pos)
 {
     const auto& menu = buttonsData.at(Menu::NODE_UPDATE); 
     return isOverMenu(pos, menu);
 }
 
 
-static bool isOverConnectNodesMenu(const sf::Vector2i& pos)
+static bool isOverConnectNodes(const sf::Vector2i& pos)
 {
     const auto& menu = buttonsData.at(Menu::CONNECT_NODES); 
     return isOverMenu(pos, menu);
 }
 
 
-static bool isOverRemoveNodesMenu(const sf::Vector2i& pos)
+static bool isOverRemoveNode(const sf::Vector2i& pos)
 {
     const auto& menu = buttonsData.at(Menu::REMOVE_NODE);
     return isOverMenu(pos, menu);
 }
 
 
-static bool isOverRemoveAllMenu(const sf::Vector2i& pos)
+static bool isOverRemoveAll(const sf::Vector2i& pos)
 {
     const auto& menu = buttonsData.at(Menu::REMOVE_ALL);
     return isOverMenu(pos, menu);
 }
 
 
-static bool isOverBFSMenu(const sf::Vector2i& pos)
+static bool isOverBFS(const sf::Vector2i& pos)
 {
     const auto& menu = buttonsData.at(Menu::TRAVERSE_BFS);
     return isOverMenu(pos, menu);
 }
 
 
-static bool isOverDFSMenu(const sf::Vector2i& pos)
+static bool isOverDFS(const sf::Vector2i& pos)
 {
     const auto& menu = buttonsData.at(Menu::TRAVERSE_DFS);
     return isOverMenu(pos, menu);

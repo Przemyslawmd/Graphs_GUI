@@ -132,6 +132,21 @@ void Model::removeAll()
 }
 
 
+std::tuple<Message, std::optional<char>> Model::removeNode()
+{
+    if (checkSelectedNodes() != 1) {
+        return { Message::NODE_SELECT_ONE, std::nullopt };
+    }
+    auto node = std::find_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.selected; });
+    char key = node->value;
+    size_t index = node - nodes.begin();
+
+    std::erase_if(nodes, [key](const auto& node) { return node.value == key; });
+    std::erase_if(connections, [index](const auto& conn) { return conn.node_1 == index || conn.node_2 == index; });
+    return { Message::OK, key };
+}
+
+
 std::tuple<int, float, float> Model::isMouseOverNode(const sf::Vector2i& mousePos)
 {
     for (size_t i = 0; i < nodes.size(); i++) {

@@ -87,22 +87,25 @@ void Window::handleMousePress()
     inputs.at(Menu::NODE_INPUT).focus = false;
 
     sf::Vector2i position = sf::Mouse::getPosition(*window);
-    if (isOverAddNodeMenu(position)) {
+    if (isOverAddNode(position)) {
         createNode();
     }
-    else if (isOverConnectNodesMenu(position)) {
+    else if (isOverConnectNodes(position)) {
         createConnection();
     }
-    else if (isOverRemoveAllMenu(position)) {
+    else if (isOverRemoveAll(position)) {
         model->removeAll();
     }
-    else if (isOverNodeValueMenu(position)) {
+    else if (isOverRemoveNode(position)) {
+        removeNode();
+    }
+    else if (isOverNodeInput(position)) {
         inputs.at(Menu::NODE_INPUT).focus = true;
     }
-    else if (isOverBFSMenu(position)) {
+    else if (isOverBFS(position)) {
         traverseBFS();
     }
-    else if (isOverDFSMenu(position)) {
+    else if (isOverDFS(position)) {
         traverseDFS();
     }
     auto [index, shiftX, shiftY] = model->isMouseOverNode(position);
@@ -176,6 +179,17 @@ void Window::createNode()
         return;
     }
     client->addNode(key.value());
+}
+
+
+void Window::removeNode()
+{
+    auto [result, key] = model->removeNode();
+    if (result != Message::OK) {
+        setMessage(MessageStr.at(result));
+        return;
+    }
+    client->removeNode(key.value());
 }
 
 

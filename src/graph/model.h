@@ -24,6 +24,7 @@ public:
     void moveConnection(size_t index);
     std::vector<Connection>& getConnections();
 
+    std::tuple<Message, std::optional<char>> removeNode();
     void removeAll();
 
     std::tuple<int, float, float> isMouseOverNode(const sf::Vector2i& position);

@@ -17,6 +17,7 @@ public:
     Client();
 
     void addNode(char key);
+    void removeNode(char key);
     void addEdge(char srcKey, char dstKey);
 
     std::unique_ptr<std::vector<char>> BFS(char key);

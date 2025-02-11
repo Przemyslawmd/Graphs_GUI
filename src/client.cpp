@@ -10,6 +10,12 @@ Client::Client()
 }
 
 
+void Client::removeNode(char key)
+{
+    graphClient->removeNode(key);
+}
+
+
 void Client::addNode(char key)
 {
     graphClient->addNode(key);
