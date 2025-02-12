@@ -64,10 +64,10 @@ std::tuple<Message, std::optional<char>> Model::getSelectedNode()
 }
 
 
-std::tuple<Message, std::optional<char>, std::optional<char>> Model::createConnection(sf::Font& font)
+std::tuple<Message, std::optional<ConnectionLibraryInterface>> Model::createConnection(sf::Text& text, sf::Font& font)
 {
     if (checkSelectedNodes() != 2) {
-        return { Message::CONNECTION_NODES_COUNT_ERROR, std::nullopt, std::nullopt };
+        return { Message::CONNECTION_NODES_COUNT_ERROR, std::nullopt };
     }
     auto node_1 = std::find_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.selected; });
     auto node_2 = std::find_if(nodes.rbegin(), nodes.rend(), [](const auto& node) { return node.selected; });
@@ -77,7 +77,12 @@ std::tuple<Message, std::optional<char>, std::optional<char>> Model::createConne
 
     if (std::any_of(connections.begin(), connections.end(), [index_1, index_2](const auto& con)
                    { return (con.node_1 == index_1 && con.node_2 == index_2) || (con.node_1 == index_2 && con.node_2 == index_1); })) {
-        return { Message::CONNECTION_EXISTS, std::nullopt, std::nullopt };
+        return { Message::CONNECTION_EXISTS, std::nullopt };
+    }
+
+    const auto [result, weight] = getWeightFromString(text.getString());
+    if (result != Message::OK) {
+        return { result, std::nullopt };
     }
 
     sf::Vector2f pos_1 = node_1->circle.getPosition();
@@ -94,14 +99,14 @@ std::tuple<Message, std::optional<char>, std::optional<char>> Model::createConne
 
     connection.text.setFillColor(sf::Color::Black);
     connection.text.setCharacterSize(14);
-    connection.text.setString("1");
+    connection.text.setString(text.getString());
     sf::FloatRect bound = connection.line.getGlobalBounds();
     connection.text.setPosition({ bound.getCenter().x, bound.getCenter().y - 15 });
 
     size_t connection_index = connections.size() - 1;
     node_1->connections.push_back(connection_index);
     node_2->connections.push_back(connection_index);
-    return { Message::OK, node_1->value, node_2->value };
+    return { Message::OK, {{ node_1->value, node_2->value, weight }}};
 }
 
 

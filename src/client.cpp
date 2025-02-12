@@ -22,9 +22,9 @@ void Client::addNode(char key)
 }
 
 
-void Client::addEdge(char srcKey, char dstKey)
+void Client::addEdge(char srcKey, char dstKey, size_t weight)
 {
-    graphClient->addEdge(srcKey, dstKey);
+    graphClient->addEdgeWeighted(srcKey, dstKey, weight);
 }
 
 

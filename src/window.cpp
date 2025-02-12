@@ -200,9 +200,9 @@ void Window::removeNode()
 
 void Window::createConnection()
 {
-    const auto [result, src, dst] = model->createConnection(font);
+    const auto [result, connInterface] = model->createConnection(inputs.at(Menu::CONNECTION_INPUT).text, font);
     if (result == Message::OK) {
-        client->addEdge(src.value(), dst.value());
+        client->addEdge(connInterface.value().src, connInterface.value().src, connInterface.value().weight);
         return;
     }
     setMessage(MessageStr.at(result));

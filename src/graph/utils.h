@@ -2,6 +2,8 @@
 #ifndef GUI_GRAPHS_UTILS_H
 #define GUI_GRAPHS_UTILS_H
 
+#include "message.h"
+
 constexpr float PI = 3.14159265;
 
 
@@ -30,6 +32,26 @@ static float calculateConnectionLength(sf::Vector2f& pos_1, sf::Vector2f& pos_2)
     float distance_y = pos_1.y - pos_2.y;
     return sqrt(pow(distance_x, 2) + pow(distance_y, 2)); 
 }
+
+
+static std::tuple<Message, size_t> getWeightFromString(const std::string& text)
+{
+    if (text.size() == 0) {
+        return { Message::OK, 1 };
+    }
+    if (text.size() > 3) {
+        return { Message::CONNECTION_INPUT_ERROR, 0 };
+    }
+
+    size_t weight = 0;
+    for (auto& c : text) {
+        if (!isdigit(c)) {
+            return { Message::CONNECTION_INPUT_ERROR, 0 }; 
+        }
+        weight = weight * 10 + c - '0';
+    }
+    return { Message::OK, weight };
+} 
 
 #endif
 

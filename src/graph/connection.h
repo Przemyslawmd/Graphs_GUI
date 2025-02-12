@@ -7,6 +7,14 @@
 constexpr size_t CONNECTION_LINE_WIDTH = 3;
 
 
+struct ConnectionLibraryInterface
+{
+    char src;
+    char dst; 
+    size_t weight;
+};
+
+
 struct Connection : public sf::Drawable
 {
     Connection(float length, size_t node_1, size_t node_2, sf::Font& font) 
