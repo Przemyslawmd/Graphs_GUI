@@ -35,6 +35,7 @@ private:
     void resizeLines(const sf::Vector2u& size);
 
     void setMessage(const std::string& message);
+    void setInputFocus(bool, bool);
 
     void handleMousePress();
     void handleMouseRelease();

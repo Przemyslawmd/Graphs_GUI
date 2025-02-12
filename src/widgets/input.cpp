@@ -15,7 +15,6 @@ Input::Input(float width, float height, sf::Font& font) : text(font), shape({ wi
     vertical.setCharacterSize(13);
     vertical.setFillColor(sf::Color::Black);
     verticalCounter = 0;
-    isVerticalToDraw = false;
     focus = false;
 }
 
@@ -25,13 +24,8 @@ void Input::checkFocus()
     if (!focus) {
         return;
     }
-    verticalCounter++;
-    if (verticalCounter == 60) {
+    if (++verticalCounter == 60) {
         verticalCounter = 0;
-        isVerticalToDraw = false;
-    }
-    else if (verticalCounter == 30) {
-        isVerticalToDraw  = true;
     }
 }
 
@@ -40,7 +34,7 @@ void Input::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(shape);
     target.draw(text);
-    if (isVerticalToDraw) {
+    if (focus && verticalCounter >= 30 && verticalCounter <= 60) {
         target.draw(vertical);
     }
 }
@@ -56,6 +50,6 @@ void Input::updateText(const char letter)
         text.setString(str + letter);
     }
     auto lastCharPos = text.findCharacterPos(str.getSize() - 1);
-    vertical.setPosition({ lastCharPos.x + 6, lastCharPos.y - 2 });
+    vertical.setPosition({ lastCharPos.x + 7, lastCharPos.y - 2 });
 }
 

@@ -22,7 +22,6 @@ public:
     sf::Text vertical;
 
     bool focus;
-    bool isVerticalToDraw;
     size_t verticalCounter;
 };
 

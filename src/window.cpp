@@ -84,7 +84,7 @@ void Window::run()
 void Window::handleMousePress()
 {
     message.release();
-    inputs.at(Menu::NODE_INPUT).focus = false;
+    setInputFocus(false, false);
 
     sf::Vector2i position = sf::Mouse::getPosition(*window);
     if (isOverAddNode(position)) {
@@ -100,12 +100,10 @@ void Window::handleMousePress()
         removeNode();
     }
     else if (isOverNodeInput(position)) {
-        inputs.at(Menu::NODE_INPUT).focus = true;
-        inputs.at(Menu::CONNECTION_INPUT).focus = false;
+        setInputFocus(true, false);
     }
     else if (isOverConnectInput(position)) {
-        inputs.at(Menu::NODE_INPUT).focus = false;
-        inputs.at(Menu::CONNECTION_INPUT).focus = true;
+        setInputFocus(false, true);
     }
     else if (isOverBFS(position)) {
         traverseBFS();
@@ -322,5 +320,12 @@ void Window::setMessage(const std::string& text)
     const auto& pos = lines.at(Line::MESSAGE_LEFT).getPosition();
     message->setPosition({ pos.x + 10, pos.y + 10 });
     message->setFillColor(sf::Color::Black);
+}
+
+
+void Window::setInputFocus(bool isFocusNodeInput, bool isFocusConnectionInput)
+{
+    inputs.at(Menu::NODE_INPUT).focus = isFocusNodeInput;
+    inputs.at(Menu::CONNECTION_INPUT).focus = isFocusConnectionInput;
 }
 
