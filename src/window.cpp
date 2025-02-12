@@ -128,15 +128,7 @@ void Window::handleMouseRelease()
     }
 
     auto& node = model->getNodes()[hold->index];
-    auto& shape = node.circle;
-    if (node.selected == false) {
-        shape.setOutlineColor(sf::Color::Black);
-        shape.setOutlineThickness(3.0f);
-    }
-    else {
-        shape.setOutlineThickness(0);
-    }
-    node.selected = !node.selected; 
+    node.changeSelect();
 }
 
 
@@ -244,6 +236,7 @@ void Window::shortestPath()
         setMessage("Shortest path: " + std::string(sequence->begin(), sequence->end()));
         return;
     }
+    setMessage(MessageStr.at(result));
 };
 
 

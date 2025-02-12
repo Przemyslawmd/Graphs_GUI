@@ -71,7 +71,11 @@ std::tuple<Message, std::optional<char>, std::optional<char>> Model::getTwoSelec
     }
     auto node_1 = std::find_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.selected; });
     auto node_2 = std::find_if(nodes.rbegin(), nodes.rend(), [](const auto& node) { return node.selected; });
-    return { Message::OK, node_1->value, node_2->value };
+
+    if (node_1->selectTime < node_2->selectTime) {
+        return { Message::OK, node_1->value, node_2->value };
+    }
+    return { Message::OK, node_2->value, node_1->value };
 }
 
 
