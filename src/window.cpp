@@ -200,7 +200,7 @@ void Window::removeNode()
 
 void Window::createConnection()
 {
-    const auto [result, src, dst] = model->createConnection();
+    const auto [result, src, dst] = model->createConnection(font);
     if (result == Message::OK) {
         client->addEdge(src.value(), dst.value());
         return;

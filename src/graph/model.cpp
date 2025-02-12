@@ -64,7 +64,7 @@ std::tuple<Message, std::optional<char>> Model::getSelectedNode()
 }
 
 
-std::tuple<Message, std::optional<char>, std::optional<char>> Model::createConnection()
+std::tuple<Message, std::optional<char>, std::optional<char>> Model::createConnection(sf::Font& font)
 {
     if (checkSelectedNodes() != 2) {
         return { Message::CONNECTION_NODES_COUNT_ERROR, std::nullopt, std::nullopt };
@@ -83,7 +83,7 @@ std::tuple<Message, std::optional<char>, std::optional<char>> Model::createConne
     sf::Vector2f pos_1 = node_1->circle.getPosition();
     sf::Vector2f pos_2 = node_2->circle.getPosition();
     float length  = calculateConnectionLength(pos_1, pos_2);
-    auto& connection = connections.emplace_back( length, index_1, index_2 );
+    auto& connection = connections.emplace_back( length, index_1, index_2, font );
 
     float radius = node_1->circle.getRadius();
     connection.line.setPosition({ pos_1.x + radius, pos_1.y + radius });
@@ -91,6 +91,12 @@ std::tuple<Message, std::optional<char>, std::optional<char>> Model::createConne
     float angle = calculateConnectionAngle(pos_1, pos_2);
     connection.line.rotate(sf::degrees(angle));
     connection.line.setFillColor({ RED, GREEN, BLUE });
+
+    connection.text.setFillColor(sf::Color::Black);
+    connection.text.setCharacterSize(14);
+    connection.text.setString("1");
+    sf::FloatRect bound = connection.line.getGlobalBounds();
+    connection.text.setPosition({ bound.getCenter().x, bound.getCenter().y - 15 });
 
     size_t connection_index = connections.size() - 1;
     node_1->connections.push_back(connection_index);
@@ -116,6 +122,9 @@ void Model::moveConnection(size_t index)
 
     float angle = calculateConnectionAngle(pos_1, pos_2);
     connectionLine.setRotation(sf::degrees(angle));
+
+    sf::FloatRect bound = connectionLine.getGlobalBounds();
+    connections[index].text.setPosition({ bound.getCenter().x, bound.getCenter().y - 15 });
 }
 
 

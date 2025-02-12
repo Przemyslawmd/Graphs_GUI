@@ -20,7 +20,7 @@ public:
     std::vector<NodeGui>& getNodes();
     std::tuple<Message, std::optional<char>> getSelectedNode();
 
-    std::tuple<Message, std::optional<char>, std::optional<char>> createConnection();
+    std::tuple<Message, std::optional<char>, std::optional<char>> createConnection(sf::Font&);
     void moveConnection(size_t index);
     std::vector<Connection>& getConnections();
 
