@@ -23,6 +23,8 @@ public:
     std::unique_ptr<std::vector<char>> BFS(char key);
     std::unique_ptr<std::vector<char>> DFS(char key);
 
+    std::unique_ptr<std::vector<char>> shortestPath(char src, char dst);
+
 private:
     std::unique_ptr<GraphClient> graphClient;
 };

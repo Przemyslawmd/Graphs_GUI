@@ -111,6 +111,9 @@ void Window::handleMousePress()
     else if (isOverDFS(position)) {
         traverseDFS();
     }
+    else if (isOverShortestPath(position)) {
+        shortestPath();
+    }
     auto [index, shiftX, shiftY] = model->isMouseOverNode(position);
     if (index >= 0) {
         hold->activate(index, shiftX, shiftY);
@@ -231,6 +234,17 @@ void Window::traverseDFS()
     }
     setMessage(MessageStr.at(result));
 }
+
+
+void Window::shortestPath()
+{
+    const auto [result, src, dst] = model->getTwoSelectedNodes();
+    if (result == Message::OK) {
+        auto sequence = client->shortestPath(src.value(), dst.value());
+        setMessage("Shortest path: " + std::string(sequence->begin(), sequence->end()));
+        return;
+    }
+};
 
 
 void Window::prepareMenu()

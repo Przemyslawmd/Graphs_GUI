@@ -39,3 +39,8 @@ std::unique_ptr<std::vector<char>> Client::DFS(char key)
     return graphClient->traverseDFS(key);
 }
 
+
+std::unique_ptr<std::vector<char>> Client::shortestPath(char src, char dst)
+{
+    return graphClient->findShortestPath(src, dst);
+}

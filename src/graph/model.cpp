@@ -64,6 +64,17 @@ std::tuple<Message, std::optional<char>> Model::getSelectedNode()
 }
 
 
+std::tuple<Message, std::optional<char>, std::optional<char>> Model::getTwoSelectedNodes()
+{
+    if (checkSelectedNodes() != 2) {
+        return { Message::NODE_SELECT_ONE, std::nullopt, std::nullopt };
+    }
+    auto node_1 = std::find_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.selected; });
+    auto node_2 = std::find_if(nodes.rbegin(), nodes.rend(), [](const auto& node) { return node.selected; });
+    return { Message::OK, node_1->value, node_2->value };
+}
+
+
 std::tuple<Message, std::optional<ConnectionLibraryInterface>> Model::createConnection(sf::Text& text, sf::Font& font)
 {
     if (checkSelectedNodes() != 2) {

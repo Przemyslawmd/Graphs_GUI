@@ -47,6 +47,7 @@ private:
     void createConnection();
     void traverseBFS();
     void traverseDFS();
+    void shortestPath();
 
     std::unique_ptr<sf::RenderWindow> window;
     std::unique_ptr<Model> model;
