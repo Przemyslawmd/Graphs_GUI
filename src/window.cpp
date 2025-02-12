@@ -69,10 +69,10 @@ void Window::run()
         for (const auto& [_, line] : lines) {
             window->draw(line);
         }
-
-        inputs.at(Menu::NODE_INPUT).checkFocus();
-        window->draw(inputs.at(Menu::NODE_INPUT));
-
+        for (auto& [_, input] : inputs) {
+            input.checkFocus();
+            window->draw(input);
+        }
         if (message) {
             window->draw(*message);
         }
@@ -101,6 +101,11 @@ void Window::handleMousePress()
     }
     else if (isOverNodeInput(position)) {
         inputs.at(Menu::NODE_INPUT).focus = true;
+        inputs.at(Menu::CONNECTION_INPUT).focus = false;
+    }
+    else if (isOverConnectInput(position)) {
+        inputs.at(Menu::NODE_INPUT).focus = false;
+        inputs.at(Menu::CONNECTION_INPUT).focus = true;
     }
     else if (isOverBFS(position)) {
         traverseBFS();
@@ -162,11 +167,14 @@ void Window::handleMouseMove(const std::optional<sf::Event> event)
 
 void Window::handleTextEntered(const std::optional<sf::Event> event)
 {
-    if (!inputs.at(Menu::NODE_INPUT).focus) {
-        return;
+    if (inputs.at(Menu::NODE_INPUT).focus) {
+        auto textEvent = event->getIf<sf::Event::TextEntered>();
+        inputs.at(Menu::NODE_INPUT).updateText(static_cast<char>(textEvent->unicode));
     }
-    auto textEvent = event->getIf<sf::Event::TextEntered>();
-    inputs.at(Menu::NODE_INPUT).updateText(static_cast<char>(textEvent->unicode));
+    else if (inputs.at(Menu::CONNECTION_INPUT).focus) {
+        auto textEvent = event->getIf<sf::Event::TextEntered>();
+        inputs.at(Menu::CONNECTION_INPUT).updateText(static_cast<char>(textEvent->unicode));
+    }
 }
 
 
@@ -230,16 +238,16 @@ void Window::traverseDFS()
 void Window::prepareMenu()
 {
     for (const auto& [key, value] : buttonsData) {
-        if (key != Menu::NODE_INPUT) {
-            auto& button = buttons.emplace_back( value.width, MENU_HEIGHT, font, value.title);
-            button.shape.setPosition({ value.posX, MENU_POS_Y });
-            button.text.setPosition({ value.posTitle, MENU_POS_Y + 2.f });
-        }
-        else {
+        if (key == Menu::NODE_INPUT || key == Menu::CONNECTION_INPUT) {
             inputs.emplace(key, Input{ value.width, MENU_HEIGHT, font });
             inputs.at(key).shape.setPosition({ value.posX, MENU_POS_Y });
             inputs.at(key).text.setPosition({ value.posTitle, MENU_POS_Y + 2.f });
             inputs.at(key).vertical.setPosition({ value.posTitle, MENU_POS_Y + 2.f });
+        }
+        else {
+            auto& button = buttons.emplace_back( value.width, MENU_HEIGHT, font, value.title.value());
+            button.shape.setPosition({ value.posX, MENU_POS_Y });
+            button.text.setPosition({ value.posTitle, MENU_POS_Y + 2.f });
         }
     }
 }
