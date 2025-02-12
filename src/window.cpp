@@ -179,57 +179,57 @@ void Window::handleTextEntered(const std::optional<sf::Event> event)
 void Window::createNode()
 {
     const auto [result, key] = model->createNode(font, inputs.at(Menu::NODE_INPUT).text);
-    if (result != Message::OK) {
-        setMessage(MessageStr.at(result));
+    if (result == Message::OK) {
+        client->addNode(key.value());
         return;
     }
-    client->addNode(key.value());
+    setMessage(MessageStr.at(result));
 }
 
 
 void Window::removeNode()
 {
     const auto [result, key] = model->removeNode();
-    if (result != Message::OK) {
-        setMessage(MessageStr.at(result));
+    if (result == Message::OK) {
+        client->removeNode(key.value());
         return;
     }
-    client->removeNode(key.value());
+    setMessage(MessageStr.at(result));
 }
 
 
 void Window::createConnection()
 {
     const auto [result, src, dst] = model->createConnection();
-    if (result != Message::OK) {
-        setMessage(MessageStr.at(result));
+    if (result == Message::OK) {
+        client->addEdge(src.value(), dst.value());
         return;
     }
-    client->addEdge(src.value(), dst.value());
+    setMessage(MessageStr.at(result));
 }
 
 
 void Window::traverseBFS()
 {
     const auto [result, key] = model->getSelectedNode();
-    if (result != Message::OK) {
-        setMessage(MessageStr.at(result));
+    if (result == Message::OK) {
+        auto sequence = client->BFS(key.value());
+        setMessage("BFS sequence: " + std::string(sequence->begin(), sequence->end()));
         return;
     }
-    auto sequence = client->BFS(key.value());
-    setMessage("BFS sequence: " + std::string(sequence->begin(), sequence->end()));
+    setMessage(MessageStr.at(result));
 }
 
 
 void Window::traverseDFS()
 {
     const auto [result, key] = model->getSelectedNode();
-    if (result != Message::OK) {
-        setMessage(MessageStr.at(result));
+    if (result == Message::OK) {
+        auto sequence = client->DFS(key.value());
+        setMessage("DFS sequence: " + std::string(sequence->begin(), sequence->end()));
         return;
     }
-    auto sequence = client->DFS(key.value());
-    setMessage("DFS sequence: " + std::string(sequence->begin(), sequence->end()));
+    setMessage(MessageStr.at(result));
 }
 
 
