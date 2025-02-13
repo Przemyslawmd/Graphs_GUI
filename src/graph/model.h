@@ -25,6 +25,8 @@ public:
     void moveConnection(size_t index);
     std::vector<Connection>& getConnections();
 
+    void colorConnections(const std::vector<char>& path);
+
     std::tuple<Message, std::optional<char>> removeNode();
     void removeAll();
 

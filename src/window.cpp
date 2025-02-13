@@ -233,7 +233,7 @@ void Window::shortestPath()
     const auto [result, src, dst] = model->getTwoSelectedNodes();
     if (result == Message::OK) {
         auto sequence = client->shortestPath(src.value(), dst.value());
-        setMessage("Shortest path: " + std::string(sequence->begin(), sequence->end()));
+        model->colorConnections(*sequence);
         return;
     }
     setMessage(MessageStr.at(result));

@@ -91,7 +91,7 @@ std::tuple<Message, std::optional<ConnectionLibraryInterface>> Model::createConn
     size_t index_2 = nodes.size() - 1 - (node_2 - nodes.rbegin());
 
     if (std::any_of(connections.begin(), connections.end(), [index_1, index_2](const auto& con)
-                   { return (con.node_1 == index_1 && con.node_2 == index_2) || (con.node_1 == index_2 && con.node_2 == index_1); })) {
+                   { return (con.src == index_1 && con.dst == index_2) || (con.src == index_2 && con.dst == index_1); })) {
         return { Message::CONNECTION_EXISTS, std::nullopt };
     }
 
@@ -103,7 +103,7 @@ std::tuple<Message, std::optional<ConnectionLibraryInterface>> Model::createConn
     sf::Vector2f pos_1 = node_1->circle.getPosition();
     sf::Vector2f pos_2 = node_2->circle.getPosition();
     float length  = calculateConnectionLength(pos_1, pos_2);
-    auto& connection = connections.emplace_back( length, index_1, index_2, font );
+    auto& connection = connections.emplace_back( length, index_1, index_2, node_1->value, node_2->value, font );
 
     float radius = node_1->circle.getRadius();
     connection.line.setPosition({ pos_1.x + radius, pos_1.y + radius });
@@ -127,8 +127,8 @@ std::tuple<Message, std::optional<ConnectionLibraryInterface>> Model::createConn
 
 void Model::moveConnection(size_t index)
 {
-    size_t node_1 = connections[index].node_1;
-    size_t node_2 = connections[index].node_2;
+    size_t node_1 = connections[index].src;
+    size_t node_2 = connections[index].dst;
  
     sf::Vector2f pos_1 = nodes[node_1].circle.getPosition();
     sf::Vector2f pos_2 = nodes[node_2].circle.getPosition();
@@ -154,6 +154,16 @@ std::vector<Connection>& Model::getConnections()
 }
 
 
+void Model::colorConnections(const std::vector<char>& path)
+{
+    for (size_t i = 0; i < path.size() - 1; i++) {
+        auto it = std::find_if(connections.begin(), connections.end(), [src = path[i], dst = path[i + 1]](const auto& con)
+                              { return con.isMatch(src, dst); });
+        it->line.setFillColor(sf::Color::Red);
+    }
+}
+
+
 void Model::removeAll()
 {
     nodes.clear();
@@ -171,7 +181,7 @@ std::tuple<Message, std::optional<char>> Model::removeNode()
     size_t index = node - nodes.begin();
 
     std::erase_if(nodes, [key](const auto& node) { return node.value == key; });
-    std::erase_if(connections, [index](const auto& conn) { return conn.node_1 == index || conn.node_2 == index; });
+    std::erase_if(connections, [index](const auto& conn) { return conn.src == index || conn.dst == index; });
     keys->giveBackKey(key);
     return { Message::OK, key };
 }
