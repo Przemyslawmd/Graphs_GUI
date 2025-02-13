@@ -197,7 +197,7 @@ void Window::createConnection()
 {
     const auto [result, connInterface] = model->createConnection(inputs.at(Menu::CONNECTION_INPUT).text, font);
     if (result == Message::OK) {
-        client->addEdge(connInterface.value().src, connInterface.value().src, connInterface.value().weight);
+        client->addEdge(connInterface.value().src, connInterface.value().dst, connInterface.value().weight);
         return;
     }
     setMessage(MessageStr.at(result));
