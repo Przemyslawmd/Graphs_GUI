@@ -154,12 +154,10 @@ void Window::handleMouseMove(const sf::Event::MouseMoved* event)
         return;
     }
 
-    auto& nodes = model->getNodes();
-    auto& heldNode = nodes[hold->index];
+    auto& heldNode = model->getNodes()[hold->index];
     float radius = heldNode.circle.getRadius();
     heldNode.setPosition({ x - radius - hold->shiftX, y - radius - hold->shiftY });
-
-    model->moveNodeConnections(heldNode.value);
+    model->moveNodeConnections(heldNode.key);
     hold->isMoved = true;
 }
 

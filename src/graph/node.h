@@ -46,7 +46,7 @@ struct NodeGui : public sf::Drawable
 
     sf::CircleShape circle;
     sf::Text text;
-    char value;
+    char key;
     bool selected;
     time_t selectTime;
 };

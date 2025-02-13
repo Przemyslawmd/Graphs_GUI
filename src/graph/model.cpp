@@ -43,8 +43,8 @@ std::tuple<Message, std::optional<char>> Model::createNode(sf::Text& text)
     node.text.setFillColor(sf::Color::Black);
     node.text.setCharacterSize(14);
     node.text.setString(key);
-    node.value = key;
-    return { Message::OK, node.value };
+    node.key = key;
+    return { Message::OK, node.key };
 };
 
 
@@ -60,7 +60,7 @@ std::tuple<Message, std::optional<char>> Model::getSelectedNode()
         return { Message::NODE_SELECT_ONE, std::nullopt };
     }
     auto node = std::find_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.selected; });
-    return { Message::OK, node->value };
+    return { Message::OK, node->key };
 }
 
 
@@ -73,9 +73,9 @@ std::tuple<Message, std::optional<char>, std::optional<char>> Model::getTwoSelec
     auto node_2 = std::find_if(nodes.rbegin(), nodes.rend(), [](const auto& node) { return node.selected; });
 
     if (node_1->selectTime < node_2->selectTime) {
-        return { Message::OK, node_1->value, node_2->value };
+        return { Message::OK, node_1->key, node_2->key };
     }
-    return { Message::OK, node_2->value, node_1->value };
+    return { Message::OK, node_2->key, node_1->key };
 }
 
 
@@ -91,7 +91,7 @@ std::tuple<Message, std::optional<ConnectionLibraryInterface>> Model::createConn
     size_t index_2 = nodes.size() - 1 - (node_2 - nodes.rbegin());
 
     if (std::any_of(connections.begin(), connections.end(), [index_1, index_2](const auto& con)
-                   { return (con.src == index_1 && con.dst == index_2) || (con.src == index_2 && con.dst == index_1); })) {
+                   { return (con.srcIndex == index_1 && con.dstIndex == index_2) || (con.srcIndex == index_2 && con.dstIndex == index_1); })) {
         return { Message::CONNECTION_EXISTS, std::nullopt };
     }
 
@@ -103,7 +103,7 @@ std::tuple<Message, std::optional<ConnectionLibraryInterface>> Model::createConn
     sf::Vector2f pos_1 = node_1->circle.getPosition();
     sf::Vector2f pos_2 = node_2->circle.getPosition();
     float length  = calculateConnectionLength(pos_1, pos_2);
-    auto& connection = connections.emplace_back( length, index_1, index_2, node_1->value, node_2->value);
+    auto& connection = connections.emplace_back( length, index_1, index_2, node_1->key, node_2->key);
 
     float radius = node_1->circle.getRadius();
     connection.line.setPosition({ pos_1.x + radius, pos_1.y + radius });
@@ -119,7 +119,7 @@ std::tuple<Message, std::optional<ConnectionLibraryInterface>> Model::createConn
     connection.text.setPosition({ bound.getCenter().x, bound.getCenter().y - 15 });
 
     size_t connection_index = connections.size() - 1;
-    return { Message::OK, {{ node_1->value, node_2->value, weight }}};
+    return { Message::OK, {{ node_1->key, node_2->key, weight }}};
 }
 
 
@@ -135,17 +135,17 @@ void Model::moveNodeConnections(char key)
 
 void Model::moveConnection(Connection& connection)
 {
-    size_t node_1 = connection.src;
-    size_t node_2 = connection.dst;
+    size_t srcIndex = connection.srcIndex;
+    size_t dstIndex = connection.dstIndex;
  
-    sf::Vector2f pos_1 = nodes[node_1].circle.getPosition();
-    sf::Vector2f pos_2 = nodes[node_2].circle.getPosition();
+    sf::Vector2f pos_1 = nodes[srcIndex].circle.getPosition();
+    sf::Vector2f pos_2 = nodes[dstIndex].circle.getPosition();
     float length  = calculateConnectionLength(pos_1, pos_2);
 
     auto& connectionLine = connection.line;
     connectionLine.setSize({ length, 3 });
 
-    float radius = nodes[node_1].circle.getRadius();
+    float radius = nodes[srcIndex].circle.getRadius();
     connectionLine.setPosition({ pos_1.x + radius, pos_1.y + radius });
 
     float angle = calculateConnectionAngle(pos_1, pos_2);
@@ -186,11 +186,11 @@ std::tuple<Message, std::optional<char>> Model::removeNode()
         return { Message::NODE_SELECT_ONE, std::nullopt };
     }
     auto node = std::find_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.selected; });
-    char key = node->value;
+    char key = node->key;
     size_t index = node - nodes.begin();
 
-    std::erase_if(nodes, [key](const auto& node) { return node.value == key; });
-    std::erase_if(connections, [index](const auto& conn) { return conn.src == index || conn.dst == index; });
+    std::erase_if(nodes, [key](const auto& node) { return node.key == key; });
+    std::erase_if(connections, [index](const auto& conn) { return conn.srcIndex == index || conn.dstIndex == index; });
     keys->giveBackKey(key);
     return { Message::OK, key };
 }
