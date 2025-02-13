@@ -89,30 +89,39 @@ void Window::handleMousePress()
     sf::Vector2i position = sf::Mouse::getPosition(*window);
     if (isOverAddNode(position)) {
         createNode();
+        return;
     }
-    else if (isOverConnectNodes(position)) {
+    if (isOverConnectNodes(position)) {
         createConnection();
+        return;
     }
-    else if (isOverRemoveAll(position)) {
-        model->removeAll();
+    if (isOverRemoveAll(position)) {
+        removeGraph();
+        return;
     }
-    else if (isOverRemoveNode(position)) {
+    if (isOverRemoveNode(position)) {
         removeNode();
+        return;
     }
-    else if (isOverNodeInput(position)) {
+    if (isOverNodeInput(position)) {
         setInputFocus(true, false);
+        return;
     }
-    else if (isOverConnectInput(position)) {
+    if (isOverConnectInput(position)) {
         setInputFocus(false, true);
+        return;
     }
-    else if (isOverBFS(position)) {
+    if (isOverBFS(position)) {
         traverseBFS();
+        return;
     }
-    else if (isOverDFS(position)) {
+    if (isOverDFS(position)) {
         traverseDFS();
+        return;
     }
-    else if (isOverShortestPath(position)) {
+    if (isOverShortestPath(position)) {
         shortestPath();
+        return;
     }
     auto [index, shiftX, shiftY] = model->isMouseOverNode(position);
     if (index >= 0) {
@@ -190,6 +199,13 @@ void Window::removeNode()
         return;
     }
     setMessage(MessageStr.at(result));
+}
+
+
+void Window::removeGraph()
+{
+    model->removeAll();
+    client->removeGraph();
 }
 
 

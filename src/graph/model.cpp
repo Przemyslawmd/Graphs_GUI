@@ -168,6 +168,7 @@ void Model::removeAll()
 {
     nodes.clear();
     connections.clear();
+    keys->prepareKeys();
 }
 
 

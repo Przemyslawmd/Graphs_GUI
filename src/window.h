@@ -47,6 +47,7 @@ private:
 
     void createNode();
     void removeNode();
+    void removeGraph();
     void createConnection();
     void traverseBFS();
     void traverseDFS();

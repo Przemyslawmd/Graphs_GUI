@@ -20,6 +20,8 @@ public:
     void removeNode(char key);
     void addEdge(char srcKey, char dstKey, size_t weight = 1);
 
+    void removeGraph();
+
     std::unique_ptr<std::vector<char>> BFS(char key);
     std::unique_ptr<std::vector<char>> DFS(char key);
 

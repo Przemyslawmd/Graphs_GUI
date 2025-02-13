@@ -28,6 +28,12 @@ void Client::addEdge(char srcKey, char dstKey, size_t weight)
 }
 
 
+void Client::removeGraph()
+{
+    graphClient->resetGraph(false);
+}
+
+
 std::unique_ptr<std::vector<char>> Client::BFS(char key)
 {
     return graphClient->traverseBFS(key);
