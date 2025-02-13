@@ -7,8 +7,9 @@
 #include <optional>
 #include <tuple>
 
+#include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 
 #include "graphclient.h"
 
