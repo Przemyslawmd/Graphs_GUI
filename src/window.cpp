@@ -168,11 +168,12 @@ void Window::handleMouseMove(const sf::Event::MouseMoved* event)
 
 void Window::handleTextEntered(const sf::Event::TextEntered* event)
 {
-    if (inputs.at(Menu::NODE_INPUT).focus) {
-        inputs.at(Menu::NODE_INPUT).updateText(static_cast<char>(event->unicode));
+    using enum Menu;
+    if (inputs.at(NODE_INPUT).focus) {
+        inputs.at(NODE_INPUT).updateText(static_cast<char>(event->unicode));
     }
-    else if (inputs.at(Menu::CONNECTION_INPUT).focus) {
-        inputs.at(Menu::CONNECTION_INPUT).updateText(static_cast<char>(event->unicode));
+    else if (inputs.at(CONNECTION_INPUT).focus) {
+        inputs.at(CONNECTION_INPUT).updateText(static_cast<char>(event->unicode));
     }
 }
 
@@ -276,15 +277,16 @@ void Window::prepareLines()
 {
     sf::Vector2u size = { window->getSize().x, window->getSize().y };
 
-    lines.emplace(Line::MESSAGE_UP, sf::Vector2f{ size.x - 2 * MARGIN_X, 1 });
-    lines.emplace(Line::MESSAGE_BOTTOM, sf::Vector2f{ size.x - 2 * MARGIN_X, 1 });
-    lines.emplace(Line::MESSAGE_LEFT, sf::Vector2f{ 1, MESSAGE_AREA_HEIGHT });
-    lines.emplace(Line::MESSAGE_RIGHT, sf::Vector2f{ 1, MESSAGE_AREA_HEIGHT });
+    using enum Line;
+    lines.emplace(MESSAGE_UP, sf::Vector2f{ size.x - 2 * MARGIN_X, 1 });
+    lines.emplace(MESSAGE_BOTTOM, sf::Vector2f{ size.x - 2 * MARGIN_X, 1 });
+    lines.emplace(MESSAGE_LEFT, sf::Vector2f{ 1, MESSAGE_AREA_HEIGHT });
+    lines.emplace(MESSAGE_RIGHT, sf::Vector2f{ 1, MESSAGE_AREA_HEIGHT });
 
-    lines.emplace(Line::GRAPHS_UP, sf::Vector2f{ size.x - 2 * MARGIN_X, 1 });
-    lines.emplace(Line::GRAPHS_BOTTOM, sf::Vector2f{ size.x - 2 * MARGIN_X, 1 });
-    lines.emplace(Line::GRAPHS_LEFT, sf::Vector2f{ 1, size.y - MARGIN_BOTTOM_GRAPHS - MARGIN_UP_GRAPHS });
-    lines.emplace(Line::GRAPHS_RIGHT, sf::Vector2f{ 1, size.y - MARGIN_BOTTOM_GRAPHS - MARGIN_UP_GRAPHS });
+    lines.emplace(GRAPHS_UP, sf::Vector2f{ size.x - 2 * MARGIN_X, 1 });
+    lines.emplace(GRAPHS_BOTTOM, sf::Vector2f{ size.x - 2 * MARGIN_X, 1 });
+    lines.emplace(GRAPHS_LEFT, sf::Vector2f{ 1, size.y - MARGIN_BOTTOM_GRAPHS - MARGIN_UP_GRAPHS });
+    lines.emplace(GRAPHS_RIGHT, sf::Vector2f{ 1, size.y - MARGIN_BOTTOM_GRAPHS - MARGIN_UP_GRAPHS });
 
     setLinesPositions(size);
 
@@ -296,15 +298,16 @@ void Window::prepareLines()
 
 void Window::setLinesPositions(const sf::Vector2u& size)
 {
-    lines.at(Line::MESSAGE_UP).setPosition({ MARGIN_X, size.y - MESSAGES_UP });
-    lines.at(Line::MESSAGE_BOTTOM).setPosition({ MARGIN_X, size.y - MESSAGES_MARGIN_BOTTOM });
-    lines.at(Line::MESSAGE_LEFT).setPosition({ MARGIN_X, size.y - MESSAGES_UP });
-    lines.at(Line::MESSAGE_RIGHT).setPosition({ size.x - MARGIN_X, size.y - MESSAGES_UP });
+    using enum Line;
+    lines.at(MESSAGE_UP).setPosition({ MARGIN_X, size.y - MESSAGES_UP });
+    lines.at(MESSAGE_BOTTOM).setPosition({ MARGIN_X, size.y - MESSAGES_MARGIN_BOTTOM });
+    lines.at(MESSAGE_LEFT).setPosition({ MARGIN_X, size.y - MESSAGES_UP });
+    lines.at(MESSAGE_RIGHT).setPosition({ size.x - MARGIN_X, size.y - MESSAGES_UP });
 
-    lines.at(Line::GRAPHS_UP).setPosition({ MARGIN_X, MARGIN_UP_GRAPHS });
-    lines.at(Line::GRAPHS_BOTTOM).setPosition({ MARGIN_X, size.y - MARGIN_BOTTOM_GRAPHS });
-    lines.at(Line::GRAPHS_LEFT).setPosition({ MARGIN_X, MARGIN_UP_GRAPHS });
-    lines.at(Line::GRAPHS_RIGHT).setPosition({ size.x - MARGIN_X, MARGIN_UP_GRAPHS });
+    lines.at(GRAPHS_UP).setPosition({ MARGIN_X, MARGIN_UP_GRAPHS });
+    lines.at(GRAPHS_BOTTOM).setPosition({ MARGIN_X, size.y - MARGIN_BOTTOM_GRAPHS });
+    lines.at(GRAPHS_LEFT).setPosition({ MARGIN_X, MARGIN_UP_GRAPHS });
+    lines.at(GRAPHS_RIGHT).setPosition({ size.x - MARGIN_X, MARGIN_UP_GRAPHS });
 }
 
 
@@ -325,13 +328,14 @@ void Window::resize()
 
 void Window::resizeLines(const sf::Vector2u& size)
 {
-    lines.at(Line::MESSAGE_UP).setSize({ size.x - 2 * MARGIN_X, 1 });
-    lines.at(Line::MESSAGE_BOTTOM).setSize({ size.x - 2 * MARGIN_X, 1 });
+    using enum Line;
+    lines.at(MESSAGE_UP).setSize({ size.x - 2 * MARGIN_X, 1 });
+    lines.at(MESSAGE_BOTTOM).setSize({ size.x - 2 * MARGIN_X, 1 });
 
-    lines.at(Line::GRAPHS_UP).setSize({ size.x - 2 * MARGIN_X, 1 });
-    lines.at(Line::GRAPHS_BOTTOM).setSize({ size.x - 2 * MARGIN_X, 1 });
-    lines.at(Line::GRAPHS_LEFT).setSize({ 1, size.y - MARGIN_UP_GRAPHS - MARGIN_BOTTOM_GRAPHS });
-    lines.at(Line::GRAPHS_RIGHT).setSize({ 1, size.y - MARGIN_UP_GRAPHS - MARGIN_BOTTOM_GRAPHS });
+    lines.at(GRAPHS_UP).setSize({ size.x - 2 * MARGIN_X, 1 });
+    lines.at(GRAPHS_BOTTOM).setSize({ size.x - 2 * MARGIN_X, 1 });
+    lines.at(GRAPHS_LEFT).setSize({ 1, size.y - MARGIN_UP_GRAPHS - MARGIN_BOTTOM_GRAPHS });
+    lines.at(GRAPHS_RIGHT).setSize({ 1, size.y - MARGIN_UP_GRAPHS - MARGIN_BOTTOM_GRAPHS });
 }
 
 

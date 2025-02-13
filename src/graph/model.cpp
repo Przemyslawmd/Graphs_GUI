@@ -56,7 +56,7 @@ std::vector<NodeGui>& Model::getNodes()
 
 std::tuple<Message, std::optional<char>> Model::getSelectedNode()
 {
-    if (checkSelectedNodes() != 1) {
+    if (countSelectedNodes() != 1) {
         return { Message::NODE_SELECT_ONE, std::nullopt };
     }
     auto node = std::find_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.selected; });
@@ -66,7 +66,7 @@ std::tuple<Message, std::optional<char>> Model::getSelectedNode()
 
 std::tuple<Message, std::optional<char>, std::optional<char>> Model::getTwoSelectedNodes()
 {
-    if (checkSelectedNodes() != 2) {
+    if (countSelectedNodes() != 2) {
         return { Message::NODE_SELECT_ONE, std::nullopt, std::nullopt };
     }
     auto node_1 = std::find_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.selected; });
@@ -81,8 +81,8 @@ std::tuple<Message, std::optional<char>, std::optional<char>> Model::getTwoSelec
 
 std::tuple<Message, std::optional<ConnectionLibraryInterface>> Model::createConnection(sf::Text& text)
 {
-    if (checkSelectedNodes() != 2) {
-        return { Message::CONNECTION_NODES_COUNT_ERROR, std::nullopt };
+    if (countSelectedNodes() != 2) {
+        return { Message::NODE_SELECT_TWO, std::nullopt };
     }
     auto node_1 = std::find_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.selected; });
     auto node_2 = std::find_if(nodes.rbegin(), nodes.rend(), [](const auto& node) { return node.selected; });
@@ -174,7 +174,7 @@ void Model::removeAll()
 
 std::tuple<Message, std::optional<char>> Model::removeNode()
 {
-    if (checkSelectedNodes() != 1) {
+    if (countSelectedNodes() != 1) {
         return { Message::NODE_SELECT_ONE, std::nullopt };
     }
     auto node = std::find_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.selected; });
@@ -205,7 +205,7 @@ std::tuple<int, float, float> Model::isMouseOverNode(const sf::Vector2i& mousePo
 }
 
 
-size_t Model::checkSelectedNodes()
+size_t Model::countSelectedNodes()
 {
     return std::count_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.selected; });
 };

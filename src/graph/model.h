@@ -33,7 +33,7 @@ public:
     std::tuple<int, float, float> isMouseOverNode(const sf::Vector2i& position);
 
 private:
-    size_t checkSelectedNodes();
+    size_t countSelectedNodes();
 
     std::vector<NodeGui> nodes;
     std::vector<Connection> connections;
