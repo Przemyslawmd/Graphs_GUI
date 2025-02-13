@@ -46,13 +46,13 @@ void Window::run()
                 hold->reset();
             }
             else if (event->is<sf::Event::MouseMoved>() && hold->isHeld) {
-                handleMouseMove(event);
+                handleMouseMove(event->getIf<sf::Event::MouseMoved>());
             }
             else if (event->is<sf::Event::Resized>()) {
                 resize();
             }
             else if (event->is<sf::Event::TextEntered>()) {
-                handleTextEntered(event);
+                handleTextEntered(event->getIf<sf::Event::TextEntered>());
             }
         }
         window->clear(sf::Color::White);
@@ -141,11 +141,10 @@ void Window::handleMouseRelease()
 }
 
 
-void Window::handleMouseMove(const std::optional<sf::Event> event)
+void Window::handleMouseMove(const sf::Event::MouseMoved* event)
 {
-    auto mouseEvent = event->getIf<sf::Event::MouseMoved>();
-    float x = mouseEvent->position.x;
-    float y = mouseEvent->position.y;
+    float x = event->position.x;
+    float y = event->position.y;
 
     sf::Vector2u size = { window->getSize().x, window->getSize().y };
     if (x > size.x - MARGIN_X - 20 || 
@@ -167,15 +166,13 @@ void Window::handleMouseMove(const std::optional<sf::Event> event)
 }
 
 
-void Window::handleTextEntered(const std::optional<sf::Event> event)
+void Window::handleTextEntered(const sf::Event::TextEntered* event)
 {
     if (inputs.at(Menu::NODE_INPUT).focus) {
-        auto textEvent = event->getIf<sf::Event::TextEntered>();
-        inputs.at(Menu::NODE_INPUT).updateText(static_cast<char>(textEvent->unicode));
+        inputs.at(Menu::NODE_INPUT).updateText(static_cast<char>(event->unicode));
     }
     else if (inputs.at(Menu::CONNECTION_INPUT).focus) {
-        auto textEvent = event->getIf<sf::Event::TextEntered>();
-        inputs.at(Menu::CONNECTION_INPUT).updateText(static_cast<char>(textEvent->unicode));
+        inputs.at(Menu::CONNECTION_INPUT).updateText(static_cast<char>(event->unicode));
     }
 }
 

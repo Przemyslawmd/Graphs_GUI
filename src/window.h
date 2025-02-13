@@ -42,8 +42,8 @@ private:
 
     void handleMousePress();
     void handleMouseRelease();
-    void handleMouseMove(const std::optional<sf::Event> event);
-    void handleTextEntered(const std::optional<sf::Event> event);
+    void handleMouseMove(const sf::Event::MouseMoved*);
+    void handleTextEntered(const const sf::Event::TextEntered*);
 
     void createNode();
     void removeNode();
