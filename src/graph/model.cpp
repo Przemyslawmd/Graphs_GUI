@@ -20,7 +20,7 @@ Model::Model()
 }
 
 
-std::tuple<Message, std::optional<char>> Model::createNode(sf::Font& font, sf::Text& text)
+std::tuple<Message, std::optional<char>> Model::createNode(sf::Text& text)
 {
     if (nodes.size() == MAX_NODES) {
         return { Message::NODE_LIMIT, std::nullopt };
@@ -37,7 +37,7 @@ std::tuple<Message, std::optional<char>> Model::createNode(sf::Font& font, sf::T
         key = text.getString()[0];
     }
 
-    auto& node = nodes.emplace_back(font);
+    auto& node = nodes.emplace_back();
     node.setPosition({ INITIAL_NODE_X, INITIAL_NODE_Y });
     node.circle.setFillColor({ RED, GREEN, BLUE });
     node.text.setFillColor(sf::Color::Black);
@@ -79,7 +79,7 @@ std::tuple<Message, std::optional<char>, std::optional<char>> Model::getTwoSelec
 }
 
 
-std::tuple<Message, std::optional<ConnectionLibraryInterface>> Model::createConnection(sf::Text& text, sf::Font& font)
+std::tuple<Message, std::optional<ConnectionLibraryInterface>> Model::createConnection(sf::Text& text)
 {
     if (checkSelectedNodes() != 2) {
         return { Message::CONNECTION_NODES_COUNT_ERROR, std::nullopt };
@@ -103,7 +103,7 @@ std::tuple<Message, std::optional<ConnectionLibraryInterface>> Model::createConn
     sf::Vector2f pos_1 = node_1->circle.getPosition();
     sf::Vector2f pos_2 = node_2->circle.getPosition();
     float length  = calculateConnectionLength(pos_1, pos_2);
-    auto& connection = connections.emplace_back( length, index_1, index_2, node_1->value, node_2->value, font );
+    auto& connection = connections.emplace_back( length, index_1, index_2, node_1->value, node_2->value);
 
     float radius = node_1->circle.getRadius();
     connection.line.setPosition({ pos_1.x + radius, pos_1.y + radius });

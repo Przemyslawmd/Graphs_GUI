@@ -4,7 +4,12 @@
 
 #include <time.h>
 
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/CircleShape.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/Text.hpp>
+
+#include "services/font.h"
+
 
 constexpr size_t CIRCLE_POINTS = 100;
 constexpr float RADIUS = 20;
@@ -12,7 +17,7 @@ constexpr float RADIUS = 20;
 
 struct NodeGui : public sf::Drawable
 {
-    NodeGui(sf::Font& font) : circle{ RADIUS, CIRCLE_POINTS }, selected{ false }, text(font) {}
+    NodeGui() : circle{ RADIUS, CIRCLE_POINTS }, selected{ false }, text(FontStore::getFont()) {}
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override
     {

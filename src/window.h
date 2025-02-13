@@ -7,7 +7,9 @@
 #include <optional>
 #include <tuple>
 
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
+
 #include "graphclient.h"
 
 #include "client.h"
@@ -58,8 +60,6 @@ private:
     std::vector<Button> buttons;
     std::map<Menu, Input> inputs;
     std::map<Line, sf::RectangleShape> lines;
-
-    sf::Font font;
 };
 
 #endif 

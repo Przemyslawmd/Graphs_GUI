@@ -7,8 +7,8 @@
 
 #include "connection.h"
 #include "node.h"
-#include "services/keys.h"
 #include "message.h"
+#include "services/keys.h"
 
 
 class Model
@@ -16,12 +16,12 @@ class Model
 public:
     Model();
 
-    std::tuple<Message, std::optional<char>> createNode(sf::Font&, sf::Text&);
+    std::tuple<Message, std::optional<char>> createNode(sf::Text&);
     std::vector<NodeGui>& getNodes();
     std::tuple<Message, std::optional<char>> getSelectedNode();
     std::tuple<Message, std::optional<char>, std::optional<char>> getTwoSelectedNodes();
 
-    std::tuple<Message, std::optional<ConnectionLibraryInterface>> createConnection(sf::Text&, sf::Font&);
+    std::tuple<Message, std::optional<ConnectionLibraryInterface>> createConnection(sf::Text&);
     void moveConnection(size_t index);
     std::vector<Connection>& getConnections();
 

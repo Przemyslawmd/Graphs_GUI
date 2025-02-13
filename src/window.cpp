@@ -5,8 +5,8 @@
 
 #include <SFML/System/Vector2.hpp>
 
-#include "config.h"
 #include "menu.h"
+#include "services/font.h"
 
 
 Window::Window()
@@ -22,7 +22,7 @@ Window::Window()
 
 void Window::init()
 {
-    if (!font.openFromFile(std::string(RESOURCES) + "Arial.ttf")) {
+    if (FontStore::createFont() == false) {
         return;
     }
     prepareMenu();
@@ -173,7 +173,7 @@ void Window::handleTextEntered(const std::optional<sf::Event> event)
 
 void Window::createNode()
 {
-    const auto [result, key] = model->createNode(font, inputs.at(Menu::NODE_INPUT).text);
+    const auto [result, key] = model->createNode(inputs.at(Menu::NODE_INPUT).text);
     if (result == Message::OK) {
         client->addNode(key.value());
         return;
@@ -195,7 +195,7 @@ void Window::removeNode()
 
 void Window::createConnection()
 {
-    const auto [result, connInterface] = model->createConnection(inputs.at(Menu::CONNECTION_INPUT).text, font);
+    const auto [result, connInterface] = model->createConnection(inputs.at(Menu::CONNECTION_INPUT).text);
     if (result == Message::OK) {
         client->addEdge(connInterface.value().src, connInterface.value().dst, connInterface.value().weight);
         return;
@@ -242,6 +242,7 @@ void Window::shortestPath()
 
 void Window::prepareMenu()
 {
+    auto& font = FontStore::getFont();
     for (const auto& [key, value] : buttonsData) {
         if (key == Menu::NODE_INPUT || key == Menu::CONNECTION_INPUT) {
             inputs.emplace(key, Input{ value.width, MENU_HEIGHT, font });
@@ -323,6 +324,7 @@ void Window::resizeLines(const sf::Vector2u& size)
 
 void Window::setMessage(const std::string& text)
 {
+    auto& font = FontStore::getFont();
     message = std::make_unique<sf::Text>(font, text, 15);
     const auto& pos = lines.at(Line::MESSAGE_LEFT).getPosition();
     message->setPosition({ pos.x + 10, pos.y + 10 });

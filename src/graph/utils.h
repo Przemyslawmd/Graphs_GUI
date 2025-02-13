@@ -44,7 +44,7 @@ static std::tuple<Message, size_t> getWeightFromString(const std::string& text)
     }
 
     size_t weight = 0;
-    for (auto& c : text) {
+    for (const auto& c : text) {
         if (!isdigit(c)) {
             return { Message::CONNECTION_INPUT_ERROR, 0 }; 
         }

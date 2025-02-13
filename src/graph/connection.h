@@ -2,7 +2,12 @@
 #ifndef GUI_GRAPHS_CONNECTION_H
 #define GUI_GRAPHS_CONNECTION_H
 
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/Text.hpp>
+
+#include "services/font.h"
+
 
 constexpr size_t LINE_WIDTH = 3;
 
@@ -17,8 +22,8 @@ struct ConnectionLibraryInterface
 
 struct Connection : public sf::Drawable
 {
-    Connection(float length, size_t src, size_t dst, char srcKey, char dstKey, sf::Font& font) 
-        : line{ sf::Vector2f{ length, LINE_WIDTH }}, src(src), dst(dst), srcKey(srcKey), dstKey(dstKey), text(font) {};
+    Connection(float length, size_t src, size_t dst, char srcKey, char dstKey)
+        : line{ sf::Vector2f{ length, LINE_WIDTH }}, src(src), dst(dst), srcKey(srcKey), dstKey(dstKey), text(FontStore::getFont()) {};
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override
     {
