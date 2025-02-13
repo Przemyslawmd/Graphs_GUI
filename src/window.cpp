@@ -159,9 +159,7 @@ void Window::handleMouseMove(const sf::Event::MouseMoved* event)
     float radius = heldNode.circle.getRadius();
     heldNode.setPosition({ x - radius - hold->shiftX, y - radius - hold->shiftY });
 
-    for (size_t i = 0; i < heldNode.connections.size(); i++) {
-        model->moveConnection(heldNode.connections[i]);
-    }
+    model->moveNodeConnections(heldNode.value);
     hold->isMoved = true;
 }
 

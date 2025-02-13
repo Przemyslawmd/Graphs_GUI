@@ -119,22 +119,30 @@ std::tuple<Message, std::optional<ConnectionLibraryInterface>> Model::createConn
     connection.text.setPosition({ bound.getCenter().x, bound.getCenter().y - 15 });
 
     size_t connection_index = connections.size() - 1;
-    node_1->connections.push_back(connection_index);
-    node_2->connections.push_back(connection_index);
     return { Message::OK, {{ node_1->value, node_2->value, weight }}};
 }
 
 
-void Model::moveConnection(size_t index)
+void Model::moveNodeConnections(char key)
 {
-    size_t node_1 = connections[index].src;
-    size_t node_2 = connections[index].dst;
+    for (auto& con : connections) {
+        if (con.srcKey == key || con.dstKey == key) {
+            moveConnection(con);
+        }
+    }
+}
+
+
+void Model::moveConnection(Connection& connection)
+{
+    size_t node_1 = connection.src;
+    size_t node_2 = connection.dst;
  
     sf::Vector2f pos_1 = nodes[node_1].circle.getPosition();
     sf::Vector2f pos_2 = nodes[node_2].circle.getPosition();
     float length  = calculateConnectionLength(pos_1, pos_2);
 
-    auto& connectionLine = connections[index].line;
+    auto& connectionLine = connection.line;
     connectionLine.setSize({ length, 3 });
 
     float radius = nodes[node_1].circle.getRadius();
@@ -144,7 +152,7 @@ void Model::moveConnection(size_t index)
     connectionLine.setRotation(sf::degrees(angle));
 
     sf::FloatRect bound = connectionLine.getGlobalBounds();
-    connections[index].text.setPosition({ bound.getCenter().x, bound.getCenter().y - 15 });
+    connection.text.setPosition({ bound.getCenter().x, bound.getCenter().y - 15 });
 }
 
 

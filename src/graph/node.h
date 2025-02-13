@@ -49,7 +49,6 @@ struct NodeGui : public sf::Drawable
     char value;
     bool selected;
     time_t selectTime;
-    std::vector<size_t> connections;
 };
 
 #endif

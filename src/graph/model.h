@@ -22,8 +22,8 @@ public:
     std::tuple<Message, std::optional<char>, std::optional<char>> getTwoSelectedNodes();
 
     std::tuple<Message, std::optional<ConnectionLibraryInterface>> createConnection(sf::Text&);
-    void moveConnection(size_t index);
     std::vector<Connection>& getConnections();
+    void moveNodeConnections(char key);
 
     void colorConnections(const std::vector<char>& path);
 
@@ -33,6 +33,7 @@ public:
     std::tuple<int, float, float> isMouseOverNode(const sf::Vector2i& position);
 
 private:
+    void moveConnection(Connection&);
     size_t countSelectedNodes();
 
     std::vector<NodeGui> nodes;

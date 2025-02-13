@@ -43,7 +43,7 @@ private:
     void handleMousePress();
     void handleMouseRelease();
     void handleMouseMove(const sf::Event::MouseMoved*);
-    void handleTextEntered(const const sf::Event::TextEntered*);
+    void handleTextEntered(const sf::Event::TextEntered*);
 
     void createNode();
     void removeNode();
