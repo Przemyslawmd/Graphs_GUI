@@ -27,8 +27,8 @@ add_executable(GraphsApp
 
 target_include_directories(
     GraphsApp 
-    PRIVATE 
+    PUBLIC 
     GraphsLib 
     ${CMAKE_CURRENT_SOURCE_DIR})
 
-target_link_libraries(GraphsApp PRIVATE SFML::Graphics GraphsLib)
+target_link_libraries(GraphsApp PUBLIC SFML::Graphics GraphsLib)
