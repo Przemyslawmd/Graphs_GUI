@@ -22,8 +22,8 @@ struct ConnectionLibraryInterface
 
 struct Connection : public sf::Drawable
 {
-    Connection(float length, size_t src, size_t dst, char srcKey, char dstKey)
-        : line{ sf::Vector2f{ length, LINE_WIDTH }}, srcIndex(src), dstIndex(dst), srcKey(srcKey), dstKey(dstKey), text(FontStore::getFont()) {};
+    Connection(float length, char srcKey, char dstKey)
+        : line{ sf::Vector2f{ length, LINE_WIDTH }}, srcKey(srcKey), dstKey(dstKey), text(FontStore::getFont()) {};
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override
     {
@@ -40,8 +40,6 @@ struct Connection : public sf::Drawable
     sf::Text text;
     char srcKey;
     char dstKey;
-    size_t srcIndex;
-    size_t dstIndex;
 };
 
 #endif
