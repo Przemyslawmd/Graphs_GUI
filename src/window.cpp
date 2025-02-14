@@ -135,7 +135,6 @@ void Window::handleMouseRelease()
     if (hold->isMoved) {
         return;
     }
-
     auto& node = model->getNodes()[hold->index];
     node.changeSelect();
 }

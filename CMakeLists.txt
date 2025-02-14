@@ -1,38 +1,12 @@
-cmake_minimum_required(VERSION 3.16)
-project(GRAPHS_GUI)
+cmake_minimum_required(VERSION 3.25)
+project(GraphsGui)
 
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED On)
+set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
-configure_file(${PROJECT_SOURCE_DIR}/src/config.h.in ${PROJECT_SOURCE_DIR}/src/config.h)
+option(BUILD_TESTS "Build tests" ON)
 
-include(FetchContent)
-FetchContent_Declare(SFML
-    GIT_REPOSITORY https://github.com/SFML/SFML.git
-    GIT_TAG 3.0.0
-    GIT_SHALLOW ON
-    EXCLUDE_FROM_ALL
-    SYSTEM)
-
-FetchContent_Declare(Graphs
-    GIT_REPOSITORY https://github.com/Przemyslawmd/Graphs.git
-    GIT_TAG main)
-
-FetchContent_MakeAvailable(SFML Graphs)
-
-add_executable(GraphsGui 
-    "src/main.cpp"
-    "src/client.cpp"
-    "src/window.cpp"
-    "src/graph/model.cpp"
-    "src/services/keys.cpp"
-    "src/widgets/input.cpp"
-    "src/widgets/button.cpp")
-
-target_include_directories(
-    GraphsGui 
-    PRIVATE 
-    GraphsLib 
-    "src")
-
-target_link_libraries(GraphsGui PRIVATE SFML::Graphics GraphsLib)
+add_subdirectory(src)
+if (BUILD_TESTS MATCHES ON)
+    add_subdirectory(test)
+endif()
