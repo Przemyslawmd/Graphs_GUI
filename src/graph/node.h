@@ -12,6 +12,8 @@
 #include "services/font.h"
 
 
+constexpr size_t INITIAL_NODE_X = 30;
+constexpr size_t INITIAL_NODE_Y = 60;
 constexpr size_t CIRCLE_POINTS = 100;
 constexpr float RADIUS = 20;
 
@@ -23,6 +25,7 @@ struct NodeGui : public sf::Drawable
         circle.setFillColor({ RED, GREEN, BLUE });
         text.setFillColor(sf::Color::Black);
         text.setCharacterSize(14);
+        setPosition({ INITIAL_NODE_X, INITIAL_NODE_Y });
     }
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override

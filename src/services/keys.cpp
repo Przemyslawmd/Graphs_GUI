@@ -1,32 +1,30 @@
 
-#include <algorithm>
-
 #include "keys.h"
+
+#include <algorithm>
 
 
 char Keys::getKey()
 {
-    char key = keys.back();
-    keys.pop_back();
-    return key;
+    auto key = std::ranges::find_if(keys, [](const auto& k) { return k.used == false; });
+    key->used = true;
+    return key->key;
 }
 
 
-void Keys::giveBackKey(char key)
+void Keys::giveBackKey(char keyToBack)
 {
-    if (std::ranges::none_of(defaultKeys, [key](char k) { return k == key; }) || 
-        std::ranges::any_of(keys, [key](char k) { return k == key; })) {
-            return;
+    auto key = std::ranges::find_if(keys, [keyToBack](const auto& k) { return k.used == true && k.key == keyToBack; });
+    if (key != keys.end()) {
+        key->used = false;
     }
-    keys.push_back(key);
 }
 
 
-void Keys::prepareKeys()
+void Keys::restoreKeys()
 {
-    auto empty = std::list<char>();
-    keys.swap(empty);
-    keys.insert(keys.begin(), std::begin(defaultKeys), std::end(defaultKeys));
-    keys.reverse();
+    for (auto& key : keys) {
+        key.used = false;
+    }
 }
 

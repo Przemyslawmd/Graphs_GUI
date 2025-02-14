@@ -5,14 +5,9 @@
 #include "defines.h"
 
 
-constexpr size_t INITIAL_NODE_X = 30;
-constexpr size_t INITIAL_NODE_Y = 60;
-
-
 Model::Model()
 {
     keys = std::make_unique<Keys>();
-    keys->prepareKeys();
 }
 
 
@@ -31,10 +26,12 @@ std::tuple<Message, std::optional<char>> Model::createNode(sf::Text& text)
     }
     else {
         key = text.getString()[0];
+        if (std::ranges::any_of(nodes, [key](const auto& node) { return node.key == key; })) {
+            return { Message::NODE_KEY_EXISTS, std::nullopt };
+        }
     }
 
     auto& node = nodes.emplace_back();
-    node.setPosition({ INITIAL_NODE_X, INITIAL_NODE_Y });
     node.text.setString(key);
     node.key = key;
     return { Message::OK, node.key };
@@ -141,7 +138,7 @@ void Model::removeAll()
 {
     nodes.clear();
     connections.clear();
-    keys->prepareKeys();
+    keys->restoreKeys();
 }
 
 

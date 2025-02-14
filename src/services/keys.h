@@ -3,9 +3,15 @@
 #define GUI_GRAPHS_KEYS_H
 
 #include <array>
-#include <list>
 
 #include "defines.h"
+
+
+struct KeyStore
+{
+    char key;
+    bool used;
+};
 
 
 class Keys
@@ -16,16 +22,17 @@ public:
     char getKey();
     void giveBackKey(char);
 
-    void prepareKeys();
+    void restoreKeys();
 
 private:
-    const std::array<char, MAX_NODES> defaultKeys = 
-    {
-        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 
-        'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 
-        'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5'
-    };
-    std::list<char> keys;
+    std::array<KeyStore, MAX_NODES> keys = {{
+        { 'A', false }, { 'B', false }, { 'C', false }, { 'D', false }, { 'E', false },
+        { 'F', false }, { 'G', false }, { 'H', false }, { 'I', false }, { 'J', false },
+        { 'K', false }, { 'L', false }, { 'M', false }, { 'N', false }, { 'O', false },
+        { 'P', false }, { 'Q', false }, { 'R', false }, { 'S', false }, { 'T', false },
+        { 'V', false }, { 'W', false }, { 'X', false }, { 'Y', false }, { 'Z', false },
+        { '1', false }, { '2', false }, { '3', false }, { '4', false }, { '5', false }
+    }};
 };
 
 #endif
