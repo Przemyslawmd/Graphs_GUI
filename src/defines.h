@@ -13,6 +13,10 @@ constexpr float MESSAGES_MARGIN_BOTTOM = 20.f;
 
 constexpr size_t MAX_NODES = 30;
 
+constexpr size_t RED = 51;
+constexpr size_t GREEN = 153;
+constexpr size_t BLUE = 255;
+
 
 enum class Line 
 {

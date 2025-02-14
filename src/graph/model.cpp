@@ -8,10 +8,6 @@
 constexpr size_t INITIAL_NODE_X = 30;
 constexpr size_t INITIAL_NODE_Y = 60;
 
-constexpr size_t RED = 51;
-constexpr size_t GREEN = 153;
-constexpr size_t BLUE = 255;
-
 
 Model::Model()
 {
@@ -39,9 +35,6 @@ std::tuple<Message, std::optional<char>> Model::createNode(sf::Text& text)
 
     auto& node = nodes.emplace_back();
     node.setPosition({ INITIAL_NODE_X, INITIAL_NODE_Y });
-    node.circle.setFillColor({ RED, GREEN, BLUE });
-    node.text.setFillColor(sf::Color::Black);
-    node.text.setCharacterSize(14);
     node.text.setString(key);
     node.key = key;
     return { Message::OK, node.key };
@@ -108,10 +101,7 @@ std::tuple<Message, std::optional<ConnectionLibraryInterface>> Model::createConn
 
     float angle = calculateConnectionAngle(pos_1, pos_2);
     connection.line.rotate(sf::degrees(angle));
-    connection.line.setFillColor({ RED, GREEN, BLUE });
 
-    connection.text.setFillColor(sf::Color::Black);
-    connection.text.setCharacterSize(14);
     connection.text.setString(text.getString());
     sf::FloatRect bound = connection.line.getGlobalBounds();
     connection.text.setPosition({ bound.getCenter().x, bound.getCenter().y - 15 });

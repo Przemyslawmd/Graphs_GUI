@@ -8,6 +8,7 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Text.hpp>
 
+#include "defines.h"
 #include "services/font.h"
 
 
@@ -17,7 +18,12 @@ constexpr float RADIUS = 20;
 
 struct NodeGui : public sf::Drawable
 {
-    NodeGui() : circle{ RADIUS, CIRCLE_POINTS }, selected{ false }, text(FontStore::getFont()) {}
+    NodeGui() : circle{ RADIUS, CIRCLE_POINTS }, selected{ false }, text(FontStore::getFont()) 
+    {
+        circle.setFillColor({ RED, GREEN, BLUE });
+        text.setFillColor(sf::Color::Black);
+        text.setCharacterSize(14);
+    }
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override
     {

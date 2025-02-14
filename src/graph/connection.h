@@ -6,6 +6,7 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Text.hpp>
 
+#include "defines.h"
 #include "services/font.h"
 
 
@@ -23,7 +24,12 @@ struct ConnectionLibraryInterface
 struct Connection : public sf::Drawable
 {
     Connection(float length, char srcKey, char dstKey)
-        : line{ sf::Vector2f{ length, LINE_WIDTH }}, srcKey(srcKey), dstKey(dstKey), text(FontStore::getFont()) {};
+        : line{ sf::Vector2f{ length, LINE_WIDTH }}, srcKey(srcKey), dstKey(dstKey), text(FontStore::getFont()) 
+    {
+        line.setFillColor({ RED, GREEN, BLUE });
+        text.setFillColor(sf::Color::Black);
+        text.setCharacterSize(14);
+    };
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override
     {
