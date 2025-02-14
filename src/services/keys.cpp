@@ -1,4 +1,6 @@
 
+#include <algorithm>
+
 #include "keys.h"
 
 
@@ -12,11 +14,9 @@ char Keys::getKey()
 
 void Keys::giveBackKey(char key)
 {
-    if (std::find(defaultKeys.begin(), defaultKeys.end(), key) == defaultKeys.end()) {
-        return;
-    }
-    if (std::find(keys.begin(), keys.end(), key) != keys.end()) {
-        return;
+    if (std::ranges::none_of(defaultKeys, [key](char k) { return k == key; }) || 
+        std::ranges::any_of(keys, [key](char k) { return k == key; })) {
+            return;
     }
     keys.push_back(key);
 }
@@ -26,8 +26,7 @@ void Keys::prepareKeys()
 {
     auto empty = std::list<char>();
     keys.swap(empty);
-    for (int i = defaultKeys.size() - 1; i >= 0; i--) {
-        keys.push_back(defaultKeys[i]);
-    }
+    keys.insert(keys.begin(), std::begin(defaultKeys), std::end(defaultKeys));
+    keys.reverse();
 }
 
