@@ -42,6 +42,11 @@ struct Connection : public sf::Drawable
         return (node_1 == srcKey && node_2 == dstKey) || (node_1 == dstKey && node_2 == srcKey);
     }
 
+    bool isColor() const
+    {
+        return line.getFillColor() == sf::Color::Red;
+    }
+
     sf::RectangleShape line;
     sf::Text text;
     char srcKey;

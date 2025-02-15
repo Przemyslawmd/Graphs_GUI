@@ -25,7 +25,8 @@ public:
     std::vector<Connection>& getConnections();
     void moveNodeConnections(char key);
 
-    void colorConnections(const std::vector<char>& path);
+    void colorPath(const std::vector<char>& path);
+    void resetPath();
 
     std::tuple<Message, std::optional<char>> removeNode();
     void removeAll();

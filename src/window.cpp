@@ -123,6 +123,10 @@ void Window::handleMousePress()
         shortestPath();
         return;
     }
+    if (isOverResetPath(position)) {
+        model->resetPath();
+        return;
+    }
     auto [index, shiftX, shiftY] = model->isMouseOverNode(position);
     if (index >= 0) {
         hold->activate(index, shiftX, shiftY);
@@ -251,7 +255,7 @@ void Window::shortestPath()
         setMessage(client->getLastErrorMessage());
         return;
     }
-    model->colorConnections(*sequence);
+    model->colorPath(*sequence);
 };
 
 

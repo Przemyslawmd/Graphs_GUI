@@ -42,7 +42,8 @@ enum class Menu
     REMOVE_ALL,
     TRAVERSE_BFS,
     TRAVERSE_DFS,
-    SHORTEST_PATH
+    SHORTEST_PATH,
+    RESET_PATH,
 };
 
 

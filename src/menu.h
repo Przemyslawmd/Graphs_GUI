@@ -35,6 +35,7 @@ static const std::map<Menu, Data> buttonsData =
     { Menu::TRAVERSE_BFS,     { 840.f, 853.f,   BUTTON_WIDTH, "Traverse BFS" }},
     { Menu::TRAVERSE_DFS,     { 960.f, 973.f,   BUTTON_WIDTH, "Traverse DFS" }},
     { Menu::SHORTEST_PATH,    { 1100.f, 1112.f, BUTTON_WIDTH, "Shortest Path" }},
+    { Menu::RESET_PATH,       { 1220.f, 1242.f, BUTTON_WIDTH, "Reset Path" }},
 };
 
 
@@ -110,6 +111,13 @@ static bool isOverDFS(const sf::Vector2i& pos)
 static bool isOverShortestPath(const sf::Vector2i& pos)
 {
     const auto& menu = buttonsData.at(Menu::SHORTEST_PATH);
+    return isOverMenu(pos, menu);
+}
+
+
+static bool isOverResetPath(const sf::Vector2i& pos)
+{
+    const auto& menu = buttonsData.at(Menu::RESET_PATH);
     return isOverMenu(pos, menu);
 }
 

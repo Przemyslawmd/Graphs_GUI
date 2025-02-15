@@ -1,6 +1,8 @@
 
 #include "model.h"
 
+#include <ranges>
+
 #include "utils.h"
 #include "defines.h"
 
@@ -124,12 +126,20 @@ std::vector<Connection>& Model::getConnections()
 }
 
 
-void Model::colorConnections(const std::vector<char>& path)
+void Model::colorPath(const std::vector<char>& path)
 {
     for (size_t i = 0; i < path.size() - 1; i++) {
         auto it = std::find_if(connections.begin(), connections.end(), [src = path[i], dst = path[i + 1]](const auto& con)
                               { return con.isMatch(src, dst); });
         it->line.setFillColor(sf::Color::Red);
+    }
+}
+
+
+void Model::resetPath()
+{
+    for (auto& conn : connections | std::views::filter([](const auto& conn) { return conn.isColor(); })) {
+        conn.line.setFillColor({ RED, GREEN, BLUE });
     }
 }
 
