@@ -2,6 +2,7 @@
 #include "window.h"
 
 #include <string>
+#include <thread>
 
 #include <SFML/System/Vector2.hpp>
 
@@ -218,15 +219,29 @@ void Window::createConnection()
 }
 
 
+void Window::callClientBFS(char key)
+{
+    auto sequence = client->BFS(key);
+    setMessage("BFS sequence: " + std::string(sequence->begin(), sequence->end()));
+}
+
+
 void Window::traverseBFS()
 {
     const auto [result, key] = model->getSelectedNode();
     if (result == Message::OK) {
-        auto sequence = client->BFS(key.value());
-        setMessage("BFS sequence: " + std::string(sequence->begin(), sequence->end()));
+        std::thread th(&Window::callClientBFS, this, key.value());
+        th.detach();
         return;
     }
     setMessage(MessageStr.at(result));
+}
+
+
+void Window::callClientDFS(char key)
+{
+    auto sequence = client->DFS(key);
+    setMessage("DFS sequence: " + std::string(sequence->begin(), sequence->end()));
 }
 
 
@@ -234,11 +249,22 @@ void Window::traverseDFS()
 {
     const auto [result, key] = model->getSelectedNode();
     if (result == Message::OK) {
-        auto sequence = client->DFS(key.value());
-        setMessage("DFS sequence: " + std::string(sequence->begin(), sequence->end()));
+        std::thread th(&Window::callClientDFS, this, key.value());
+        th.detach();
         return;
     }
     setMessage(MessageStr.at(result));
+}
+
+
+void Window::callClientShortestPath(char src, char dst)
+{
+    auto sequence = client->shortestPath(src, dst);
+    if (sequence == nullptr) {
+        setMessage(client->getLastErrorMessage());
+        return;
+    }
+    model->colorPath(*sequence);
 }
 
 
@@ -249,13 +275,8 @@ void Window::shortestPath()
         setMessage(MessageStr.at(result));
         return;
     }
- 
-    auto sequence = client->shortestPath(src.value(), dst.value());
-    if (sequence == nullptr) {
-        setMessage(client->getLastErrorMessage());
-        return;
-    }
-    model->colorPath(*sequence);
+    std::thread th(&Window::callClientShortestPath, this, src.value(), dst.value());
+    th.detach();
 };
 
 

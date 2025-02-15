@@ -53,6 +53,10 @@ private:
     void traverseDFS();
     void shortestPath();
 
+    void callClientBFS(char key);
+    void callClientDFS(char key);
+    void callClientShortestPath(char src, char dst);
+
     std::unique_ptr<sf::RenderWindow> window;
     std::unique_ptr<Model> model;
     std::unique_ptr<Client> client;
