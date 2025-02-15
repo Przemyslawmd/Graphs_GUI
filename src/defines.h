@@ -34,11 +34,10 @@ enum class Line
 enum class Menu
 {
     NODE_ADD,
-    NODE_UPDATE,
+    NODE_REMOVE,
     NODE_INPUT,
     CONNECTION_ADD,
     CONNECTION_INPUT,
-    REMOVE_NODE,
     REMOVE_ALL,
     TRAVERSE_BFS,
     TRAVERSE_DFS,
