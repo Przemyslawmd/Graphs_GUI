@@ -241,12 +241,17 @@ void Window::traverseDFS()
 void Window::shortestPath()
 {
     const auto [result, src, dst] = model->getTwoSelectedNodes();
-    if (result == Message::OK) {
-        auto sequence = client->shortestPath(src.value(), dst.value());
-        model->colorConnections(*sequence);
+    if (result != Message::OK) {
+        setMessage(MessageStr.at(result));
         return;
     }
-    setMessage(MessageStr.at(result));
+ 
+    auto sequence = client->shortestPath(src.value(), dst.value());
+    if (sequence == nullptr) {
+        setMessage(client->getLastErrorMessage());
+        return;
+    }
+    model->colorConnections(*sequence);
 };
 
 

@@ -50,3 +50,10 @@ std::unique_ptr<std::vector<char>> Client::shortestPath(char src, char dst)
 {
     return graphClient->findShortestPath(src, dst);
 }
+
+
+const std::string Client::getLastErrorMessage()
+{
+    return (graphClient->getLastErrorMessage() != std::nullopt) ? graphClient->getLastErrorMessage().value() : "Graph client unknown error"; 
+}
+

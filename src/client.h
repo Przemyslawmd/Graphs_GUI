@@ -27,6 +27,8 @@ public:
 
     std::unique_ptr<std::vector<char>> shortestPath(char src, char dst);
 
+    const std::string getLastErrorMessage();
+
 private:
     std::unique_ptr<GraphClient> graphClient;
 };
