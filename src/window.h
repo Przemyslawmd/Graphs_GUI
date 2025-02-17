@@ -11,9 +11,6 @@
 #include "graphclient.h"
 
 #include "client.h"
-#include "defines.h"
-#include "gui/button.h"
-#include "gui/input.h"
 #include "gui/lines.h"
 #include "gui/menu.h"
 #include "graph/model.h"

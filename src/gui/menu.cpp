@@ -40,7 +40,6 @@ void Menu::setInputFocus(bool nodeInput, bool connectionInput)
     inputs.at(Action::NODE_INPUT).focus = nodeInput;
     inputs.at(Action::CONNECTION_INPUT).focus = connectionInput;
 }
-   
 
 
 sf::Text& Menu::getInputText(Action action)
