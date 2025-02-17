@@ -6,8 +6,8 @@
 
 #include <SFML/System/Vector2.hpp>
 
-#include "menu.h"
 #include "services/font.h"
+#include "gui/menu.h"
 
 
 Window::Window()

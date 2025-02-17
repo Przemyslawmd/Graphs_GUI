@@ -15,11 +15,10 @@
 
 #include "client.h"
 #include "defines.h"
+#include "gui/button.h"
+#include "gui/input.h"
 #include "graph/model.h"
 #include "services/hold.h"
-#include "widgets/button.h"
-#include "widgets/input.h"
-
 
 class Window
 {
