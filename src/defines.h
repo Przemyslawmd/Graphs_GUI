@@ -31,7 +31,7 @@ enum class Line
 };
 
 
-enum class Menu
+enum class Action
 {
     NODE_ADD,
     NODE_REMOVE,

@@ -169,7 +169,7 @@ void Window::handleMouseMove(const sf::Event::MouseMoved* event)
 
 void Window::handleTextEntered(const sf::Event::TextEntered* event)
 {
-    using enum Menu;
+    using enum Action;
     if (inputs.at(NODE_INPUT).focus) {
         inputs.at(NODE_INPUT).updateText(static_cast<char>(event->unicode));
     }
@@ -181,7 +181,7 @@ void Window::handleTextEntered(const sf::Event::TextEntered* event)
 
 void Window::createNode()
 {
-    const auto [result, key] = model->createNode(inputs.at(Menu::NODE_INPUT).text);
+    const auto [result, key] = model->createNode(inputs.at(Action::NODE_INPUT).text);
     if (result == Message::OK) {
         client->addNode(key.value());
         return;
@@ -210,7 +210,7 @@ void Window::removeGraph()
 
 void Window::createConnection()
 {
-    const auto [result, connInterface] = model->createConnection(inputs.at(Menu::CONNECTION_INPUT).text);
+    const auto [result, connInterface] = model->createConnection(inputs.at(Action::CONNECTION_INPUT).text);
     if (result == Message::OK) {
         client->addEdge(connInterface.value().src, connInterface.value().dst, connInterface.value().weight);
         return;
@@ -284,7 +284,7 @@ void Window::prepareMenu()
 {
     auto& font = FontStore::getFont();
     for (const auto& [key, value] : buttonsData) {
-        if (key == Menu::NODE_INPUT || key == Menu::CONNECTION_INPUT) {
+        if (key == Action::NODE_INPUT || key == Action::CONNECTION_INPUT) {
             inputs.emplace(key, Input{ value.width, MENU_HEIGHT, font });
             inputs.at(key).shape.setPosition({ value.posX, MENU_POS_Y });
             inputs.at(key).text.setPosition({ value.posTitle, MENU_POS_Y + 2.f });
@@ -377,7 +377,7 @@ void Window::setMessage(const std::string& text)
 
 void Window::setInputFocus(bool isFocusNodeInput, bool isFocusConnectionInput)
 {
-    inputs.at(Menu::NODE_INPUT).focus = isFocusNodeInput;
-    inputs.at(Menu::CONNECTION_INPUT).focus = isFocusConnectionInput;
+    inputs.at(Action::NODE_INPUT).focus = isFocusNodeInput;
+    inputs.at(Action::CONNECTION_INPUT).focus = isFocusConnectionInput;
 }
 

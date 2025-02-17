@@ -23,18 +23,18 @@ struct Data
 };
 
 
-static const std::map<Menu, Data> buttonsData = 
+static const std::map<Action, Data> buttonsData = 
 {
-    { Menu::NODE_INPUT,       { 20.f,  25.f,    INPUT_WIDTH,  std::nullopt }},
-    { Menu::NODE_ADD,         { 52.f,  80.f,    BUTTON_WIDTH, "Add Node" }},
-    { Menu::NODE_REMOVE,      { 174.f, 188.f,   BUTTON_WIDTH, "Remove Node" }},
-    { Menu::CONNECTION_INPUT, { 340.f, 345.f,   INPUT_WIDTH,  std::nullopt }},
-    { Menu::CONNECTION_ADD,   { 370.f, 380.f,   BUTTON_WIDTH, "Connect Nodes" }},
-    { Menu::REMOVE_ALL,       { 650.f, 670.f,   BUTTON_WIDTH, "Remove All" }},
-    { Menu::TRAVERSE_BFS,     { 840.f, 853.f,   BUTTON_WIDTH, "Traverse BFS" }},
-    { Menu::TRAVERSE_DFS,     { 960.f, 973.f,   BUTTON_WIDTH, "Traverse DFS" }},
-    { Menu::SHORTEST_PATH,    { 1100.f, 1112.f, BUTTON_WIDTH, "Shortest Path" }},
-    { Menu::RESET_PATH,       { 1220.f, 1242.f, BUTTON_WIDTH, "Reset Path" }},
+    { Action::NODE_INPUT,       { 20.f,  25.f,    INPUT_WIDTH,  std::nullopt }},
+    { Action::NODE_ADD,         { 52.f,  80.f,    BUTTON_WIDTH, "Add Node" }},
+    { Action::NODE_REMOVE,      { 174.f, 188.f,   BUTTON_WIDTH, "Remove Node" }},
+    { Action::CONNECTION_INPUT, { 340.f, 345.f,   INPUT_WIDTH,  std::nullopt }},
+    { Action::CONNECTION_ADD,   { 370.f, 380.f,   BUTTON_WIDTH, "Connect Nodes" }},
+    { Action::REMOVE_ALL,       { 650.f, 670.f,   BUTTON_WIDTH, "Remove All" }},
+    { Action::TRAVERSE_BFS,     { 840.f, 853.f,   BUTTON_WIDTH, "Traverse BFS" }},
+    { Action::TRAVERSE_DFS,     { 960.f, 973.f,   BUTTON_WIDTH, "Traverse DFS" }},
+    { Action::SHORTEST_PATH,    { 1100.f, 1112.f, BUTTON_WIDTH, "Shortest Path" }},
+    { Action::RESET_PATH,       { 1220.f, 1242.f, BUTTON_WIDTH, "Reset Path" }},
 };
 
 
@@ -46,70 +46,70 @@ static bool isOverMenu(const sf::Vector2i& pos, const Data& menu)
 
 static bool isOverNodeInput(const sf::Vector2i& pos)
 {
-    const auto& menu = buttonsData.at(Menu::NODE_INPUT); 
+    const auto& menu = buttonsData.at(Action::NODE_INPUT); 
     return isOverMenu(pos, menu);
 }
 
 
 static bool isOverAddNode(const sf::Vector2i& pos)
 {
-    const auto& menu = buttonsData.at(Menu::NODE_ADD); 
+    const auto& menu = buttonsData.at(Action::NODE_ADD); 
     return isOverMenu(pos, menu);
 }
 
 
 static bool isOverRemoveNode(const sf::Vector2i& pos)
 {
-    const auto& menu = buttonsData.at(Menu::NODE_REMOVE);
+    const auto& menu = buttonsData.at(Action::NODE_REMOVE);
     return isOverMenu(pos, menu);
 }
 
 
 static bool isOverConnectNodes(const sf::Vector2i& pos)
 {
-    const auto& menu = buttonsData.at(Menu::CONNECTION_ADD); 
+    const auto& menu = buttonsData.at(Action::CONNECTION_ADD); 
     return isOverMenu(pos, menu);
 }
 
 
 static bool isOverConnectInput(const sf::Vector2i& pos)
 {
-    const auto& menu = buttonsData.at(Menu::CONNECTION_INPUT); 
+    const auto& menu = buttonsData.at(Action::CONNECTION_INPUT); 
     return isOverMenu(pos, menu);
 }
 
 
 static bool isOverRemoveAll(const sf::Vector2i& pos)
 {
-    const auto& menu = buttonsData.at(Menu::REMOVE_ALL);
+    const auto& menu = buttonsData.at(Action::REMOVE_ALL);
     return isOverMenu(pos, menu);
 }
 
 
 static bool isOverBFS(const sf::Vector2i& pos)
 {
-    const auto& menu = buttonsData.at(Menu::TRAVERSE_BFS);
+    const auto& menu = buttonsData.at(Action::TRAVERSE_BFS);
     return isOverMenu(pos, menu);
 }
 
 
 static bool isOverDFS(const sf::Vector2i& pos)
 {
-    const auto& menu = buttonsData.at(Menu::TRAVERSE_DFS);
+    const auto& menu = buttonsData.at(Action::TRAVERSE_DFS);
     return isOverMenu(pos, menu);
 }
 
 
 static bool isOverShortestPath(const sf::Vector2i& pos)
 {
-    const auto& menu = buttonsData.at(Menu::SHORTEST_PATH);
+    const auto& menu = buttonsData.at(Action::SHORTEST_PATH);
     return isOverMenu(pos, menu);
 }
 
 
 static bool isOverResetPath(const sf::Vector2i& pos)
 {
-    const auto& menu = buttonsData.at(Menu::RESET_PATH);
+    const auto& menu = buttonsData.at(Action::RESET_PATH);
     return isOverMenu(pos, menu);
 }
 

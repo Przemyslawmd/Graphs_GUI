@@ -63,7 +63,7 @@ private:
     std::unique_ptr<sf::Text> message;
 
     std::vector<Button> buttons;
-    std::map<Menu, Input> inputs;
+    std::map<Action, Input> inputs;
     std::map<Line, sf::RectangleShape> lines;
 };
 
