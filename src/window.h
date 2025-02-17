@@ -17,6 +17,7 @@
 #include "defines.h"
 #include "gui/button.h"
 #include "gui/input.h"
+#include "gui/menu.h"
 #include "graph/model.h"
 #include "services/hold.h"
 
@@ -29,7 +30,6 @@ public:
     void run();
 
 private:
-    void prepareMenu();
     void prepareLines();
     void setLinesPositions(const sf::Vector2u& size);
 
@@ -37,12 +37,10 @@ private:
     void resizeLines(const sf::Vector2u& size);
 
     void setMessage(const std::string& message);
-    void setInputFocus(bool, bool);
 
     void handleMousePress();
     void handleMouseRelease();
     void handleMouseMove(const sf::Event::MouseMoved*);
-    void handleTextEntered(const sf::Event::TextEntered*);
 
     void createNode();
     void removeNode();
@@ -57,13 +55,12 @@ private:
     void callClientShortestPath(char src, char dst);
 
     std::unique_ptr<sf::RenderWindow> window;
+    std::unique_ptr<Menu> menu;
     std::unique_ptr<Model> model;
     std::unique_ptr<Client> client;
     std::unique_ptr<Hold> hold;
     std::unique_ptr<sf::Text> message;
 
-    std::vector<Button> buttons;
-    std::map<Action, Input> inputs;
     std::map<Line, sf::RectangleShape> lines;
 };
 

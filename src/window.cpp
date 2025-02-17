@@ -18,6 +18,7 @@ Window::Window()
     client = std::make_unique<Client>();
     model = std::make_unique<Model>();
     hold = std::make_unique<Hold>();
+    menu = std::make_unique<Menu>();
 }
 
 
@@ -26,7 +27,7 @@ void Window::init()
     if (FontStore::createFont() == false) {
         return;
     }
-    prepareMenu();
+    menu->prepareMenu();
     prepareLines();
     window->setVerticalSyncEnabled(true);
 }
@@ -53,12 +54,13 @@ void Window::run()
                 resize();
             }
             else if (event->is<sf::Event::TextEntered>()) {
-                handleTextEntered(event->getIf<sf::Event::TextEntered>());
+                const auto* textEvent = event->getIf<sf::Event::TextEntered>();
+                menu->checkTextEvent(static_cast<char>(textEvent->unicode));
             }
         }
         window->clear(sf::Color::White);
 
-        for (const auto& button : buttons) {
+        for (const auto& button : menu->getButtons()) {
             window->draw(button);
         }
         for (const auto& connection : model->getConnections()) {
@@ -70,7 +72,7 @@ void Window::run()
         for (const auto& [_, line] : lines) {
             window->draw(line);
         }
-        for (auto& [_, input] : inputs) {
+        for (auto& [_, input] : menu->getInputs()) {
             input.checkFocus();
             window->draw(input);
         }
@@ -85,7 +87,7 @@ void Window::run()
 void Window::handleMousePress()
 {
     message.release();
-    setInputFocus(false, false);
+    menu->setInputFocus(false, false);
 
     sf::Vector2i position = sf::Mouse::getPosition(*window);
     if (isOverAddNode(position)) {
@@ -105,11 +107,11 @@ void Window::handleMousePress()
         return;
     }
     if (isOverNodeInput(position)) {
-        setInputFocus(true, false);
+        menu->setInputFocus(true, false);
         return;
     }
     if (isOverConnectInput(position)) {
-        setInputFocus(false, true);
+        menu->setInputFocus(false, true);
         return;
     }
     if (isOverBFS(position)) {
@@ -167,21 +169,9 @@ void Window::handleMouseMove(const sf::Event::MouseMoved* event)
 }
 
 
-void Window::handleTextEntered(const sf::Event::TextEntered* event)
-{
-    using enum Action;
-    if (inputs.at(NODE_INPUT).focus) {
-        inputs.at(NODE_INPUT).updateText(static_cast<char>(event->unicode));
-    }
-    else if (inputs.at(CONNECTION_INPUT).focus) {
-        inputs.at(CONNECTION_INPUT).updateText(static_cast<char>(event->unicode));
-    }
-}
-
-
 void Window::createNode()
 {
-    const auto [result, key] = model->createNode(inputs.at(Action::NODE_INPUT).text);
+    const auto [result, key] = model->createNode(menu->getInputText(Action::NODE_INPUT));
     if (result == Message::OK) {
         client->addNode(key.value());
         return;
@@ -210,7 +200,7 @@ void Window::removeGraph()
 
 void Window::createConnection()
 {
-    const auto [result, connInterface] = model->createConnection(inputs.at(Action::CONNECTION_INPUT).text);
+    const auto [result, connInterface] = model->createConnection(menu->getInputText(Action::CONNECTION_INPUT));
     if (result == Message::OK) {
         client->addEdge(connInterface.value().src, connInterface.value().dst, connInterface.value().weight);
         return;
@@ -278,25 +268,6 @@ void Window::shortestPath()
     std::thread th(&Window::callClientShortestPath, this, src.value(), dst.value());
     th.detach();
 };
-
-
-void Window::prepareMenu()
-{
-    auto& font = FontStore::getFont();
-    for (const auto& [key, value] : buttonsData) {
-        if (key == Action::NODE_INPUT || key == Action::CONNECTION_INPUT) {
-            inputs.emplace(key, Input{ value.width, MENU_HEIGHT, font });
-            inputs.at(key).shape.setPosition({ value.posX, MENU_POS_Y });
-            inputs.at(key).text.setPosition({ value.posTitle, MENU_POS_Y + 2.f });
-            inputs.at(key).vertical.setPosition({ value.posTitle, MENU_POS_Y + 2.f });
-        }
-        else {
-            auto& button = buttons.emplace_back( value.width, MENU_HEIGHT, font, value.title.value());
-            button.shape.setPosition({ value.posX, MENU_POS_Y });
-            button.text.setPosition({ value.posTitle, MENU_POS_Y + 2.f });
-        }
-    }
-}
 
 
 void Window::prepareLines()
@@ -372,12 +343,5 @@ void Window::setMessage(const std::string& text)
     const auto& pos = lines.at(Line::MESSAGE_LEFT).getPosition();
     message->setPosition({ pos.x + 10, pos.y + 10 });
     message->setFillColor(sf::Color::Black);
-}
-
-
-void Window::setInputFocus(bool isFocusNodeInput, bool isFocusConnectionInput)
-{
-    inputs.at(Action::NODE_INPUT).focus = isFocusNodeInput;
-    inputs.at(Action::CONNECTION_INPUT).focus = isFocusConnectionInput;
 }
 

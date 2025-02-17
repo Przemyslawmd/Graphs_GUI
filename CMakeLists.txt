@@ -27,7 +27,8 @@ add_executable(GraphsGui
     "src/graph/model.cpp"
     "src/services/keys.cpp"
     "src/gui/input.cpp"
-    "src/gui/button.cpp")
+    "src/gui/button.cpp"
+    "src/gui/menu.cpp")
 
 target_include_directories(
     GraphsGui 

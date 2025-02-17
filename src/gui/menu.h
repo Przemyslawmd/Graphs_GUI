@@ -3,9 +3,15 @@
 #define GUI_GRAPHS_MENU_H
 
 #include <map>
+#include <optional>
 #include <string>
+#include <vector>
+
+#include <SFML/System/Vector2.hpp>
 
 #include "defines.h"
+#include "gui/button.h"
+#include "gui/input.h"
 
 
 constexpr float MENU_HEIGHT = 22.f;
@@ -112,6 +118,25 @@ static bool isOverResetPath(const sf::Vector2i& pos)
     const auto& menu = buttonsData.at(Action::RESET_PATH);
     return isOverMenu(pos, menu);
 }
+
+
+class Menu
+{
+public:
+    void prepareMenu();
+
+    const std::vector<Button>& getButtons() const;
+    std::map<Action, Input>& getInputs();
+
+    void setInputFocus(bool nodeInput, bool connectionInput);
+
+    sf::Text& getInputText(Action action);
+    void checkTextEvent(char letter);
+
+private:
+    std::vector<Button> buttons;
+    std::map<Action, Input> inputs;
+};
 
 #endif
 
