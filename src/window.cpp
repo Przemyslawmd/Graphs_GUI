@@ -1,6 +1,7 @@
 
 #include "window.h"
 
+#include <ranges>
 #include <thread>
 
 #include <SFML/System/Vector2.hpp>
@@ -68,10 +69,10 @@ void Window::run()
         for (const auto& node : model->getNodes()) {
             window->draw(node);
         }
-        for (const auto& [_, line] : lines->getLines()) {
+        for (const auto& line : lines->getLines() | std::views::values) {
             window->draw(line);
         }
-        for (auto& [_, input] : menu->getInputs()) {
+        for (auto& input : menu->getInputs() | std::views::values) {
             input.checkFocus();
             window->draw(input);
         }
@@ -141,7 +142,6 @@ void Window::handleMouseRelease()
     if (hold->isMoved) {
         return;
     }
-
     auto& node = model->getNodes()[hold->index];
     node.changeSelect();
 }
