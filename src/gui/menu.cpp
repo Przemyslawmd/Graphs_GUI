@@ -59,3 +59,4 @@ void Menu::checkTextEvent(char letter)
         inputs.at(CONNECTION_INPUT).updateText(letter);
     }
 }
+

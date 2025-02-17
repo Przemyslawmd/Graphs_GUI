@@ -2,13 +2,10 @@
 #ifndef GUI_GRAPHS_WINDOW_H
 #define GUI_GRAPHS_WINDOW_H
 
-#include <map>
 #include <memory>
-#include <optional>
-#include <tuple>
+#include <string>
 
 #include <SFML/Window/Event.hpp>
-#include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #include "graphclient.h"
@@ -17,6 +14,7 @@
 #include "defines.h"
 #include "gui/button.h"
 #include "gui/input.h"
+#include "gui/lines.h"
 #include "gui/menu.h"
 #include "graph/model.h"
 #include "services/hold.h"
@@ -30,11 +28,7 @@ public:
     void run();
 
 private:
-    void prepareLines();
-    void setLinesPositions(const sf::Vector2u& size);
-
     void resize();
-    void resizeLines(const sf::Vector2u& size);
 
     void setMessage(const std::string& message);
 
@@ -56,12 +50,11 @@ private:
 
     std::unique_ptr<sf::RenderWindow> window;
     std::unique_ptr<Menu> menu;
+    std::unique_ptr<Lines> lines;
     std::unique_ptr<Model> model;
     std::unique_ptr<Client> client;
     std::unique_ptr<Hold> hold;
     std::unique_ptr<sf::Text> message;
-
-    std::map<Line, sf::RectangleShape> lines;
 };
 
 #endif 

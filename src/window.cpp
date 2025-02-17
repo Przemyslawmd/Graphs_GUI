@@ -1,13 +1,11 @@
 
 #include "window.h"
 
-#include <string>
 #include <thread>
 
 #include <SFML/System/Vector2.hpp>
 
 #include "services/font.h"
-#include "gui/menu.h"
 
 
 Window::Window()
@@ -19,6 +17,7 @@ Window::Window()
     model = std::make_unique<Model>();
     hold = std::make_unique<Hold>();
     menu = std::make_unique<Menu>();
+    lines = std::make_unique<Lines>();
 }
 
 
@@ -28,7 +27,7 @@ void Window::init()
         return;
     }
     menu->prepareMenu();
-    prepareLines();
+    lines->prepareLines({ window->getSize().x, window->getSize().y });
     window->setVerticalSyncEnabled(true);
 }
 
@@ -69,7 +68,7 @@ void Window::run()
         for (const auto& node : model->getNodes()) {
             window->draw(node);
         }
-        for (const auto& [_, line] : lines) {
+        for (const auto& [_, line] : lines->getLines()) {
             window->draw(line);
         }
         for (auto& [_, input] : menu->getInputs()) {
@@ -270,69 +269,18 @@ void Window::shortestPath()
 };
 
 
-void Window::prepareLines()
-{
-    sf::Vector2u size = { window->getSize().x, window->getSize().y };
-
-    using enum Line;
-    lines.emplace(MESSAGE_UP, sf::Vector2f{ size.x - 2 * MARGIN_X, 1 });
-    lines.emplace(MESSAGE_BOTTOM, sf::Vector2f{ size.x - 2 * MARGIN_X, 1 });
-    lines.emplace(MESSAGE_LEFT, sf::Vector2f{ 1, MESSAGE_AREA_HEIGHT });
-    lines.emplace(MESSAGE_RIGHT, sf::Vector2f{ 1, MESSAGE_AREA_HEIGHT });
-
-    lines.emplace(GRAPHS_UP, sf::Vector2f{ size.x - 2 * MARGIN_X, 1 });
-    lines.emplace(GRAPHS_BOTTOM, sf::Vector2f{ size.x - 2 * MARGIN_X, 1 });
-    lines.emplace(GRAPHS_LEFT, sf::Vector2f{ 1, size.y - MARGIN_BOTTOM_GRAPHS - MARGIN_UP_GRAPHS });
-    lines.emplace(GRAPHS_RIGHT, sf::Vector2f{ 1, size.y - MARGIN_BOTTOM_GRAPHS - MARGIN_UP_GRAPHS });
-
-    setLinesPositions(size);
-
-    for (auto& [_, line] : lines) {
-        line.setFillColor(sf::Color::Black);
-    }
-}
-
-
-void Window::setLinesPositions(const sf::Vector2u& size)
-{
-    using enum Line;
-    lines.at(MESSAGE_UP).setPosition({ MARGIN_X, size.y - MESSAGES_UP });
-    lines.at(MESSAGE_BOTTOM).setPosition({ MARGIN_X, size.y - MESSAGES_MARGIN_BOTTOM });
-    lines.at(MESSAGE_LEFT).setPosition({ MARGIN_X, size.y - MESSAGES_UP });
-    lines.at(MESSAGE_RIGHT).setPosition({ size.x - MARGIN_X, size.y - MESSAGES_UP });
-
-    lines.at(GRAPHS_UP).setPosition({ MARGIN_X, MARGIN_UP_GRAPHS });
-    lines.at(GRAPHS_BOTTOM).setPosition({ MARGIN_X, size.y - MARGIN_BOTTOM_GRAPHS });
-    lines.at(GRAPHS_LEFT).setPosition({ MARGIN_X, MARGIN_UP_GRAPHS });
-    lines.at(GRAPHS_RIGHT).setPosition({ size.x - MARGIN_X, MARGIN_UP_GRAPHS });
-}
-
-
 void Window::resize()
 {
     sf::Vector2u size = { window->getSize().x, window->getSize().y };
     sf::FloatRect newView({ 0, 0 }, { (float) size.x, (float) size.y });
     window->setView(sf::View(newView));
-    resizeLines(size);
-    setLinesPositions(size);
+    lines->resizeLines(size);
+    lines->setLinesPositions(size);
 
     if (message) {
-        const auto& pos = lines.at(Line::MESSAGE_LEFT).getPosition();
+        const auto pos = lines->getMessageLine();
         message->setPosition({ pos.x + 10, pos.y + 10 });
     }
-}
-
-
-void Window::resizeLines(const sf::Vector2u& size)
-{
-    using enum Line;
-    lines.at(MESSAGE_UP).setSize({ size.x - 2 * MARGIN_X, 1 });
-    lines.at(MESSAGE_BOTTOM).setSize({ size.x - 2 * MARGIN_X, 1 });
-
-    lines.at(GRAPHS_UP).setSize({ size.x - 2 * MARGIN_X, 1 });
-    lines.at(GRAPHS_BOTTOM).setSize({ size.x - 2 * MARGIN_X, 1 });
-    lines.at(GRAPHS_LEFT).setSize({ 1, size.y - MARGIN_UP_GRAPHS - MARGIN_BOTTOM_GRAPHS });
-    lines.at(GRAPHS_RIGHT).setSize({ 1, size.y - MARGIN_UP_GRAPHS - MARGIN_BOTTOM_GRAPHS });
 }
 
 
@@ -340,7 +288,7 @@ void Window::setMessage(const std::string& text)
 {
     auto& font = FontStore::getFont();
     message = std::make_unique<sf::Text>(font, text, 15);
-    const auto& pos = lines.at(Line::MESSAGE_LEFT).getPosition();
+    const auto& pos = lines->getMessageLine();
     message->setPosition({ pos.x + 10, pos.y + 10 });
     message->setFillColor(sf::Color::Black);
 }
