@@ -100,7 +100,7 @@ void Window::handleMousePress()
         hold->activate(index, shiftX, shiftY);
         return;
     }
-    model->isMouseOverConnection(position);
+    model->checkMouseOverConnection(position);
 }
 
 

@@ -3,8 +3,6 @@
 
 #include <ranges>
 
-//#include <SFML/Graphics/Rect.hpp>
-
 #include "utils.h"
 #include "defines.h"
 
@@ -185,7 +183,7 @@ std::tuple<int, float, float> Model::isMouseOverNode(const sf::Vector2i& mousePo
 }
 
 
-void Model::isMouseOverConnection(const sf::Vector2i& mousePos)
+void Model::checkMouseOverConnection(const sf::Vector2i& mousePos)
 {
     for (auto& conn : connections) {
         const auto& shape = conn.line;
