@@ -105,7 +105,6 @@ std::tuple<Message, std::optional<ConnectionLibraryInterface>> Model::createConn
     sf::FloatRect bound = connection.line.getGlobalBounds();
     connection.text.setPosition({ bound.getCenter().x, bound.getCenter().y - 15 });
 
-    size_t connection_index = connections.size() - 1;
     return { Message::OK, {{ node_1->key, node_2->key, weight }}};
 }
 
