@@ -32,6 +32,7 @@ public:
     void removeAll();
 
     std::tuple<int, float, float> isMouseOverNode(const sf::Vector2i& position);
+    void isMouseOverConnection(const sf::Vector2i& position);
 
 private:
     void moveConnection(Connection&);

@@ -98,7 +98,9 @@ void Window::handleMousePress()
     auto [index, shiftX, shiftY] = model->isMouseOverNode(position);
     if (index >= 0) {
         hold->activate(index, shiftX, shiftY);
+        return;
     }
+    model->isMouseOverConnection(position);
 }
 
 

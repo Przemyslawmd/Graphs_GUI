@@ -7,7 +7,7 @@
 constexpr float PI = 3.14159265;
 
 
-static float calculateConnectionAngle(const sf::Vector2f& pos_1, const sf::Vector2f& pos_2)
+static float calculateAngle(const sf::Vector2f& pos_1, const sf::Vector2f& pos_2)
 {
     float distance_x = abs(pos_1.x - pos_2.x);
     float distance_y = abs(pos_1.y - pos_2.y);
@@ -23,6 +23,32 @@ static float calculateConnectionAngle(const sf::Vector2f& pos_1, const sf::Vecto
         return 180 + angle;
     }
     return 360 - angle;
+}
+
+
+static bool matchAngles(const float connectionAngle, const sf::FloatRect& rect, const float posX, const float posY)
+{
+    float xCorner = 0.0f;
+    float yCorner = 0.0f;
+
+    if (connectionAngle <= 90 ){ 
+        xCorner = rect.position.x + rect.size.x;
+        yCorner = rect.position.y + rect.size.y;
+    }
+    else if (connectionAngle > 90 && connectionAngle <= 180) {
+        xCorner = rect.position.x;;
+        yCorner = rect.position.y + rect.size.y;
+    }
+    else if (connectionAngle > 180 && connectionAngle <= 270) {
+        xCorner = rect.position.x;
+        yCorner = rect.position.y;
+    }
+    else {
+        xCorner = rect.position.x + rect.size.x;
+        yCorner = rect.position.y;
+    }
+    auto posAngle = calculateAngle({ posX, posY }, { xCorner, yCorner });
+    return abs(connectionAngle - posAngle) < 2;
 }
 
 

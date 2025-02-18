@@ -24,7 +24,7 @@ struct ConnectionLibraryInterface
 struct Connection : public sf::Drawable
 {
     Connection(float length, char srcKey, char dstKey)
-        : line{ sf::Vector2f{ length, LINE_WIDTH }}, srcKey(srcKey), dstKey(dstKey), text(FontStore::getFont()) 
+        : line{ sf::Vector2f{ length, LINE_WIDTH }}, srcKey(srcKey), dstKey(dstKey), text(FontStore::getFont()), selected(false) 
     {
         line.setFillColor({ RED, GREEN, BLUE });
         text.setFillColor(sf::Color::Black);
@@ -47,10 +47,22 @@ struct Connection : public sf::Drawable
         return line.getFillColor() == sf::Color::Red;
     }
 
+    void changeSelect()
+    {
+        if (selected) {
+            line.setOutlineColor(sf::Color::Black);
+            line.setOutlineThickness(2.0f);
+        } else {
+            line.setOutlineThickness(0.0f);
+        }
+        selected = !selected;
+    }
+
     sf::RectangleShape line;
     sf::Text text;
     char srcKey;
     char dstKey;
+    bool selected;
 };
 
 #endif

@@ -3,6 +3,8 @@
 
 #include <ranges>
 
+//#include <SFML/Graphics/Rect.hpp>
+
 #include "utils.h"
 #include "defines.h"
 
@@ -98,7 +100,7 @@ std::tuple<Message, std::optional<ConnectionLibraryInterface>> Model::createConn
     float radius = node_1->circle.getRadius();
     connection.line.setPosition({ pos_1.x + radius, pos_1.y + radius });
 
-    float angle = calculateConnectionAngle(pos_1, pos_2);
+    float angle = calculateAngle(pos_1, pos_2);
     connection.line.rotate(sf::degrees(angle));
 
     connection.text.setString(text.getString());
@@ -182,6 +184,21 @@ std::tuple<int, float, float> Model::isMouseOverNode(const sf::Vector2i& mousePo
     return { -1, 0, 0 };
 }
 
+
+void Model::isMouseOverConnection(const sf::Vector2i& mousePos)
+{
+    for (auto& conn : connections) {
+        const auto& shape = conn.line;
+        sf::FloatRect rect = shape.getGlobalBounds();
+        if (rect.contains({ (float)mousePos.x, (float)mousePos.y })) {
+            if (matchAngles(shape.getRotation().asDegrees(), rect, mousePos.x, mousePos.y)) {
+                conn.changeSelect();
+                return;
+            }
+        }
+    }
+}
+
 /*****************************************************************************************************/
 /***************************************** PRIVATE ***************************************************/
 
@@ -208,7 +225,7 @@ void Model::moveConnection(Connection& connection)
     float radius = srcIt->circle.getRadius();
     connectionLine.setPosition({ pos_1.x + radius, pos_1.y + radius });
 
-    float angle = calculateConnectionAngle(pos_1, pos_2);
+    float angle = calculateAngle(pos_1, pos_2);
     connectionLine.setRotation(sf::degrees(angle));
 
     sf::FloatRect bound = connectionLine.getGlobalBounds();
