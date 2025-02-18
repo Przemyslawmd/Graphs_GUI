@@ -43,6 +43,8 @@ enum class Action
     TRAVERSE_DFS,
     SHORTEST_PATH,
     RESET_PATH,
+
+    NO_ACTION
 };
 
 

@@ -2,7 +2,7 @@
 #include "button.h"
 
 
-Button::Button(float width, float height, sf::Font& font, const std::string& text_) : text(font, text_, 15), shape({ width, height })
+Button::Button(float width, float height, sf::Font& font, const std::string& text_) : text(font, text_, 14), shape({ width, height })
 {
     shape.setFillColor({ 223, 243, 246 });
     shape.setOutlineThickness(2);

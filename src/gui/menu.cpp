@@ -7,7 +7,7 @@
 void Menu::prepareMenu()
 {
     auto& font = FontStore::getFont();
-    for (const auto& [key, value] : buttonsData) {
+    for (const auto& [key, value] : actionData) {
         if (key == Action::NODE_INPUT || key == Action::CONNECTION_INPUT) {
             inputs.emplace(key, Input{ value.width, MENU_HEIGHT, font });
             inputs.at(key).shape.setPosition({ value.posX, MENU_POS_Y });

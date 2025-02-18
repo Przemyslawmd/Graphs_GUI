@@ -16,6 +16,7 @@
 #include "graph/model.h"
 #include "services/hold.h"
 
+
 class Window
 {
 public:
@@ -26,12 +27,13 @@ public:
 
 private:
     void resize();
-
     void setMessage(const std::string& message);
 
     void handleMousePress();
     void handleMouseRelease();
     void handleMouseMove(const sf::Event::MouseMoved*);
+
+    void invokeAction(Action);
 
     void createNode();
     void removeNode();

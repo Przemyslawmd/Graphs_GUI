@@ -90,44 +90,9 @@ void Window::handleMousePress()
     menu->setInputFocus(false, false);
 
     sf::Vector2i position = sf::Mouse::getPosition(*window);
-    if (isOverAddNode(position)) {
-        createNode();
-        return;
-    }
-    if (isOverConnectNodes(position)) {
-        createConnection();
-        return;
-    }
-    if (isOverRemoveAll(position)) {
-        removeGraph();
-        return;
-    }
-    if (isOverRemoveNode(position)) {
-        removeNode();
-        return;
-    }
-    if (isOverNodeInput(position)) {
-        menu->setInputFocus(true, false);
-        return;
-    }
-    if (isOverConnectInput(position)) {
-        menu->setInputFocus(false, true);
-        return;
-    }
-    if (isOverBFS(position)) {
-        traverseBFS();
-        return;
-    }
-    if (isOverDFS(position)) {
-        traverseDFS();
-        return;
-    }
-    if (isOverShortestPath(position)) {
-        shortestPath();
-        return;
-    }
-    if (isOverResetPath(position)) {
-        model->resetPath();
+    Action action = isOverActionMenu(position);
+    if (action != Action::NO_ACTION) {
+        invokeAction(action);
         return;
     }
     auto [index, shiftX, shiftY] = model->isMouseOverNode(position);
@@ -165,6 +130,45 @@ void Window::handleMouseMove(const sf::Event::MouseMoved* event)
     heldNode.setPosition({ x - radius - hold->shiftX, y - radius - hold->shiftY });
     model->moveNodeConnections(heldNode.key);
     hold->isMoved = true;
+}
+
+
+void Window::invokeAction(Action action)
+{
+    using enum Action;
+    switch(action)
+    {
+        case NODE_ADD:
+            createNode();
+            break;
+        case CONNECTION_ADD:
+            createConnection();
+            break;
+        case NODE_REMOVE:
+            removeNode();
+            break;
+        case REMOVE_ALL:
+            removeGraph();
+            break;
+        case NODE_INPUT:
+            menu->setInputFocus(true, false);
+            break;
+        case CONNECTION_INPUT:
+            menu->setInputFocus(false, true);;
+            break;
+        case TRAVERSE_BFS:
+            traverseBFS();
+            break;
+        case TRAVERSE_DFS:
+            traverseDFS();
+            break;
+        case SHORTEST_PATH:
+            shortestPath();
+            break;
+        case RESET_PATH:
+            model->resetPath();
+            break;
+    }
 }
 
 
