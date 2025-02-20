@@ -24,7 +24,7 @@ struct ConnectionLibraryInterface
 struct Connection : public sf::Drawable
 {
     Connection(float length, char srcKey, char dstKey)
-        : line{ sf::Vector2f{ length, LINE_WIDTH }}, srcKey(srcKey), dstKey(dstKey), text(FontStore::getFont()), selected(false) 
+        : line{ sf::Vector2f{ length, LINE_WIDTH }}, srcKey{ srcKey }, dstKey{ dstKey }, text{ FontStore::getFont() }, selected{ false } 
     {
         line.setFillColor({ RED, GREEN, BLUE });
         text.setFillColor(sf::Color::Black);

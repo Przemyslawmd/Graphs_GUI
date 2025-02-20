@@ -124,10 +124,8 @@ std::tuple<Message, std::optional<char>, std::optional<char>> Model::removeConne
 
 void Model::moveNodeConnections(char key)
 {
-    for (auto& con : connections) {
-        if (con.srcKey == key || con.dstKey == key) {
-            moveConnection(con);
-        }
+    for (auto& conn : connections | std::views::filter([key](const auto& conn) { return conn.srcKey == key | conn.dstKey == key; })) {
+        moveConnection(conn);
     }
 }
 

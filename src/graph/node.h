@@ -20,7 +20,7 @@ constexpr float RADIUS = 20;
 
 struct NodeGui : public sf::Drawable
 {
-    NodeGui() : circle{ RADIUS, CIRCLE_POINTS }, selected{ false }, text(FontStore::getFont()) 
+    NodeGui() : circle{ RADIUS, CIRCLE_POINTS }, selected{ false }, text{ FontStore::getFont() } 
     {
         circle.setFillColor({ RED, GREEN, BLUE });
         text.setFillColor(sf::Color::Black);
@@ -42,7 +42,7 @@ struct NodeGui : public sf::Drawable
 
     void changeSelect()
     {
-        if (selected == false) {
+        if (!selected) {
             circle.setOutlineColor(sf::Color::Black);
             circle.setOutlineThickness(3.0f);
             selectTime = time(0);

@@ -36,7 +36,7 @@ static bool matchAngles(const float connectionAngle, const sf::FloatRect& rect, 
         yCorner = rect.position.y + rect.size.y;
     }
     else if (connectionAngle > 90 && connectionAngle <= 180) {
-        xCorner = rect.position.x;;
+        xCorner = rect.position.x;
         yCorner = rect.position.y + rect.size.y;
     }
     else if (connectionAngle > 180 && connectionAngle <= 270) {
@@ -77,7 +77,7 @@ static std::tuple<Message, size_t> getWeightFromString(const std::string& text)
         weight = weight * 10 + c - '0';
     }
     return { Message::OK, weight };
-} 
+}
 
 #endif
 
