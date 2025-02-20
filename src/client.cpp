@@ -28,6 +28,12 @@ void Client::addEdge(char srcKey, char dstKey, size_t weight)
 }
 
 
+void Client::removeEdge(char src, char dst)
+{
+    graphClient->removeEdge(src, dst);
+}
+
+
 void Client::removeGraph()
 {
     graphClient->resetGraph(false);

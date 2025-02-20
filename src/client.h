@@ -18,7 +18,9 @@ public:
 
     void addNode(char key);
     void removeNode(char key);
-    void addEdge(char srcKey, char dstKey, size_t weight = 1);
+
+    void addEdge(char src, char dst, size_t weight = 1);
+    void removeEdge(char src, char dst);
 
     void removeGraph();
 

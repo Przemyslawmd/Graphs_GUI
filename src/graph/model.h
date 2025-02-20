@@ -24,6 +24,7 @@ public:
     std::tuple<Message, std::optional<ConnectionLibraryInterface>> createConnection(sf::Text&);
     std::vector<Connection>& getConnections();
     void moveNodeConnections(char key);
+    std::tuple<Message, std::optional<char>, std::optional<char>> removeConnection();
 
     void colorPath(const std::vector<char>& path);
     void resetPath();
@@ -37,6 +38,7 @@ public:
 private:
     void moveConnection(Connection&);
     size_t countSelectedNodes();
+    size_t countSelectedConnections();
 
     std::vector<NodeGui> nodes;
     std::vector<Connection> connections;

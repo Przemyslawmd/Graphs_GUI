@@ -109,6 +109,19 @@ std::tuple<Message, std::optional<ConnectionLibraryInterface>> Model::createConn
 }
 
 
+std::tuple<Message, std::optional<char>, std::optional<char>> Model::removeConnection()
+{
+    if (countSelectedConnections() != 1) {
+        return { Message::CONNECTION_SELECT_ONE, std::nullopt, std::nullopt };
+    }
+    auto conn = std::find_if(connections.begin(), connections.end(), [](const auto& conn) { return conn.selected; });
+    char src = conn->srcKey;
+    char dst = conn->dstKey;
+    connections.erase(conn);
+    return { Message::OK, src, dst };
+}
+
+
 void Model::moveNodeConnections(char key)
 {
     for (auto& con : connections) {
@@ -203,6 +216,12 @@ void Model::checkMouseOverConnection(const sf::Vector2i& mousePos)
 size_t Model::countSelectedNodes()
 {
     return std::count_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.selected; });
+};
+
+
+size_t Model::countSelectedConnections()
+{
+    return std::count_if(connections.begin(), connections.end(), [](const auto& conn) { return conn.selected; });
 };
 
 

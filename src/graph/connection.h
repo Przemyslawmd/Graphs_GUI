@@ -49,7 +49,7 @@ struct Connection : public sf::Drawable
 
     void changeSelect()
     {
-        if (selected) {
+        if (!selected) {
             line.setOutlineColor(sf::Color::Black);
             line.setOutlineThickness(2.0f);
         } else {

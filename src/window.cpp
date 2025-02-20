@@ -219,6 +219,12 @@ void Window::createConnection()
 
 void Window::removeConnection()
 {
+    const auto [result, src, dst] = model->removeConnection();
+    if (result == Message::OK) {
+        client->removeEdge(src.value(), dst.value());
+        return;
+    }
+    setMessage(MessageStr.at(result));
 }
 
 
