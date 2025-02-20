@@ -16,6 +16,7 @@
 
 constexpr float MENU_HEIGHT = 22.f;
 constexpr float BUTTON_WIDTH = 120.f;
+constexpr float BUTTON_WIDTH_CONNECTION = 130.f;
 constexpr float INPUT_WIDTH = 30.f;
 constexpr float MENU_POS_Y = 5.f;
 
@@ -31,16 +32,17 @@ struct Data
 
 static const std::map<Action, Data> actionData = 
 {
-    { Action::NODE_INPUT,       { 20.f,  25.f,    INPUT_WIDTH,  std::nullopt }},
-    { Action::NODE_ADD,         { 52.f,  82.f,    BUTTON_WIDTH, "Add Node" }},
-    { Action::NODE_REMOVE,      { 174.f, 188.f,   BUTTON_WIDTH, "Remove Node" }},
-    { Action::CONNECTION_INPUT, { 340.f, 345.f,   INPUT_WIDTH,  std::nullopt }},
-    { Action::CONNECTION_ADD,   { 370.f, 380.f,   BUTTON_WIDTH, "Connect Nodes" }},
-    { Action::REMOVE_ALL,       { 650.f, 675.f,   BUTTON_WIDTH, "Remove All" }},
-    { Action::TRAVERSE_BFS,     { 840.f, 855.f,   BUTTON_WIDTH, "Traverse BFS" }},
-    { Action::TRAVERSE_DFS,     { 960.f, 975.f,   BUTTON_WIDTH, "Traverse DFS" }},
-    { Action::SHORTEST_PATH,    { 1100.f, 1115.f, BUTTON_WIDTH, "Shortest Path" }},
-    { Action::RESET_PATH,       { 1220.f, 1245.f, BUTTON_WIDTH, "Reset Path" }},
+    { Action::NODE_INPUT,        { 20.f,  25.f,    INPUT_WIDTH,             std::nullopt }},
+    { Action::NODE_ADD,          { 52.f,  82.f,    BUTTON_WIDTH,            "Add Node" }},
+    { Action::NODE_REMOVE,       { 174.f, 188.f,   BUTTON_WIDTH,            "Remove Node" }},
+    { Action::CONNECTION_INPUT,  { 340.f, 345.f,   INPUT_WIDTH,              std::nullopt }},
+    { Action::CONNECTION_ADD,    { 370.f, 385.f,   BUTTON_WIDTH_CONNECTION, "Connect Nodes" }},
+    { Action::CONNECTION_REMOVE, { 500.f, 506.f,   BUTTON_WIDTH_CONNECTION, "Disconnect Nodes" }},
+    { Action::REMOVE_ALL,        { 670.f, 695.f,   BUTTON_WIDTH,            "Remove All" }},
+    { Action::TRAVERSE_BFS,      { 840.f, 855.f,   BUTTON_WIDTH,            "Traverse BFS" }},
+    { Action::TRAVERSE_DFS,      { 960.f, 975.f,   BUTTON_WIDTH,            "Traverse DFS" }},
+    { Action::SHORTEST_PATH,     { 1100.f, 1115.f, BUTTON_WIDTH,            "Shortest Path" }},
+    { Action::RESET_PATH,        { 1220.f, 1245.f, BUTTON_WIDTH,            "Reset Path" }},
 };
 
 
@@ -67,6 +69,9 @@ static Action isOverActionMenu(const sf::Vector2i& pos)
     }
     if (isOverMenu(pos, actionData.at(CONNECTION_INPUT))) {
         return CONNECTION_INPUT;
+    }
+    if (isOverMenu(pos, actionData.at(CONNECTION_REMOVE))) {
+        return CONNECTION_REMOVE;
     }
     if (isOverMenu(pos, actionData.at(REMOVE_ALL))) {
         return REMOVE_ALL;

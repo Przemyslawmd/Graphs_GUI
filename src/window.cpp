@@ -149,6 +149,9 @@ void Window::invokeAction(Action action)
         case NODE_REMOVE:
             removeNode();
             break;
+        case CONNECTION_REMOVE:
+            removeConnection();
+            break;
         case REMOVE_ALL:
             removeGraph();
             break;
@@ -211,6 +214,11 @@ void Window::createConnection()
         return;
     }
     setMessage(MessageStr.at(result));
+}
+
+
+void Window::removeConnection()
+{
 }
 
 

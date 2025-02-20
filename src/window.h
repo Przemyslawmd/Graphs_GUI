@@ -39,6 +39,7 @@ private:
     void removeNode();
     void removeGraph();
     void createConnection();
+    void removeConnection();
     void traverseBFS();
     void traverseDFS();
     void shortestPath();
