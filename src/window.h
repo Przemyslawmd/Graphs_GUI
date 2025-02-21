@@ -43,6 +43,8 @@ private:
     void traverseBFS();
     void traverseDFS();
     void shortestPath();
+    void saveGraph();
+    void readGraph();
 
     void callClientBFS(char key);
     void callClientDFS(char key);

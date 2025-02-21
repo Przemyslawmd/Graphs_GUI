@@ -173,6 +173,12 @@ void Window::invokeAction(Action action)
         case RESET_PATH:
             model->resetPath();
             break;
+        case SAVE_GRAPH:
+            saveGraph();
+            break;
+        case READ_GRAPH:
+            readGraph();
+            break;
     }
 }
 
@@ -287,6 +293,16 @@ void Window::shortestPath()
     std::thread th(&Window::callClientShortestPath, this, src.value(), dst.value());
     th.detach();
 };
+
+
+void Window::saveGraph()
+{
+}
+
+
+void Window::readGraph()
+{
+}
 
 
 void Window::resize()

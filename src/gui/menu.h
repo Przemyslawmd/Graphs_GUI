@@ -15,9 +15,6 @@
 
 
 constexpr float MENU_HEIGHT = 22.f;
-constexpr float BUTTON_WIDTH = 120.f;
-constexpr float BUTTON_WIDTH_CONNECTION = 130.f;
-constexpr float INPUT_WIDTH = 30.f;
 constexpr float MENU_POS_Y = 5.f;
 
 
@@ -32,17 +29,19 @@ struct Data
 
 static const std::map<Action, Data> actionData = 
 {
-    { Action::NODE_INPUT,        { 20.f,  25.f,    INPUT_WIDTH,             std::nullopt }},
-    { Action::NODE_ADD,          { 52.f,  82.f,    BUTTON_WIDTH,            "Add Node" }},
-    { Action::NODE_REMOVE,       { 174.f, 188.f,   BUTTON_WIDTH,            "Remove Node" }},
-    { Action::CONNECTION_INPUT,  { 340.f, 345.f,   INPUT_WIDTH,              std::nullopt }},
-    { Action::CONNECTION_ADD,    { 370.f, 385.f,   BUTTON_WIDTH_CONNECTION, "Connect Nodes" }},
-    { Action::CONNECTION_REMOVE, { 500.f, 506.f,   BUTTON_WIDTH_CONNECTION, "Disconnect Nodes" }},
-    { Action::REMOVE_ALL,        { 670.f, 695.f,   BUTTON_WIDTH,            "Remove All" }},
-    { Action::TRAVERSE_BFS,      { 840.f, 855.f,   BUTTON_WIDTH,            "Traverse BFS" }},
-    { Action::TRAVERSE_DFS,      { 960.f, 975.f,   BUTTON_WIDTH,            "Traverse DFS" }},
-    { Action::SHORTEST_PATH,     { 1100.f, 1115.f, BUTTON_WIDTH,            "Shortest Path" }},
-    { Action::RESET_PATH,        { 1220.f, 1245.f, BUTTON_WIDTH,            "Reset Path" }},
+    { Action::NODE_INPUT,        { 20.f,   25.f,    30.f,  std::nullopt }},
+    { Action::NODE_ADD,          { 52.f,   75.f,    110.f, "Add Node" }},
+    { Action::NODE_REMOVE,       { 164.f,  174.f,   110.f, "Remove Node" }},
+    { Action::CONNECTION_INPUT,  { 300.f,  305.f,   30.f,  std::nullopt }},
+    { Action::CONNECTION_ADD,    { 330.f,  340.f,   120.f, "Connect Nodes" }},
+    { Action::CONNECTION_REMOVE, { 450.f,  475.f,   120.f, "Disconnect" }},
+    { Action::REMOVE_ALL,        { 600.f,  615.f,   100.f, "Remove All" }},
+    { Action::TRAVERSE_BFS,      { 730.f,  742.f,   110.f, "Traverse BFS" }},
+    { Action::TRAVERSE_DFS,      { 840.f,  850.f,   110.f, "Traverse DFS" }},
+    { Action::SHORTEST_PATH,     { 980.f,  995.f,   110.f, "Shortest Path" }},
+    { Action::RESET_PATH,        { 1090.f, 1110.f,  110.f, "Reset Path" }},
+    { Action::SAVE_GRAPH,        { 1230.f, 1243.f,  100.f, "Save Graph" }},
+    { Action::READ_GRAPH,        { 1330.f, 1343.f,  100.f, "Read Graph" }},
 };
 
 
@@ -87,6 +86,12 @@ static Action isOverActionMenu(const sf::Vector2i& pos)
     }
     if (isOverMenu(pos, actionData.at(RESET_PATH))) {
         return RESET_PATH;
+    }
+    if (isOverMenu(pos, actionData.at(SAVE_GRAPH))) {
+        return SAVE_GRAPH;
+    }
+    if (isOverMenu(pos, actionData.at(READ_GRAPH))) {
+        return READ_GRAPH;
     }
     return NO_ACTION;
 }

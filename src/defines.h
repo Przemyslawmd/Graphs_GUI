@@ -44,6 +44,8 @@ enum class Action
     TRAVERSE_DFS,
     SHORTEST_PATH,
     RESET_PATH,
+    SAVE_GRAPH,
+    READ_GRAPH,
 
     NO_ACTION
 };
