@@ -4,10 +4,6 @@
 #include <fstream>
 #include <filesystem>
 
-#include "graph/model.h"
-#include "graph/node.h"
-#include "graph/connection.h"
-
 constexpr char delimiter = ',';
 constexpr std::string_view fileName = "graph.txt"; 
 

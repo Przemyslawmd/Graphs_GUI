@@ -10,14 +10,14 @@ void Menu::prepareMenu()
     for (const auto& [key, value] : actionData) {
         if (key == Action::NODE_INPUT || key == Action::CONNECTION_INPUT) {
             inputs.emplace(key, Input{ value.width, MENU_HEIGHT, font });
-            inputs.at(key).shape.setPosition({ value.posX, MENU_POS_Y });
-            inputs.at(key).text.setPosition({ value.posTitle, MENU_POS_Y + 2.f });
-            inputs.at(key).vertical.setPosition({ value.posTitle, MENU_POS_Y + 2.f });
+            inputs.at(key).shape.setPosition({ value.posX, value.posY });
+            inputs.at(key).text.setPosition({ value.posTitle, value.posY + 2.f });
+            inputs.at(key).vertical.setPosition({ value.posTitle, value.posY + 2.f });
         }
         else {
             auto& button = buttons.emplace_back( value.width, MENU_HEIGHT, font, value.title.value());
-            button.shape.setPosition({ value.posX, MENU_POS_Y });
-            button.text.setPosition({ value.posTitle, MENU_POS_Y + 2.f });
+            button.shape.setPosition({ value.posX, value.posY });
+            button.text.setPosition({ value.posTitle, value.posY + 2.f });
         }
     }
 }

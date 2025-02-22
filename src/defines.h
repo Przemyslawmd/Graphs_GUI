@@ -4,7 +4,7 @@
 
 
 constexpr float MARGIN_X = 20.f;
-constexpr float MARGIN_UP_GRAPHS = 50.f;
+constexpr float MARGIN_UP_GRAPHS = 70.f;
 constexpr float MARGIN_BOTTOM_GRAPHS = 80.f;
 
 constexpr float MESSAGE_AREA_HEIGHT = 40.f;
