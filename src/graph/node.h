@@ -20,12 +20,13 @@ constexpr float RADIUS = 20;
 
 struct NodeGui : public sf::Drawable
 {
-    NodeGui() : circle{ RADIUS, CIRCLE_POINTS }, selected{ false }, text{ FontStore::getFont() } 
+    NodeGui(char key) : circle{ RADIUS, CIRCLE_POINTS }, selected{ false }, text{ FontStore::getFont() }, key { key } 
     {
         circle.setFillColor({ RED, GREEN, BLUE });
         text.setFillColor(sf::Color::Black);
         text.setCharacterSize(14);
         setPosition({ INITIAL_NODE_X, INITIAL_NODE_Y });
+        text.setString(key);
     }
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override

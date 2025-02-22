@@ -33,11 +33,16 @@ std::tuple<Message, std::optional<char>> Model::createNode(sf::Text& text)
         }
     }
 
-    auto& node = nodes.emplace_back();
-    node.text.setString(key);
-    node.key = key;
+    auto& node = nodes.emplace_back(key);
     return { Message::OK, node.key };
 };
+
+
+void Model::createNodeFromFile(char key, size_t posX, size_t posY)
+{
+    auto& node = nodes.emplace_back(key);
+    node.setPosition({ (float) posX, (float) posY });
+}
 
 
 std::vector<NodeGui>& Model::getNodes()

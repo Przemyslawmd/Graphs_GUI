@@ -7,6 +7,7 @@
 #include <SFML/System/Vector2.hpp>
 
 #include "services/font.h"
+#include "services/iofile.h"
 
 
 Window::Window()
@@ -297,11 +298,20 @@ void Window::shortestPath()
 
 void Window::saveGraph()
 {
+    IOFile iofile;
+    iofile.saveGraph(model->getNodes(), model->getConnections());
 }
 
 
 void Window::readGraph()
 {
+    IOFile iofile;
+    iofile.readGraph();
+    const auto& nodesData = iofile.getNodesData();
+    for (const auto& data : nodesData) {
+        model->createNodeFromFile(data.key, data.posX, data.posY);
+        client->addNode(data.key);
+    }
 }
 
 

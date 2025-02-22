@@ -17,6 +17,7 @@ public:
     Model();
 
     std::tuple<Message, std::optional<char>> createNode(sf::Text&);
+    void createNodeFromFile(char key, size_t posX, size_t posY);
     std::vector<NodeGui>& getNodes();
     std::tuple<Message, std::optional<char>> getSelectedNode();
     std::tuple<Message, std::optional<char>, std::optional<char>> getTwoSelectedNodes();
