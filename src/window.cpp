@@ -299,14 +299,20 @@ void Window::shortestPath()
 void Window::saveGraph()
 {
     IOFile iofile;
-    iofile.saveGraph(model->getNodes(), model->getConnections());
+    if (!iofile.saveGraph(model->getNodes(), model->getConnections())) {
+        setMessage("Write graph to file failed");
+    }
 }
 
 
 void Window::readGraph()
 {
+    removeGraph();
     IOFile iofile;
-    iofile.readGraph();
+    if (!iofile.readGraph()) {
+        setMessage("Read graph from file failed");
+        return;
+    }
     const auto& nodesData = iofile.getNodesData();
     for (const auto& data : nodesData) {
         model->createNodeFromFile(data.key, data.posX, data.posY);

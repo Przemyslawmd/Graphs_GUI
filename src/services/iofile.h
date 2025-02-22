@@ -27,15 +27,15 @@ struct ConnectionData
 class IOFile
 {
 public:
-    void saveGraph(const std::vector<NodeGui>&, const std::vector<Connection>&);
+    bool saveGraph(const std::vector<NodeGui>&, const std::vector<Connection>&);
     bool readGraph();
 
     const std::vector<NodeData>& getNodesData();
     const std::vector<ConnectionData>& getConnectionsData();
 
 private:
-    void fillNodeData(std::string&);
-    void fillConnectionData(std::string&);
+    bool fillNodeData(std::string&);
+    bool fillConnectionData(std::string&);
 
     std::vector<NodeData> nodesData;
     std::vector<ConnectionData> connectionsData;
