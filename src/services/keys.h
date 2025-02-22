@@ -3,6 +3,7 @@
 #define GUI_GRAPHS_KEYS_H
 
 #include <array>
+#include <vector>
 
 #include "defines.h"
 
@@ -21,6 +22,7 @@ public:
 
     char getKey();
     void giveBackKey(char);
+    void setKeyAsUsed(char);
 
     void restoreKeys();
 

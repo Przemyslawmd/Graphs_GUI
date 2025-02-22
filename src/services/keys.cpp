@@ -21,6 +21,15 @@ void Keys::giveBackKey(char keyToBack)
 }
 
 
+void Keys::setKeyAsUsed(char keyUsed)
+{
+    auto key = std::ranges::find_if(keys, [keyUsed](const auto& k) { return k.key == keyUsed; });
+    if (key != keys.end()) {
+        key->used = true;
+    }
+}
+
+
 void Keys::restoreKeys()
 {
     for (auto& key : keys) {

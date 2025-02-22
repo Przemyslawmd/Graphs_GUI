@@ -42,6 +42,7 @@ void Model::createNodeFromFile(char key, size_t posX, size_t posY)
 {
     auto& node = nodes.emplace_back(key);
     node.setPosition({ (float) posX, (float) posY });
+    keys->setKeyAsUsed(key);
 }
 
 
