@@ -34,6 +34,9 @@ public:
     const std::vector<ConnectionData>& getConnectionsData();
 
 private:
+    void fillNodeData(std::string&);
+    void fillConnectionData(std::string&);
+
     std::vector<NodeData> nodesData;
     std::vector<ConnectionData> connectionsData;
 };

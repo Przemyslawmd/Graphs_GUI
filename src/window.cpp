@@ -312,6 +312,11 @@ void Window::readGraph()
         model->createNodeFromFile(data.key, data.posX, data.posY);
         client->addNode(data.key);
     }
+    const auto& connectionData = iofile.getConnectionsData();
+    for (const auto& conn : connectionData) {
+        model->createConnectionFromFile(conn.src, conn.dst, conn.weight);
+        client->addEdge(conn.src, conn.dst, conn.weight);
+    }
 }
 
 

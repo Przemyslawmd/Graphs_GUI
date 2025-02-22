@@ -114,6 +114,28 @@ std::tuple<Message, std::optional<ConnectionLibraryInterface>> Model::createConn
 }
 
 
+void Model::createConnectionFromFile(char src, char dst, size_t weight)
+{
+    auto node_1 = std::find_if(nodes.begin(), nodes.end(), [src](const auto& node) { return node.key == src; });
+    auto node_2 = std::find_if(nodes.begin(), nodes.end(), [dst](const auto& node) { return node.key == dst; });
+
+    sf::Vector2f pos_1 = node_1->circle.getPosition();
+    sf::Vector2f pos_2 = node_2->circle.getPosition();
+    float length  = calculateConnectionLength(pos_1, pos_2);
+    auto& connection = connections.emplace_back( length, node_1->key, node_2->key);
+
+    float radius = node_1->circle.getRadius();
+    connection.line.setPosition({ pos_1.x + radius, pos_1.y + radius });
+
+    float angle = calculateAngle(pos_1, pos_2);
+    connection.line.rotate(sf::degrees(angle));
+
+    connection.text.setString(std::to_string(weight));
+    sf::FloatRect bound = connection.line.getGlobalBounds();
+    connection.text.setPosition({ bound.getCenter().x, bound.getCenter().y - 15 });
+}
+
+
 std::tuple<Message, std::optional<char>, std::optional<char>> Model::removeConnection()
 {
     if (countSelectedConnections() != 1) {

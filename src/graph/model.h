@@ -23,6 +23,7 @@ public:
     std::tuple<Message, std::optional<char>, std::optional<char>> getTwoSelectedNodes();
 
     std::tuple<Message, std::optional<ConnectionLibraryInterface>> createConnection(sf::Text&);
+    void createConnectionFromFile(char src, char dst, size_t weight);
     std::vector<Connection>& getConnections();
     void moveNodeConnections(char key);
     std::tuple<Message, std::optional<char>, std::optional<char>> removeConnection();
