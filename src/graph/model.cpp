@@ -52,28 +52,28 @@ std::vector<NodeGui>& Model::getNodes()
 }
 
 
-std::tuple<Message, std::optional<char>> Model::getSelectedNode()
+std::optional<char> Model::getSelectedNode()
 {
     if (countSelectedNodes() != 1) {
-        return { Message::NODE_SELECT_ONE, std::nullopt };
+        return std::nullopt;
     }
     auto node = std::find_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.selected; });
-    return { Message::OK, node->key };
+    return node->key;
 }
 
 
-std::tuple<Message, std::optional<char>, std::optional<char>> Model::getTwoSelectedNodes()
+std::tuple<std::optional<char>, std::optional<char>> Model::getTwoSelectedNodes()
 {
     if (countSelectedNodes() != 2) {
-        return { Message::NODE_SELECT_TWO, std::nullopt, std::nullopt };
+        return { std::nullopt, std::nullopt };
     }
     auto node_1 = std::find_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.selected; });
     auto node_2 = std::find_if(nodes.rbegin(), nodes.rend(), [](const auto& node) { return node.selected; });
 
     if (node_1->selectTime < node_2->selectTime) {
-        return { Message::OK, node_1->key, node_2->key };
+        return { node_1->key, node_2->key };
     }
-    return { Message::OK, node_2->key, node_1->key };
+    return { node_2->key, node_1->key };
 }
 
 
@@ -228,7 +228,7 @@ std::tuple<int, float, float> Model::isMouseOverNode(const sf::Vector2i& mousePo
             return { i, shiftX, shiftY };
         }
     }
-    return { -1, 0, 0 };
+    return { -1, 0.0f, 0.0f };
 }
 
 

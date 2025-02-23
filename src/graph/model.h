@@ -19,8 +19,9 @@ public:
     std::tuple<Message, std::optional<char>> createNode(const sf::Text&);
     void createNodeFromFile(char key, size_t posX, size_t posY);
     std::vector<NodeGui>& getNodes();
-    std::tuple<Message, std::optional<char>> getSelectedNode();
-    std::tuple<Message, std::optional<char>, std::optional<char>> getTwoSelectedNodes();
+
+    std::optional<char> getSelectedNode();
+    std::tuple<std::optional<char>, std::optional<char>> getTwoSelectedNodes();
 
     std::tuple<Message, std::optional<ConnectionData>> createConnection(const sf::Text&);
     void createConnectionFromFile(char src, char dst, size_t weight);

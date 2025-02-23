@@ -27,6 +27,7 @@ struct Connection : public sf::Drawable
         : line{ sf::Vector2f{ length, LINE_WIDTH }}, srcKey{ srcKey }, dstKey{ dstKey }, text{ FontStore::getFont() }, selected{ false } 
     {
         line.setFillColor({ RED, GREEN, BLUE });
+        line.setOutlineColor(sf::Color::Black);
         text.setFillColor(sf::Color::Black);
         text.setCharacterSize(14);
     };
@@ -50,7 +51,6 @@ struct Connection : public sf::Drawable
     void changeSelect()
     {
         if (!selected) {
-            line.setOutlineColor(sf::Color::Black);
             line.setOutlineThickness(2.0f);
         } else {
             line.setOutlineThickness(0.0f);

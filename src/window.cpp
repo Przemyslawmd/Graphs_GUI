@@ -252,13 +252,13 @@ void Window::callClientBFS(char key)
 
 void Window::traverseBFS()
 {
-    const auto [result, key] = model->getSelectedNode();
-    if (result == Message::OK) {
+    const auto key = model->getSelectedNode();
+    if (key.has_value()) {
         std::thread th(&Window::callClientBFS, this, key.value());
         th.detach();
         return;
     }
-    setMessage(MessageStr.at(result));
+    setMessage(MessageStr.at(Message::NODE_SELECT_ONE));
 }
 
 
@@ -271,13 +271,13 @@ void Window::callClientDFS(char key)
 
 void Window::traverseDFS()
 {
-    const auto [result, key] = model->getSelectedNode();
-    if (result == Message::OK) {
+    const auto key = model->getSelectedNode();
+    if (key.has_value()) {
         std::thread th(&Window::callClientDFS, this, key.value());
         th.detach();
         return;
     }
-    setMessage(MessageStr.at(result));
+    setMessage(MessageStr.at(Message::NODE_SELECT_ONE));
 }
 
 
@@ -294,9 +294,9 @@ void Window::callClientShortestPath(char src, char dst)
 
 void Window::shortestPath()
 {
-    const auto [result, src, dst] = model->getTwoSelectedNodes();
-    if (result != Message::OK) {
-        setMessage(MessageStr.at(result));
+    const auto [src, dst] = model->getTwoSelectedNodes();
+    if (!src.has_value() || !dst.has_value()) {
+        setMessage(MessageStr.at(Message::NODE_SELECT_TWO));
         return;
     }
     std::thread th(&Window::callClientShortestPath, this, src.value(), dst.value());
