@@ -13,7 +13,7 @@ Model::Model()
 }
 
 
-std::tuple<Message, std::optional<char>> Model::createNode(sf::Text& text)
+std::tuple<Message, std::optional<char>> Model::createNode(const sf::Text& text)
 {
     if (nodes.size() == MAX_NODES) {
         return { Message::NODE_LIMIT, std::nullopt };
@@ -77,7 +77,7 @@ std::tuple<Message, std::optional<char>, std::optional<char>> Model::getTwoSelec
 }
 
 
-std::tuple<Message, std::optional<ConnectionLibraryInterface>> Model::createConnection(sf::Text& text)
+std::tuple<Message, std::optional<ConnectionData>> Model::createConnection(const sf::Text& text)
 {
     if (countSelectedNodes() != 2) {
         return { Message::NODE_SELECT_TWO, std::nullopt };

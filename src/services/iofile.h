@@ -16,14 +16,6 @@ struct NodeData
 };
 
 
-struct ConnectionData
-{
-    char src;
-    char dst;
-    size_t weight;
-};
-
-
 class IOFile
 {
 public:

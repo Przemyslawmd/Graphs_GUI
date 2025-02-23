@@ -160,7 +160,7 @@ void Window::invokeAction(Action action)
             menu->setInputFocus(true, false);
             break;
         case CONNECTION_INPUT:
-            menu->setInputFocus(false, true);;
+            menu->setInputFocus(false, true);
             break;
         case TRAVERSE_BFS:
             traverseBFS();
@@ -192,7 +192,8 @@ void Window::invokeAction(Action action)
 
 void Window::createNode()
 {
-    const auto [result, key] = model->createNode(menu->getInputText(Action::NODE_INPUT));
+    const auto& text = menu->getInputText(Action::NODE_INPUT);
+    const auto [result, key] = model->createNode(text);
     if (result == Message::OK) {
         client->addNode(key.value());
         return;
@@ -221,9 +222,10 @@ void Window::removeGraph()
 
 void Window::createConnection()
 {
-    const auto [result, connInterface] = model->createConnection(menu->getInputText(Action::CONNECTION_INPUT));
+    const auto& text = menu->getInputText(Action::CONNECTION_INPUT);
+    const auto [result, connData] = model->createConnection(text);
     if (result == Message::OK) {
-        client->addEdge(connInterface.value().src, connInterface.value().dst, connInterface.value().weight);
+        client->addEdge(connData.value().src, connData.value().dst, connData.value().weight);
         return;
     }
     setMessage(MessageStr.at(result));

@@ -13,7 +13,7 @@
 constexpr size_t LINE_WIDTH = 3;
 
 
-struct ConnectionLibraryInterface
+struct ConnectionData
 {
     char src;
     char dst; 
