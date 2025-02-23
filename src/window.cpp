@@ -177,6 +177,9 @@ void Window::invokeAction(Action action)
         case MIN_SPANNING_TREE:
             minSpanningTree();
             break;
+        case RESET_TREE:
+            model->resetPath();
+            break;
         case SAVE_GRAPH:
             saveGraph();
             break;
