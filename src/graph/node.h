@@ -13,7 +13,7 @@
 
 
 constexpr size_t INITIAL_NODE_X = 30;
-constexpr size_t INITIAL_NODE_Y = 60;
+constexpr size_t INITIAL_NODE_Y = 75;
 constexpr size_t CIRCLE_POINTS = 100;
 constexpr float RADIUS = 20;
 

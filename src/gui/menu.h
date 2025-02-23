@@ -23,7 +23,7 @@ struct Data
 {
     const float posX;
     const float posTitle;
-    const float posY;    
+    const float posY;
     const float width;
     const std::optional<std::string> title;
 };
@@ -31,19 +31,21 @@ struct Data
 
 static const std::map<Action, Data> actionData = 
 {
-    { Action::NODE_INPUT,        { 20.f,   25.f,  MENU_POS_Y_1, 30.f,  std::nullopt }},
-    { Action::NODE_ADD,          { 52.f,   75.f,  MENU_POS_Y_1, 110.f, "Add Node" }},
-    { Action::NODE_REMOVE,       { 52.f,   63.f,  MENU_POS_Y_2, 110.f, "Remove Node" }},
-    { Action::CONNECTION_INPUT,  { 220.f,  225.f, MENU_POS_Y_1, 30.f,  std::nullopt }},
-    { Action::CONNECTION_ADD,    { 252.f,  262.f, MENU_POS_Y_1, 120.f, "Connect Nodes" }},
-    { Action::CONNECTION_REMOVE, { 252.f,  275.f, MENU_POS_Y_2, 120.f, "Disconnect" }},
-    { Action::TRAVERSE_BFS,      { 430.f,  442.f, MENU_POS_Y_1, 110.f, "Traverse BFS" }},
-    { Action::TRAVERSE_DFS,      { 430.f,  440.f, MENU_POS_Y_2, 110.f, "Traverse DFS" }},
-    { Action::SHORTEST_PATH,     { 610.f,  625.f, MENU_POS_Y_1, 110.f, "Shortest Path" }},
-    { Action::RESET_PATH,        { 610.f,  630.f, MENU_POS_Y_2, 110.f, "Reset Path" }},
-    { Action::REMOVE_ALL,        { 780.f,  795.f, MENU_POS_Y_1, 100.f, "Remove All" }},
-    { Action::SAVE_GRAPH,        { 930.f, 943.f,  MENU_POS_Y_1, 100.f, "Save Graph" }},
-    { Action::READ_GRAPH,        { 930.f, 943.f,  MENU_POS_Y_2, 100.f, "Read Graph" }},
+    { Action::NODE_INPUT,        { 20.f,   25.f,   MENU_POS_Y_1, 30.f,  std::nullopt }},
+    { Action::NODE_ADD,          { 52.f,   75.f,   MENU_POS_Y_1, 110.f, "Add Node" }},
+    { Action::NODE_REMOVE,       { 52.f,   63.f,   MENU_POS_Y_2, 110.f, "Remove Node" }},
+    { Action::CONNECTION_INPUT,  { 210.f,  215.f,  MENU_POS_Y_1, 30.f,  std::nullopt }},
+    { Action::CONNECTION_ADD,    { 242.f,  252.f,  MENU_POS_Y_1, 120.f, "Connect Nodes" }},
+    { Action::CONNECTION_REMOVE, { 242.f,  265.f,  MENU_POS_Y_2, 120.f, "Disconnect" }},
+    { Action::TRAVERSE_BFS,      { 420.f,  431.f,  MENU_POS_Y_1, 110.f, "Traverse BFS" }},
+    { Action::TRAVERSE_DFS,      { 420.f,  431.f,  MENU_POS_Y_2, 110.f, "Traverse DFS" }},
+    { Action::SHORTEST_PATH,     { 590.f,  605.f,  MENU_POS_Y_1, 110.f, "Shortest Path" }},
+    { Action::RESET_PATH,        { 590.f,  625.f,  MENU_POS_Y_2, 110.f, "Reset" }},
+    { Action::MIN_SPANNING_TREE, { 760.f,  772.f,  MENU_POS_Y_1, 140.f, "Min Spanning Tree" }},
+    { Action::RESET_TREE,        { 760.f,  810.f,  MENU_POS_Y_2, 140.f, "Reset" }},
+    { Action::REMOVE_ALL,        { 940.f,  955.f,  MENU_POS_Y_1, 100.f, "Remove All" }},
+    { Action::SAVE_GRAPH,        { 1080.f, 1093.f, MENU_POS_Y_1, 100.f, "Save Graph" }},
+    { Action::READ_GRAPH,        { 1080.f, 1093.f, MENU_POS_Y_2, 100.f, "Read Graph" }},
 };
 
 
@@ -88,6 +90,12 @@ static Action isOverActionMenu(const sf::Vector2i& pos)
     }
     if (isOverMenu(pos, actionData.at(RESET_PATH))) {
         return RESET_PATH;
+    }
+    if (isOverMenu(pos, actionData.at(MIN_SPANNING_TREE))) {
+        return MIN_SPANNING_TREE;
+    }
+    if (isOverMenu(pos, actionData.at(RESET_TREE))) {
+        return RESET_TREE;
     }
     if (isOverMenu(pos, actionData.at(SAVE_GRAPH))) {
         return SAVE_GRAPH;
