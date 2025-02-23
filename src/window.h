@@ -43,12 +43,14 @@ private:
     void traverseBFS();
     void traverseDFS();
     void shortestPath();
+    void minSpanningTree();
     void saveGraph();
     void readGraph();
 
     void callClientBFS(char key);
     void callClientDFS(char key);
     void callClientShortestPath(char src, char dst);
+    void callClientMinSpanningTree();
 
     std::unique_ptr<sf::RenderWindow> window;
     std::unique_ptr<Menu> menu;

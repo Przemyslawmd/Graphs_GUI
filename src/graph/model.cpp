@@ -174,6 +174,16 @@ void Model::colorPath(const std::vector<char>& path)
 }
 
 
+void Model::colorEdges(const std::vector<std::tuple<char, char>>& edges)
+{
+    for (size_t i = 0; i < edges.size(); i++) {
+        auto it = std::find_if(connections.begin(), connections.end(), [src = std::get<0>(edges[i]), dst = std::get<1>(edges[i])](const auto& con)
+            { return con.isMatch(src, dst); });
+        it->line.setFillColor(sf::Color::Red);
+    }
+}
+
+
 void Model::resetPath()
 {
     for (auto& conn : connections | std::views::filter([](const auto& conn) { return conn.isColor(); })) {

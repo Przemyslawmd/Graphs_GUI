@@ -58,6 +58,12 @@ std::unique_ptr<std::vector<char>> Client::shortestPath(char src, char dst)
 }
 
 
+std::unique_ptr<std::vector<std::tuple<char, char>>> Client::minSpanningTree()
+{
+    return graphClient->findMinSpanningTree();
+}
+
+
 const std::string Client::getLastErrorMessage()
 {
     return (graphClient->getLastErrorMessage() != std::nullopt) ? graphClient->getLastErrorMessage().value() : "Graph client unknown error"; 

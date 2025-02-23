@@ -29,6 +29,8 @@ public:
 
     std::unique_ptr<std::vector<char>> shortestPath(char src, char dst);
 
+    std::unique_ptr<std::vector<std::tuple<char, char>>> minSpanningTree();
+
     const std::string getLastErrorMessage();
 
 private:

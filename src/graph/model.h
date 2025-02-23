@@ -29,6 +29,7 @@ public:
     std::tuple<Message, std::optional<char>, std::optional<char>> removeConnection();
 
     void colorPath(const std::vector<char>& path);
+    void colorEdges(const std::vector<std::tuple<char, char>>& edges);
     void resetPath();
 
     std::tuple<Message, std::optional<char>> removeNode();

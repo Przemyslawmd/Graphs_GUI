@@ -174,6 +174,9 @@ void Window::invokeAction(Action action)
         case RESET_PATH:
             model->resetPath();
             break;
+        case MIN_SPANNING_TREE:
+            minSpanningTree();
+            break;
         case SAVE_GRAPH:
             saveGraph();
             break;
@@ -292,6 +295,24 @@ void Window::shortestPath()
         return;
     }
     std::thread th(&Window::callClientShortestPath, this, src.value(), dst.value());
+    th.detach();
+};
+
+
+void Window::callClientMinSpanningTree()
+{
+    auto edges = client->minSpanningTree();
+    if (edges == nullptr) {
+        setMessage(client->getLastErrorMessage());
+        return;
+    }
+    model->colorEdges(*edges);
+}
+
+
+void Window::minSpanningTree()
+{
+    std::thread th(&Window::callClientMinSpanningTree, this);
     th.detach();
 };
 
