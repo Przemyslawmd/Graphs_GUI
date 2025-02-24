@@ -22,6 +22,8 @@ public:
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
+    void setCoordinates(const sf::Vector2f& srcPos, const sf::Vector2f& dstPos);
+
     bool isMatch(char node_1, char node_2) const;
     bool isColor() const;
     void changeSelect();

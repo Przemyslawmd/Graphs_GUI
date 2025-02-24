@@ -17,6 +17,8 @@ constexpr size_t RED = 51;
 constexpr size_t GREEN = 153;
 constexpr size_t BLUE = 255;
 
+constexpr float NODE_RADIUS = 20.f;
+
 
 enum class Line 
 {

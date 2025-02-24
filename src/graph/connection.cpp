@@ -1,6 +1,7 @@
 
 #include "connection.h"
 
+#include "utils.h"
 #include "defines.h"
 #include "services/font.h"
 
@@ -21,6 +22,16 @@ void Connection::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(line);
     target.draw(text);
+}
+
+
+void Connection::setCoordinates(const sf::Vector2f& srcPos, const sf::Vector2f& dstPos)
+{
+    line.setPosition({ srcPos.x + NODE_RADIUS, srcPos.y + NODE_RADIUS });
+    float angle = calculateAngle(srcPos, dstPos);
+    line.setRotation(sf::degrees(angle));
+    sf::FloatRect bound = line.getGlobalBounds();
+    text.setPosition({ bound.getCenter().x, bound.getCenter().y - 15 });
 }
 
 

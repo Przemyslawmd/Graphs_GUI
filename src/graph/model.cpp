@@ -84,12 +84,12 @@ std::tuple<Message, std::optional<ConnectionData>> Model::createConnection(const
     if (countSelectedNodes() != 2) {
         return { Message::NODE_SELECT_TWO, std::nullopt };
     }
-    auto node_1 = std::find_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.selected; });
-    auto node_2 = std::find_if(nodes.rbegin(), nodes.rend(), [](const auto& node) { return node.selected; });
-    char src = node_1->key;
-    char dst = node_2->key;
+    auto srcNode = std::find_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.selected; });
+    auto dstNode = std::find_if(nodes.rbegin(), nodes.rend(), [](const auto& node) { return node.selected; });
+    char srcKey = srcNode->key;
+    char dstKey = dstNode->key;
 
-    if (std::any_of(connections.begin(), connections.end(), [src, dst](const auto& con) { return con.isMatch(src, dst); })) {
+    if (std::any_of(connections.begin(), connections.end(), [srcKey, dstKey](const auto& con) { return con.isMatch(srcKey, dstKey); })) {
         return { Message::CONNECTION_EXISTS, std::nullopt };
     }
 
@@ -98,44 +98,28 @@ std::tuple<Message, std::optional<ConnectionData>> Model::createConnection(const
         return { result, std::nullopt };
     }
 
-    sf::Vector2f pos_1 = node_1->circle.getPosition();
-    sf::Vector2f pos_2 = node_2->circle.getPosition();
-    float length  = calculateConnectionLength(pos_1, pos_2);
-    auto& connection = connections.emplace_back( length, node_1->key, node_2->key);
+    sf::Vector2f srcPos = srcNode->circle.getPosition();
+    sf::Vector2f dstPos = dstNode->circle.getPosition();
+    float length  = calculateConnectionLength(srcPos, dstPos);
+    auto& connection = connections.emplace_back( length, srcKey, dstKey);
 
-    float radius = node_1->circle.getRadius();
-    connection.line.setPosition({ pos_1.x + radius, pos_1.y + radius });
-
-    float angle = calculateAngle(pos_1, pos_2);
-    connection.line.rotate(sf::degrees(angle));
-
+    connection.setCoordinates(srcPos, dstPos);
     connection.text.setString(text.getString());
-    sf::FloatRect bound = connection.line.getGlobalBounds();
-    connection.text.setPosition({ bound.getCenter().x, bound.getCenter().y - 15 });
-
-    return { Message::OK, {{ node_1->key, node_2->key, weight }}};
+    return { Message::OK, {{ srcKey, dstKey, weight }}};
 }
 
 
 void Model::createConnectionFromFile(char src, char dst, size_t weight)
 {
-    auto node_1 = std::find_if(nodes.begin(), nodes.end(), [src](const auto& node) { return node.key == src; });
-    auto node_2 = std::find_if(nodes.begin(), nodes.end(), [dst](const auto& node) { return node.key == dst; });
+    auto srcNode = std::find_if(nodes.begin(), nodes.end(), [src](const auto& node) { return node.key == src; });
+    auto dstNode = std::find_if(nodes.begin(), nodes.end(), [dst](const auto& node) { return node.key == dst; });
 
-    sf::Vector2f pos_1 = node_1->circle.getPosition();
-    sf::Vector2f pos_2 = node_2->circle.getPosition();
-    float length  = calculateConnectionLength(pos_1, pos_2);
-    auto& connection = connections.emplace_back( length, node_1->key, node_2->key);
-
-    float radius = node_1->circle.getRadius();
-    connection.line.setPosition({ pos_1.x + radius, pos_1.y + radius });
-
-    float angle = calculateAngle(pos_1, pos_2);
-    connection.line.rotate(sf::degrees(angle));
-
+    sf::Vector2f srcPos = srcNode->circle.getPosition();
+    sf::Vector2f dstPos = dstNode->circle.getPosition();
+    float length  = calculateConnectionLength(srcPos, dstPos);
+    auto& connection = connections.emplace_back( length, srcNode->key, dstNode->key);
+    connection.setCoordinates(srcPos, dstPos);
     connection.text.setString(std::to_string(weight));
-    sf::FloatRect bound = connection.line.getGlobalBounds();
-    connection.text.setPosition({ bound.getCenter().x, bound.getCenter().y - 15 });
 }
 
 
@@ -267,23 +251,16 @@ void Model::moveConnection(Connection& connection)
 {
     char src = connection.srcKey;
     char dst = connection.dstKey;
-    auto srcIt = std::find_if(nodes.begin(), nodes.end(), [src](const auto& node) { return node.key == src; });
-    auto dstIt = std::find_if(nodes.begin(), nodes.end(), [dst](const auto& node) { return node.key == dst; });
+    auto srcNode = std::find_if(nodes.begin(), nodes.end(), [src](const auto& node) { return node.key == src; });
+    auto dstNode = std::find_if(nodes.begin(), nodes.end(), [dst](const auto& node) { return node.key == dst; });
 
-    sf::Vector2f pos_1 = srcIt->circle.getPosition();
-    sf::Vector2f pos_2 = dstIt->circle.getPosition();
-    float length  = calculateConnectionLength(pos_1, pos_2);
+    sf::Vector2f srcPos = srcNode->circle.getPosition();
+    sf::Vector2f dstPos = dstNode->circle.getPosition();
+    float length  = calculateConnectionLength(srcPos, dstPos);
 
     auto& connectionLine = connection.line;
     connectionLine.setSize({ length, 3 });
 
-    float radius = srcIt->circle.getRadius();
-    connectionLine.setPosition({ pos_1.x + radius, pos_1.y + radius });
-
-    float angle = calculateAngle(pos_1, pos_2);
-    connectionLine.setRotation(sf::degrees(angle));
-
-    sf::FloatRect bound = connectionLine.getGlobalBounds();
-    connection.text.setPosition({ bound.getCenter().x, bound.getCenter().y - 15 });
+    connection.setCoordinates(srcPos, dstPos);
 }
 
