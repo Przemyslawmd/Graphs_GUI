@@ -6,12 +6,6 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Text.hpp>
 
-#include "defines.h"
-#include "services/font.h"
-
-
-constexpr size_t LINE_WIDTH = 3;
-
 
 struct ConnectionData
 {
@@ -21,42 +15,16 @@ struct ConnectionData
 };
 
 
-struct Connection : public sf::Drawable
+class Connection : public sf::Drawable
 {
-    Connection(float length, char srcKey, char dstKey)
-        : line{ sf::Vector2f{ length, LINE_WIDTH }}, srcKey{ srcKey }, dstKey{ dstKey }, text{ FontStore::getFont() }, selected{ false } 
-    {
-        line.setFillColor({ RED, GREEN, BLUE });
-        line.setOutlineColor(sf::Color::Black);
-        text.setFillColor(sf::Color::Black);
-        text.setCharacterSize(14);
-    };
+public:
+    Connection(float length, char src, char dst);
 
-    void draw(sf::RenderTarget& target, sf::RenderStates states) const override
-    {
-        target.draw(line);
-        target.draw(text);
-    }
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-    bool isMatch(char node_1, char node_2) const
-    {
-        return (node_1 == srcKey && node_2 == dstKey) || (node_1 == dstKey && node_2 == srcKey);
-    }
-
-    bool isColor() const
-    {
-        return line.getFillColor() == sf::Color::Red;
-    }
-
-    void changeSelect()
-    {
-        if (!selected) {
-            line.setOutlineThickness(2.0f);
-        } else {
-            line.setOutlineThickness(0.0f);
-        }
-        selected = !selected;
-    }
+    bool isMatch(char node_1, char node_2) const;
+    bool isColor() const;
+    void changeSelect();
 
     sf::RectangleShape line;
     sf::Text text;
