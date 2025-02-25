@@ -45,6 +45,8 @@ enum class Action
     NODE_REMOVE,
     READ_GRAPH,
     REMOVE_ALL,
+    RADIO_DIRECTED,
+    RADIO_UNDIRECTED,
     RESET_PATH,
     RESET_TREE,
     SAVE_GRAPH,

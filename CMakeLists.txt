@@ -32,7 +32,8 @@ add_executable(GraphsGui
     "src/gui/input.cpp"
     "src/gui/button.cpp"
     "src/gui/lines.cpp"
-    "src/gui/menu.cpp")
+    "src/gui/menu.cpp"
+    "src/gui/radio.cpp")
 
 target_include_directories(
     GraphsGui 
