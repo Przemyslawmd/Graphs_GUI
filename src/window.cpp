@@ -148,7 +148,7 @@ void Window::invokeAction(Action action)
             createConnection();
             break;
         case NODE_REMOVE:
-            removeNode();
+            removeNodes();
             break;
         case CONNECTION_REMOVE:
             removeConnection();
@@ -202,11 +202,11 @@ void Window::createNode()
 }
 
 
-void Window::removeNode()
+void Window::removeNodes()
 {
     auto keys = model->removeNodes();
     if (keys == nullptr) {
-        setMessage(MessageStr.at(Message::NODE_SELECT_ONE));
+        setMessage(MessageStr.at(Message::NODE_SELECT_AT_LEAST_ONE));
         return;
     }
     client->removeNodes(std::move(keys));

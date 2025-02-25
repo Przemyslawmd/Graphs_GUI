@@ -36,7 +36,7 @@ private:
     void invokeAction(Action);
 
     void createNode();
-    void removeNode();
+    void removeNodes();
     void removeGraph();
     void createConnection();
     void removeConnection();

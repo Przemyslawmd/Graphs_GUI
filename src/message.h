@@ -17,6 +17,7 @@ enum class Message
     NODE_LIMIT,
     NODE_VALUE_ERROR,
     NODE_SELECT_ONE,
+    NODE_SELECT_AT_LEAST_ONE,
     NODE_SELECT_TWO,
 };
 
@@ -30,6 +31,7 @@ static const std::map<Message, std::string> MessageStr =
     { Message::NODE_KEY_EXISTS,              { "There is a node with provided key" }},
     { Message::NODE_LIMIT,                   { "Maximum number of nodes is 30" }},
     { Message::NODE_SELECT_ONE,              { "Select only one node to perform an action" }},
+    { Message::NODE_SELECT_AT_LEAST_ONE,     { "Select at least one node to perform an action" }},
     { Message::NODE_SELECT_TWO,              { "Select two nodes to perform an action" }}
 };
 
