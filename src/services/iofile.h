@@ -19,8 +19,8 @@ struct NodeData
 class IOFile
 {
 public:
-    bool saveGraph(const std::vector<NodeGui>&, const std::vector<Connection>&);
-    bool readGraph();
+    bool saveGraph(const std::vector<NodeGui>&, const std::vector<Connection>&, const std::string& fileName);
+    bool readGraph(const std::string& fileName);
 
     const std::vector<NodeData>& getNodesData();
     const std::vector<ConnectionData>& getConnectionsData();

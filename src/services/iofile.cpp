@@ -5,10 +5,9 @@
 #include <filesystem>
 
 constexpr char delimiter = ',';
-constexpr std::string_view fileName = "graph.txt"; 
 
 
-bool IOFile::saveGraph(const std::vector<NodeGui>& nodes, const std::vector<Connection>& connections)
+bool IOFile::saveGraph(const std::vector<NodeGui>& nodes, const std::vector<Connection>& connections, const std::string& fileName)
 {
     std::fstream ofs;
     ofs.open(std::filesystem::current_path().append(fileName), std::ios::out);
@@ -29,7 +28,7 @@ bool IOFile::saveGraph(const std::vector<NodeGui>& nodes, const std::vector<Conn
 }
 
 
-bool IOFile::readGraph()
+bool IOFile::readGraph(const std::string& fileName)
 {
     std::fstream ifs;
     ifs.open(std::filesystem::current_path().append(fileName), std::ios::in);

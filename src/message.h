@@ -1,5 +1,4 @@
 
-
 #ifndef GUI_GRAPHS_MESSAGE_H
 #define GUI_GRAPHS_MESSAGE_H
 
@@ -19,6 +18,9 @@ enum class Message
     NODE_SELECT_ONE,
     NODE_NOT_SELECTED,
     NODE_SELECT_TWO,
+    NO_FILE_NAME,
+    READ_FILE_ERROR,
+    WRITE_FILE_ERROR,
 };
 
 
@@ -32,7 +34,10 @@ static const std::map<Message, std::string> MessageStr =
     { Message::NODE_LIMIT,                   { "Maximum number of nodes is 30" }},
     { Message::NODE_SELECT_ONE,              { "Select only one node to perform an action" }},
     { Message::NODE_NOT_SELECTED,            { "Select at least one node to perform an action" }},
-    { Message::NODE_SELECT_TWO,              { "Select two nodes to perform an action" }}
+    { Message::NODE_SELECT_TWO,              { "Select two nodes to perform an action" }},
+    { Message::NO_FILE_NAME,                 { "File name is empty" }},
+    { Message::READ_FILE_ERROR,              { "Reading graph file error" }},
+    { Message::WRITE_FILE_ERROR,             { "Writing graph file error" }}
 };
 
 

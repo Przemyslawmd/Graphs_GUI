@@ -318,19 +318,29 @@ void Window::minSpanningTree()
 
 void Window::saveGraph()
 {
+    const auto& text = menu->getInputText(Action::FILE_INPUT);
+    if (text.getString().isEmpty()) {
+        setMessage(MessageStr.at(Message::NO_FILE_NAME));
+        return;
+    }
     IOFile iofile;
-    if (!iofile.saveGraph(model->getNodes(), model->getConnections())) {
-        setMessage("Write graph to file failed");
+    if (!iofile.saveGraph(model->getNodes(), model->getConnections(), text.getString())) {
+        setMessage(MessageStr.at(Message::WRITE_FILE_ERROR));
     }
 }
 
 
 void Window::readGraph()
 {
+    const auto& text = menu->getInputText(Action::FILE_INPUT);
+    if (text.getString().isEmpty()) {
+        setMessage(MessageStr.at(Message::NO_FILE_NAME));
+        return;
+    }
     removeGraph();
     IOFile iofile;
-    if (!iofile.readGraph()) {
-        setMessage("Read graph from file failed");
+    if (!iofile.readGraph(text.getString())) {
+        setMessage(MessageStr.at(Message::READ_FILE_ERROR));
         return;
     }
     const auto& nodesData = iofile.getNodesData();
