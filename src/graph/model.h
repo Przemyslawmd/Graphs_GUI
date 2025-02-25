@@ -19,16 +19,17 @@ public:
     std::tuple<Message, std::optional<char>> createNode(const sf::Text&);
     void createNodeFromFile(char key, size_t posX, size_t posY);
     std::unique_ptr<std::vector<char>> removeNodes();
-    std::vector<NodeGui>& getNodes();
-
-    std::optional<char> getSelectedNode();
-    std::tuple<std::optional<char>, std::optional<char>> getTwoSelectedNodes();
 
     std::tuple<Message, std::optional<ConnectionData>> createConnection(const sf::Text&);
     void createConnectionFromFile(char src, char dst, size_t weight);
+    std::unique_ptr<std::vector<std::tuple<char, char>>> removeConnections();
+
+    std::vector<NodeGui>& getNodes();
+    std::optional<char> getSelectedNode();
+    std::tuple<std::optional<char>, std::optional<char>> getTwoSelectedNodes();
     std::vector<Connection>& getConnections();
+
     void moveNodeConnections(char key);
-    std::tuple<Message, std::optional<char>, std::optional<char>> removeConnection();
 
     void colorPath(const std::vector<char>& path);
     void colorEdges(const std::vector<std::tuple<char, char>>& edges);
@@ -42,7 +43,6 @@ public:
 private:
     void moveConnection(Connection&);
     size_t countSelectedNodes();
-    size_t countSelectedConnections();
 
     std::vector<NodeGui> nodes;
     std::vector<Connection> connections;

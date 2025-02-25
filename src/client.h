@@ -20,7 +20,7 @@ public:
     void removeNodes(std::unique_ptr<std::vector<char>> keys);
 
     void addEdge(char src, char dst, size_t weight = 1);
-    void removeEdge(char src, char dst);
+    void removeEdges(std::unique_ptr<std::vector<std::tuple<char, char>>> edges);
 
     void removeGraph();
 

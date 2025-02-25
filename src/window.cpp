@@ -206,7 +206,7 @@ void Window::removeNodes()
 {
     auto keys = model->removeNodes();
     if (keys == nullptr) {
-        setMessage(MessageStr.at(Message::NODE_SELECT_AT_LEAST_ONE));
+        setMessage(MessageStr.at(Message::NODE_NOT_SELECTED));
         return;
     }
     client->removeNodes(std::move(keys));
@@ -234,12 +234,12 @@ void Window::createConnection()
 
 void Window::removeConnection()
 {
-    const auto [result, src, dst] = model->removeConnection();
-    if (result == Message::OK) {
-        client->removeEdge(src.value(), dst.value());
+    auto edges = model->removeConnections();
+    if (edges == nullptr) {
+        setMessage(MessageStr.at(Message::CONNECTION_NOT_SELECTED));
         return;
     }
-    setMessage(MessageStr.at(result));
+    client->removeEdges(std::move(edges));
 }
 
 

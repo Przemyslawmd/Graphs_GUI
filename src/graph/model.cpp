@@ -49,18 +49,78 @@ void Model::createNodeFromFile(char key, size_t posX, size_t posY)
 
 std::unique_ptr<std::vector<char>> Model::removeNodes()
 {
-    auto nodesToRemove = nodes | std::views::filter([](const auto& node) { return node.selected; });
-    if (nodesToRemove.empty()) {
+    auto nodesSelected = nodes | std::views::filter([](const auto& node) { return node.selected; });
+    if (nodesSelected.empty()) {
         return nullptr;
     }
 
-    auto keysToRemove = std::make_unique<std::vector<char>>();
-    for (auto& node : nodesToRemove) {
+    auto nodesToRemove = std::make_unique<std::vector<char>>();
+    for (auto& node : nodesSelected) {
         std::erase_if(connections, [key = node.key](const auto& conn) { return conn.srcKey == key || conn.dstKey == key; });
         keys->giveBackKey(node.key);
-        keysToRemove->push_back(node.key);
+        nodesToRemove->push_back(node.key);
     }
     std::erase_if(nodes, [](const auto& node) { return node.selected; });
+    return std::move(nodesToRemove);
+}
+
+
+std::tuple<Message, std::optional<ConnectionData>> Model::createConnection(const sf::Text& text)
+{
+    if (countSelectedNodes() != 2) {
+        return { Message::NODE_SELECT_TWO, std::nullopt };
+    }
+    auto srcNode = std::find_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.selected; });
+    auto dstNode = std::find_if(nodes.rbegin(), nodes.rend(), [](const auto& node) { return node.selected; });
+    char srcKey = srcNode->key;
+    char dstKey = dstNode->key;
+
+    if (std::any_of(connections.begin(), connections.end(), [srcKey, dstKey](const auto& con) { return con.isMatch(srcKey, dstKey); })) {
+        return { Message::CONNECTION_EXISTS, std::nullopt };
+    }
+
+    const auto [result, weight] = getWeightFromString(text.getString());
+    if (result != Message::OK) {
+        return { result, std::nullopt };
+    }
+
+    sf::Vector2f srcPos = srcNode->circle.getPosition();
+    sf::Vector2f dstPos = dstNode->circle.getPosition();
+    float length = calculateConnectionLength(srcPos, dstPos);
+    auto& connection = connections.emplace_back(length, srcKey, dstKey);
+
+    connection.setCoordinates(srcPos, dstPos);
+    connection.text.setString(text.getString());
+    return { Message::OK, {{ srcKey, dstKey, weight }} };
+}
+
+
+void Model::createConnectionFromFile(char src, char dst, size_t weight)
+{
+    auto srcNode = std::find_if(nodes.begin(), nodes.end(), [src](const auto& node) { return node.key == src; });
+    auto dstNode = std::find_if(nodes.begin(), nodes.end(), [dst](const auto& node) { return node.key == dst; });
+
+    sf::Vector2f srcPos = srcNode->circle.getPosition();
+    sf::Vector2f dstPos = dstNode->circle.getPosition();
+    float length = calculateConnectionLength(srcPos, dstPos);
+    auto& connection = connections.emplace_back(length, srcNode->key, dstNode->key);
+    connection.setCoordinates(srcPos, dstPos);
+    connection.text.setString(std::to_string(weight));
+}
+
+
+std::unique_ptr<std::vector<std::tuple<char, char>>> Model::removeConnections()
+{
+    auto connsSelected = connections | std::views::filter([](const auto& conn) { return conn.selected; });
+    if (connsSelected.empty()) {
+        return nullptr;
+    }
+
+    auto keysToRemove = std::make_unique<std::vector<std::tuple<char, char>>>();
+    for (auto& conn : connsSelected) {
+        keysToRemove->emplace_back(conn.srcKey, conn.dstKey);
+    }
+    std::erase_if(connections, [](const auto& conn) { return conn.selected; });
     return std::move(keysToRemove);
 }
 
@@ -94,63 +154,6 @@ std::tuple<std::optional<char>, std::optional<char>> Model::getTwoSelectedNodes(
         return { node_1->key, node_2->key };
     }
     return { node_2->key, node_1->key };
-}
-
-
-std::tuple<Message, std::optional<ConnectionData>> Model::createConnection(const sf::Text& text)
-{
-    if (countSelectedNodes() != 2) {
-        return { Message::NODE_SELECT_TWO, std::nullopt };
-    }
-    auto srcNode = std::find_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.selected; });
-    auto dstNode = std::find_if(nodes.rbegin(), nodes.rend(), [](const auto& node) { return node.selected; });
-    char srcKey = srcNode->key;
-    char dstKey = dstNode->key;
-
-    if (std::any_of(connections.begin(), connections.end(), [srcKey, dstKey](const auto& con) { return con.isMatch(srcKey, dstKey); })) {
-        return { Message::CONNECTION_EXISTS, std::nullopt };
-    }
-
-    const auto [result, weight] = getWeightFromString(text.getString());
-    if (result != Message::OK) {
-        return { result, std::nullopt };
-    }
-
-    sf::Vector2f srcPos = srcNode->circle.getPosition();
-    sf::Vector2f dstPos = dstNode->circle.getPosition();
-    float length  = calculateConnectionLength(srcPos, dstPos);
-    auto& connection = connections.emplace_back( length, srcKey, dstKey);
-
-    connection.setCoordinates(srcPos, dstPos);
-    connection.text.setString(text.getString());
-    return { Message::OK, {{ srcKey, dstKey, weight }}};
-}
-
-
-void Model::createConnectionFromFile(char src, char dst, size_t weight)
-{
-    auto srcNode = std::find_if(nodes.begin(), nodes.end(), [src](const auto& node) { return node.key == src; });
-    auto dstNode = std::find_if(nodes.begin(), nodes.end(), [dst](const auto& node) { return node.key == dst; });
-
-    sf::Vector2f srcPos = srcNode->circle.getPosition();
-    sf::Vector2f dstPos = dstNode->circle.getPosition();
-    float length  = calculateConnectionLength(srcPos, dstPos);
-    auto& connection = connections.emplace_back( length, srcNode->key, dstNode->key);
-    connection.setCoordinates(srcPos, dstPos);
-    connection.text.setString(std::to_string(weight));
-}
-
-
-std::tuple<Message, std::optional<char>, std::optional<char>> Model::removeConnection()
-{
-    if (countSelectedConnections() != 1) {
-        return { Message::CONNECTION_SELECT_ONE, std::nullopt, std::nullopt };
-    }
-    auto conn = std::find_if(connections.begin(), connections.end(), [](const auto& conn) { return conn.selected; });
-    char src = conn->srcKey;
-    char dst = conn->dstKey;
-    connections.erase(conn);
-    return { Message::OK, src, dst };
 }
 
 
@@ -241,12 +244,6 @@ void Model::checkMouseOverConnection(const sf::Vector2i& mousePos)
 size_t Model::countSelectedNodes()
 {
     return std::count_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.selected; });
-};
-
-
-size_t Model::countSelectedConnections()
-{
-    return std::count_if(connections.begin(), connections.end(), [](const auto& conn) { return conn.selected; });
 };
 
 
