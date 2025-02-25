@@ -18,6 +18,7 @@ public:
 
     std::tuple<Message, std::optional<char>> createNode(const sf::Text&);
     void createNodeFromFile(char key, size_t posX, size_t posY);
+    std::unique_ptr<std::vector<char>> removeNodes();
     std::vector<NodeGui>& getNodes();
 
     std::optional<char> getSelectedNode();
@@ -33,7 +34,6 @@ public:
     void colorEdges(const std::vector<std::tuple<char, char>>& edges);
     void resetPath();
 
-    std::tuple<Message, std::optional<char>> removeNode();
     void removeAll();
 
     std::tuple<int, float, float> isMouseOverNode(const sf::Vector2i& position);

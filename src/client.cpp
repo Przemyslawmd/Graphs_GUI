@@ -10,15 +10,15 @@ Client::Client()
 }
 
 
-void Client::removeNode(char key)
-{
-    graphClient->removeNode(key);
-}
-
-
 void Client::addNode(char key)
 {
     graphClient->addNode(key);
+}
+
+
+void Client::removeNodes(std::unique_ptr<std::vector<char>> nodes)
+{
+    graphClient->removeNodes(nodes);
 }
 
 

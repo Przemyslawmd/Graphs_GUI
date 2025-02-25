@@ -204,12 +204,12 @@ void Window::createNode()
 
 void Window::removeNode()
 {
-    const auto [result, key] = model->removeNode();
-    if (result == Message::OK) {
-        client->removeNode(key.value());
+    auto keys = model->removeNodes();
+    if (keys == nullptr) {
+        setMessage(MessageStr.at(Message::NODE_SELECT_ONE));
         return;
     }
-    setMessage(MessageStr.at(result));
+    client->removeNodes(std::move(keys));
 }
 
 

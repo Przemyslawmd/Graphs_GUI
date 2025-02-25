@@ -17,7 +17,7 @@ public:
     Client();
 
     void addNode(char key);
-    void removeNode(char key);
+    void removeNodes(std::unique_ptr<std::vector<char>> keys);
 
     void addEdge(char src, char dst, size_t weight = 1);
     void removeEdge(char src, char dst);

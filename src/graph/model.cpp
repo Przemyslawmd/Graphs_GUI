@@ -47,6 +47,24 @@ void Model::createNodeFromFile(char key, size_t posX, size_t posY)
 }
 
 
+std::unique_ptr<std::vector<char>> Model::removeNodes()
+{
+    auto nodesToRemove = nodes | std::views::filter([](const auto& node) { return node.selected; });
+    if (nodesToRemove.empty()) {
+        return nullptr;
+    }
+
+    auto keysToRemove = std::make_unique<std::vector<char>>();
+    for (auto& node : nodesToRemove) {
+        std::erase_if(connections, [key = node.key](const auto& conn) { return conn.srcKey == key || conn.dstKey == key; });
+        keys->giveBackKey(node.key);
+        keysToRemove->push_back(node.key);
+    }
+    std::erase_if(nodes, [](const auto& node) { return node.selected; });
+    return std::move(keysToRemove);
+}
+
+
 std::vector<NodeGui>& Model::getNodes()
 {
     return nodes;
@@ -183,21 +201,6 @@ void Model::removeAll()
     nodes.clear();
     connections.clear();
     keys->restoreKeys();
-}
-
-
-std::tuple<Message, std::optional<char>> Model::removeNode()
-{
-    if (countSelectedNodes() != 1) {
-        return { Message::NODE_SELECT_ONE, std::nullopt };
-    }
-    auto node = std::find_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.selected; });
-    char key = node->key;
-
-    std::erase_if(nodes, [key](const auto& node) { return node.key == key; });
-    std::erase_if(connections, [key](const auto& conn) { return conn.srcKey == key || conn.dstKey == key; });
-    keys->giveBackKey(key);
-    return { Message::OK, key };
 }
 
 
