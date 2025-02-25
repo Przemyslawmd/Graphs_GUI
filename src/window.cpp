@@ -88,10 +88,10 @@ void Window::run()
 void Window::handleMousePress()
 {
     message.release();
-    menu->setInputFocus(false, false);
+    menu->setInputFocus(Action::NO_ACTION);
 
     sf::Vector2i position = sf::Mouse::getPosition(*window);
-    Action action = isOverActionMenu(position);
+    Action action = menu->isOverActionMenu(position);
     if (action != Action::NO_ACTION) {
         invokeAction(action);
         return;
@@ -155,12 +155,6 @@ void Window::invokeAction(Action action)
             break;
         case REMOVE_ALL:
             removeGraph();
-            break;
-        case NODE_INPUT:
-            menu->setInputFocus(true, false);
-            break;
-        case CONNECTION_INPUT:
-            menu->setInputFocus(false, true);
             break;
         case TRAVERSE_BFS:
             traverseBFS();

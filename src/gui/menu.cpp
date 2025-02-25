@@ -1,14 +1,17 @@
 
 #include "menu.h"
 
+#include "ranges"
+
 #include "services/font.h"
 
 
 void Menu::prepareMenu()
 {
+    using enum Action;
     auto& font = FontStore::getFont();
     for (const auto& [key, value] : actionData) {
-        if (key == Action::NODE_INPUT || key == Action::CONNECTION_INPUT) {
+        if (key == NODE_INPUT || key == CONNECTION_INPUT || key == FILE_INPUT) {
             inputs.emplace(key, Input{ value.width, MENU_HEIGHT, font });
             inputs.at(key).shape.setPosition({ value.posX, value.posY });
             inputs.at(key).text.setPosition({ value.posTitle, value.posY + 2.f });
@@ -35,10 +38,11 @@ std::map<Action, Input>& Menu::getInputs()
 }
 
 
-void Menu::setInputFocus(bool nodeInput, bool connectionInput)
+void Menu::setInputFocus(Action action)
 {
-    inputs.at(Action::NODE_INPUT).focus = nodeInput;
-    inputs.at(Action::CONNECTION_INPUT).focus = connectionInput;
+    for (auto& key : inputs | std::views::keys) {
+        inputs.at(key).focus = (key == action);
+    }
 }
 
 
@@ -57,5 +61,66 @@ void Menu::checkTextEvent(char letter)
     else if (inputs.at(CONNECTION_INPUT).focus) {
         inputs.at(CONNECTION_INPUT).updateText(letter);
     }
+    else if (inputs.at(FILE_INPUT).focus) {
+        inputs.at(FILE_INPUT).updateText(letter);
+    }
+}
+
+
+Action Menu::isOverActionMenu(const sf::Vector2i& pos)
+{
+    using enum Action;
+    if (isOverMenu(pos, actionData.at(NODE_INPUT))) {
+        setInputFocus(NODE_INPUT);
+        return NO_ACTION;
+    }
+    if (isOverMenu(pos, actionData.at(NODE_ADD))) {
+        return NODE_ADD;
+    }
+    if (isOverMenu(pos, actionData.at(NODE_REMOVE))) {
+        return NODE_REMOVE;
+    }
+    if (isOverMenu(pos, actionData.at(CONNECTION_ADD))) {
+        return CONNECTION_ADD;
+    }
+    if (isOverMenu(pos, actionData.at(CONNECTION_INPUT))) {
+        setInputFocus(CONNECTION_INPUT);
+        return NO_ACTION;
+    }
+    if (isOverMenu(pos, actionData.at(CONNECTION_REMOVE))) {
+        return CONNECTION_REMOVE;
+    }
+    if (isOverMenu(pos, actionData.at(REMOVE_ALL))) {
+        return REMOVE_ALL;
+    }
+    if (isOverMenu(pos, actionData.at(TRAVERSE_BFS))) {
+        return TRAVERSE_BFS;
+    }
+    if (isOverMenu(pos, actionData.at(TRAVERSE_DFS))) {
+        return TRAVERSE_DFS;
+    }
+    if (isOverMenu(pos, actionData.at(SHORTEST_PATH))) {
+        return SHORTEST_PATH;
+    }
+    if (isOverMenu(pos, actionData.at(RESET_PATH))) {
+        return RESET_PATH;
+    }
+    if (isOverMenu(pos, actionData.at(MIN_SPANNING_TREE))) {
+        return MIN_SPANNING_TREE;
+    }
+    if (isOverMenu(pos, actionData.at(RESET_TREE))) {
+        return RESET_TREE;
+    }
+    if (isOverMenu(pos, actionData.at(FILE_INPUT))) {
+        setInputFocus(FILE_INPUT);
+        return NO_ACTION;
+    }
+    if (isOverMenu(pos, actionData.at(SAVE_GRAPH))) {
+        return SAVE_GRAPH;
+    }
+    if (isOverMenu(pos, actionData.at(READ_GRAPH))) {
+        return READ_GRAPH;
+    }
+    return NO_ACTION;
 }
 
