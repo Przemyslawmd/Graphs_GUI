@@ -12,9 +12,11 @@
 #include "defines.h"
 #include "gui/button.h"
 #include "gui/input.h"
+#include "gui/radio.h"
 
 
 constexpr float MENU_HEIGHT = 22.f;
+constexpr float RADIO_HEIGHT = 12.f;
 constexpr float MENU_POS_Y_1 = 5.f;
 constexpr float MENU_POS_Y_2 = 35.f;
 
@@ -55,6 +57,8 @@ static const std::map<Action, Data> actionData =
     { Action::FILE_INPUT,        { 1080.f, 1085.f, MENU_POS_Y_1,  80.f,  std::nullopt,       ActionType::INPUT }},
     { Action::SAVE_GRAPH,        { 1162.f, 1175.f, MENU_POS_Y_1, 100.f, "Save Graph",        ActionType::BUTTON }},
     { Action::READ_GRAPH,        { 1162.f, 1175.f, MENU_POS_Y_2, 100.f, "Read Graph",        ActionType::BUTTON }},
+    { Action::RADIO_UNDIRECTED,  { 1310.f, 1335.f, MENU_POS_Y_1,  7.f,  "Undirected",        ActionType::RADIO }},
+    { Action::RADIO_DIRECTED,    { 1310.f, 1335.f, MENU_POS_Y_2,  7.f,  "Directed",          ActionType::RADIO }},
 };
 
 
@@ -73,6 +77,7 @@ public:
 
     const std::vector<Button>& getButtons() const;
     std::map<Action, Input>& getInputs();
+    std::map<Action, Radio>& getRadio();
 
     void setInputFocus(Action);
 
@@ -82,6 +87,7 @@ public:
 private:
     std::vector<Button> buttons;
     std::map<Action, Input> inputs;
+    std::map<Action, Radio> radio;
 };
 
 #endif

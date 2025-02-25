@@ -77,6 +77,9 @@ void Window::run()
             input.checkFocus();
             window->draw(input);
         }
+        for (auto& radio : menu->getRadio() | std::views::values) {
+            window->draw(radio);
+        }
         if (message) {
             window->draw(*message);
         }

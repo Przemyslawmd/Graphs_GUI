@@ -17,10 +17,15 @@ void Menu::prepareMenu()
             inputs.at(key).text.setPosition({ value.posTitle, value.posY + 2.f });
             inputs.at(key).vertical.setPosition({ value.posTitle, value.posY + 2.f });
         }
-        else {
+        else if (value.type == BUTTON) {
             auto& button = buttons.emplace_back( value.width, MENU_HEIGHT, font, value.title.value());
             button.shape.setPosition({ value.posX, value.posY });
             button.text.setPosition({ value.posTitle, value.posY + 2.f });
+        }
+        else {
+            radio.emplace(key, Radio{ value.width, font, value.title.value() });
+            radio.at(key).radio.setPosition({ value.posX, value.posY + 3 });
+            radio.at(key).text.setPosition({ value.posTitle, value.posY + 2.f });
         }
     }
 }
@@ -35,6 +40,12 @@ const std::vector<Button>& Menu::getButtons() const
 std::map<Action, Input>& Menu::getInputs()
 {
     return inputs;
+}
+
+
+std::map<Action, Radio>& Menu::getRadio()
+{
+    return radio;
 }
 
 

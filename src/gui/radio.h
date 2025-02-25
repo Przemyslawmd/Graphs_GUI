@@ -5,7 +5,7 @@
 #include <string>
 
 #include <SFML/Graphics/Font.hpp>
-#include <SFML/Graphics/CircleShape.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Text.hpp>
 
@@ -17,9 +17,10 @@ public:
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-    sf::CircleShape circle;
+    sf::RectangleShape radio;
     sf::Text text;
     bool selected;
 };
 
 #endif
+

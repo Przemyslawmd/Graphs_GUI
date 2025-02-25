@@ -57,6 +57,5 @@ enum class Action
     NO_ACTION
 };
 
-
 #endif
 

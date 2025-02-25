@@ -40,6 +40,5 @@ static const std::map<Message, std::string> MessageStr =
     { Message::WRITE_FILE_ERROR,             { "Writing graph file error" }}
 };
 
-
 #endif
 
