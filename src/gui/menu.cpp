@@ -8,10 +8,10 @@
 
 void Menu::prepareMenu()
 {
-    using enum Action;
+    using enum ActionType;
     auto& font = FontStore::getFont();
     for (const auto& [key, value] : actionData) {
-        if (key == NODE_INPUT || key == CONNECTION_INPUT || key == FILE_INPUT) {
+        if (value.type == INPUT) {
             inputs.emplace(key, Input{ value.width, MENU_HEIGHT, font });
             inputs.at(key).shape.setPosition({ value.posX, value.posY });
             inputs.at(key).text.setPosition({ value.posTitle, value.posY + 2.f });
