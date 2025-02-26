@@ -12,22 +12,23 @@ void Menu::prepareMenu()
     auto& font = FontStore::getFont();
     for (const auto& [key, value] : actionData) {
         if (value.type == INPUT) {
-            inputs.emplace(key, Input{ value.width, MENU_HEIGHT, font });
+            inputs.emplace(key, Input{ value.width, value.height, font });
             inputs.at(key).shape.setPosition({ value.posX, value.posY });
             inputs.at(key).text.setPosition({ value.posTitle, value.posY + 2.f });
             inputs.at(key).vertical.setPosition({ value.posTitle, value.posY + 2.f });
         }
         else if (value.type == BUTTON) {
-            auto& button = buttons.emplace_back( value.width, MENU_HEIGHT, font, value.title.value());
+            auto& button = buttons.emplace_back( value.width, value.height, font, value.title.value());
             button.shape.setPosition({ value.posX, value.posY });
             button.text.setPosition({ value.posTitle, value.posY + 2.f });
         }
         else {
-            radio.emplace(key, Radio{ value.width, font, value.title.value() });
+            radio.emplace(key, Radio{ value.width, value.height, font, value.title.value() });
             radio.at(key).radio.setPosition({ value.posX, value.posY + 3 });
             radio.at(key).text.setPosition({ value.posTitle, value.posY + 2.f });
         }
     }
+    radio.at(Action::RADIO_UNDIRECTED).changeSelect();
 }
 
 
@@ -46,35 +47,6 @@ std::map<Action, Input>& Menu::getInputs()
 std::map<Action, Radio>& Menu::getRadio()
 {
     return radio;
-}
-
-
-void Menu::setInputFocus(Action action)
-{
-    for (auto& key : inputs | std::views::keys) {
-        inputs.at(key).focus = (key == action);
-    }
-}
-
-
-sf::Text& Menu::getInputText(Action action)
-{
-    return inputs.at(action).text;
-}
-
-
-void Menu::checkTextEvent(char letter)
-{
-    using enum Action;
-    if (inputs.at(NODE_INPUT).focus) {
-        inputs.at(NODE_INPUT).updateText(letter);
-    }
-    else if (inputs.at(CONNECTION_INPUT).focus) {
-        inputs.at(CONNECTION_INPUT).updateText(letter);
-    }
-    else if (inputs.at(FILE_INPUT).focus) {
-        inputs.at(FILE_INPUT).updateText(letter);
-    }
 }
 
 
@@ -132,6 +104,46 @@ Action Menu::isOverActionMenu(const sf::Vector2i& pos)
     if (isOverMenu(pos, actionData.at(READ_GRAPH))) {
         return READ_GRAPH;
     }
+    if (isOverMenu(pos, actionData.at(RADIO_UNDIRECTED))) {
+        radio.at(RADIO_UNDIRECTED).changeSelect();
+        radio.at(RADIO_DIRECTED).changeSelect();
+        return NO_ACTION;
+    }
+    if (isOverMenu(pos, actionData.at(RADIO_DIRECTED))) {
+        radio.at(RADIO_DIRECTED).changeSelect();
+        radio.at(RADIO_UNDIRECTED).changeSelect();
+        return NO_ACTION;
+    }
+
     return NO_ACTION;
+}
+
+
+void Menu::setInputFocus(Action action)
+{
+    for (auto& key : inputs | std::views::keys) {
+        inputs.at(key).focus = (key == action);
+    }
+}
+
+
+sf::Text& Menu::getInputText(Action action)
+{
+    return inputs.at(action).text;
+}
+
+
+void Menu::checkTextEvent(char letter)
+{
+    using enum Action;
+    if (inputs.at(NODE_INPUT).focus) {
+        inputs.at(NODE_INPUT).updateText(letter);
+    }
+    else if (inputs.at(CONNECTION_INPUT).focus) {
+        inputs.at(CONNECTION_INPUT).updateText(letter);
+    }
+    else if (inputs.at(FILE_INPUT).focus) {
+        inputs.at(FILE_INPUT).updateText(letter);
+    }
 }
 

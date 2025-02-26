@@ -13,9 +13,11 @@
 class Radio : public sf::Drawable
 {
 public:
-    Radio(float radius, sf::Font& font, const std::string& title);
+    Radio(float width, float height, sf::Font& font, const std::string& title);
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+    void changeSelect();
 
     sf::RectangleShape radio;
     sf::Text text;
