@@ -9,7 +9,7 @@ constexpr size_t INITIAL_NODE_Y = 75;
 constexpr size_t CIRCLE_POINTS = 100;
 
 
-NodeGui::NodeGui(char key) : circle{ NODE_RADIUS, CIRCLE_POINTS }, selected{ false }, text{ FontStore::getFont() }, key{ key }
+NodeGui::NodeGui(char key) : circle{ NODE_RADIUS, 100 }, selected{ false }, text{ FontStore::getFont() }, key{ key }
 {
     circle.setFillColor({ RED, GREEN, BLUE });
     text.setFillColor(sf::Color::Black);

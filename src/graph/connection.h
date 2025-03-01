@@ -2,6 +2,7 @@
 #ifndef GUI_GRAPHS_CONNECTION_H
 #define GUI_GRAPHS_CONNECTION_H
 
+#include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -29,10 +30,12 @@ public:
     void changeSelect();
 
     sf::RectangleShape line;
+    sf::CircleShape arrow;
     sf::Text text;
     char srcKey;
     char dstKey;
     bool selected;
+    float len;
 };
 
 #endif
