@@ -25,8 +25,12 @@ public:
 
     void setCoordinates(sf::Vector2f& srcPos, sf::Vector2f& dstPos);
 
-    bool isMatch(char node_1, char node_2) const;
+    void colorConnection();
+    void resetColor();
     bool isColor() const;
+
+    bool isMatch(char node_1, char node_2) const;
+
     void changeSelect();
 
     sf::RectangleShape line;

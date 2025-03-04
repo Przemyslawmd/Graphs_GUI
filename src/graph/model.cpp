@@ -178,9 +178,11 @@ std::vector<Connection>& Model::getConnections()
 void Model::colorPath(const std::vector<char>& path)
 {
     for (size_t i = 0; i < path.size() - 1; i++) {
-        auto it = std::find_if(connections.begin(), connections.end(), [src = path[i], dst = path[i + 1]](const auto& con)
-                              { return con.isMatch(src, dst); });
-        it->line.setFillColor(sf::Color::Red);
+        auto it = std::ranges::find_if(connections, [src = path[i], dst = path[i + 1]](const auto& con)
+                                      { return con.isMatch(src, dst); });
+        if (it != connections.end()) {
+            it->colorConnection();
+        }
     }
 }
 
@@ -188,9 +190,11 @@ void Model::colorPath(const std::vector<char>& path)
 void Model::colorEdges(const std::vector<std::tuple<char, char>>& edges)
 {
     for (const auto& edge : edges) {
-        auto it = std::find_if(connections.begin(), connections.end(), [src = std::get<0>(edge), dst = std::get<1>(edge)](const auto& con)
-            { return con.isMatch(src, dst); });
-        it->line.setFillColor(sf::Color::Red);
+        auto it = std::ranges::find_if(connections, [src = std::get<0>(edge), dst = std::get<1>(edge)](const auto& con)
+                                      { return con.isMatch(src, dst); });
+        if (it != connections.end()) {
+            it->colorConnection();
+        }
     }
 }
 
@@ -198,7 +202,7 @@ void Model::colorEdges(const std::vector<std::tuple<char, char>>& edges)
 void Model::resetPath()
 {
     for (auto& conn : connections | std::views::filter([](const auto& conn) { return conn.isColor(); })) {
-        conn.line.setFillColor({ RED, GREEN, BLUE });
+        conn.resetColor();
     }
 }
 

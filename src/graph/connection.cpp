@@ -67,6 +67,24 @@ bool Connection::isMatch(char key_1, char key_2) const
 }
 
 
+void Connection::colorConnection()
+{
+    line.setFillColor(sf::Color::Red);
+    if (directed) {
+        arrow.setFillColor(sf::Color::Red);
+    }
+}
+
+
+void Connection::resetColor()
+{
+    line.setFillColor({ RED, GREEN, BLUE });
+    if (directed) {
+        arrow.setFillColor({ RED, GREEN, BLUE });
+    }
+}
+
+
 bool Connection::isColor() const
 {
     return line.getFillColor() == sf::Color::Red;
