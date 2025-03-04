@@ -2,6 +2,8 @@
 #ifndef GUI_GRAPHS_UTILS_H
 #define GUI_GRAPHS_UTILS_H
 
+#include <cmath>
+
 #include "message.h"
 
 constexpr float PI = 3.14159265;
@@ -77,6 +79,18 @@ static std::tuple<Message, size_t> getWeightFromString(const std::string& text)
         weight = weight * 10 + c - '0';
     }
     return { Message::OK, weight };
+}
+
+
+static float getSine(float angle)
+{
+    return sin(PI / 180.f * angle);
+}
+
+
+static float getCosine(float angle)
+{
+    return cos(PI / 180.f * angle);
 }
 
 #endif

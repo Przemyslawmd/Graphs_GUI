@@ -61,17 +61,15 @@ void Window::run()
         }
         window->clear(sf::Color::White);
 
-        for (const auto& button : menu->getButtons()) {
-            window->draw(button);
-        }
-
-        for (const auto& node : model->getNodes()) {
-            window->draw(node);
-        }
         for (const auto& connection : model->getConnections()) {
             window->draw(connection);
         }
-
+        for (const auto& node : model->getNodes()) {
+            window->draw(node);
+        }
+        for (const auto& button : menu->getButtons()) {
+            window->draw(button);
+        }
         for (const auto& line : lines->getLines() | std::views::values) {
             window->draw(line);
         }

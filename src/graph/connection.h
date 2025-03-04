@@ -23,7 +23,7 @@ public:
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-    void setCoordinates(const sf::Vector2f& srcPos, const sf::Vector2f& dstPos);
+    void setCoordinates(sf::Vector2f& srcPos, sf::Vector2f& dstPos);
 
     bool isMatch(char node_1, char node_2) const;
     bool isColor() const;
@@ -35,7 +35,7 @@ public:
     char srcKey;
     char dstKey;
     bool selected;
-    float len;
+    bool directed;
 };
 
 #endif
