@@ -48,6 +48,8 @@ private:
     std::vector<Connection> connections;
 
     std::unique_ptr<Keys> keys;
+
+    bool directed;
 };
 
 #endif 

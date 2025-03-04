@@ -9,12 +9,12 @@ constexpr size_t LINE_WIDTH = 3;
 constexpr size_t ARROW_RADIUS = 10;
 
 
-Connection::Connection(float length, char src, char dst) : line{ sf::Vector2f{ length, LINE_WIDTH }}, 
-                                                           srcKey{ src }, dstKey{ dst }, 
-                                                           text{ FontStore::getFont() }, 
-                                                           arrow{ ARROW_RADIUS, 3 },
-                                                           selected{ false },
-                                                           directed{ true }
+Connection::Connection(float length, char src, char dst, bool isDirected) : line{ sf::Vector2f{ length, LINE_WIDTH }}, 
+                                                                            srcKey{ src }, dstKey{ dst }, 
+                                                                            text{ FontStore::getFont() }, 
+                                                                            arrow{ ARROW_RADIUS, 3 },
+                                                                            selected{ false },
+                                                                            directed{ isDirected }
 {
     line.setFillColor({ RED, GREEN, BLUE });
     line.setOutlineColor(sf::Color::Black);
@@ -41,7 +41,7 @@ void Connection::setCoordinates(sf::Vector2f& srcPos, sf::Vector2f& dstPos)
     float angle = calculateAngle(srcPos, dstPos);
     line.setRotation(sf::degrees(angle));
     sf::FloatRect bound = line.getGlobalBounds();
-    text.setPosition({ bound.getCenter().x, bound.getCenter().y - 15   });
+    text.setPosition({ bound.getCenter().x, bound.getCenter().y - 15 });
 
     if (!directed) {
         return;

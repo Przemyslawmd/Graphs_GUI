@@ -19,7 +19,7 @@ struct ConnectionData
 class Connection : public sf::Drawable
 {
 public:
-    Connection(float length, char src, char dst);
+    Connection(float length, char src, char dst, bool directed);
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

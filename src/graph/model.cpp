@@ -6,6 +6,7 @@
 
 #include "utils.h"
 #include "defines.h"
+#include "services/directed.h"
 
 
 Model::Model()
@@ -35,6 +36,9 @@ std::tuple<Message, std::optional<char>> Model::createNode(const sf::Text& text)
     }
 
     auto& node = nodes.emplace_back(key);
+    if (nodes.size() == 1) {
+        directed = Directed::isDirected();
+    }
     return { Message::OK, node.key };
 };
 
@@ -87,7 +91,7 @@ std::tuple<Message, std::optional<ConnectionData>> Model::createConnection(const
     sf::Vector2f srcPos = srcNode->circle.getPosition();
     sf::Vector2f dstPos = dstNode->circle.getPosition();
     float length = calculateConnectionLength(srcPos, dstPos);
-    auto& connection = connections.emplace_back(length, srcKey, dstKey);
+    auto& connection = connections.emplace_back(length, srcKey, dstKey, directed);
 
     connection.setCoordinates(srcPos, dstPos);
     connection.text.setString(text.getString());
@@ -103,7 +107,7 @@ void Model::createConnectionFromFile(char src, char dst, size_t weight)
     sf::Vector2f srcPos = srcNode->circle.getPosition();
     sf::Vector2f dstPos = dstNode->circle.getPosition();
     float length = calculateConnectionLength(srcPos, dstPos);
-    auto& connection = connections.emplace_back(length, srcNode->key, dstNode->key);
+    auto& connection = connections.emplace_back(length, srcNode->key, dstNode->key, directed);
     connection.setCoordinates(srcPos, dstPos);
     connection.text.setString(std::to_string(weight));
 }

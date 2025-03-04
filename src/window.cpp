@@ -69,7 +69,7 @@ void Window::run()
         }
         for (const auto& button : menu->getButtons()) {
             window->draw(button);
-        }
+        } 
         for (const auto& line : lines->getLines() | std::views::values) {
             window->draw(line);
         }
