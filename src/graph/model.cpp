@@ -74,12 +74,15 @@ std::tuple<Message, std::optional<ConnectionData>> Model::createConnection(const
     if (countSelectedNodes() != 2) {
         return { Message::NODE_SELECT_TWO, std::nullopt };
     }
-    auto srcNode = std::find_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.selected; });
-    auto dstNode = std::find_if(nodes.rbegin(), nodes.rend(), [](const auto& node) { return node.selected; });
-    char srcKey = srcNode->key;
-    char dstKey = dstNode->key;
+    auto node_1 = std::find_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.selected; });
+    auto node_2 = (std::find_if(nodes.rbegin(), nodes.rend(), [](const auto& node) { return node.selected; }) + 1).base();
 
-    if (std::any_of(connections.begin(), connections.end(), [srcKey, dstKey](const auto& con) { return con.isMatch(srcKey, dstKey); })) {
+    auto src = node_1->selectTime < node_2->selectTime ? node_1 : node_2;
+    auto dst = src == node_1 ? node_2 : node_1;
+
+    char srcKey = src->key;
+    char dstKey = dst->key;
+    if (std::any_of(connections.begin(), connections.end(), [srcKey, dstKey](const auto& conn) { return conn.isMatch(srcKey, dstKey); })) {
         return { Message::CONNECTION_EXISTS, std::nullopt };
     }
 
@@ -88,11 +91,11 @@ std::tuple<Message, std::optional<ConnectionData>> Model::createConnection(const
         return { result, std::nullopt };
     }
 
-    sf::Vector2f srcPos = srcNode->circle.getPosition();
-    sf::Vector2f dstPos = dstNode->circle.getPosition();
+    sf::Vector2f srcPos = src->circle.getPosition();
+    sf::Vector2f dstPos = dst->circle.getPosition();
     float length = calculateConnectionLength(srcPos, dstPos);
-    auto& connection = connections.emplace_back(length, srcKey, dstKey, directed);
 
+    auto& connection = connections.emplace_back(length, srcKey, dstKey, directed);
     connection.setCoordinates(srcPos, dstPos);
     connection.text.setString(text.getString());
     return { Message::OK, {{ srcKey, dstKey, weight }} };
