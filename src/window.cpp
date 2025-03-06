@@ -105,7 +105,7 @@ void Window::handleMousePress()
         hold->activate(index, shiftX, shiftY);
         return;
     }
-    model->checkMouseOverConnection(position);
+    model->isMouseOverConnection(position);
 }
 
 
@@ -257,7 +257,7 @@ void Window::callClientBFS(char key)
 
 void Window::traverseBFS()
 {
-    const auto key = model->getSelectedNode();
+    const auto key = model->getSelectedNodeKey();
     if (key.has_value()) {
         std::thread th(&Window::callClientBFS, this, key.value());
         th.detach();
@@ -276,7 +276,7 @@ void Window::callClientDFS(char key)
 
 void Window::traverseDFS()
 {
-    const auto key = model->getSelectedNode();
+    const auto key = model->getSelectedNodeKey();
     if (key.has_value()) {
         std::thread th(&Window::callClientDFS, this, key.value());
         th.detach();
@@ -299,7 +299,7 @@ void Window::callClientShortestPath(char src, char dst)
 
 void Window::shortestPath()
 {
-    const auto [src, dst] = model->getTwoSelectedNodes();
+    const auto [src, dst] = model->getTwoSelectedNodesKeys();
     if (!src.has_value() || !dst.has_value()) {
         setMessage(MessageStr.at(Message::NODE_SELECT_TWO));
         return;

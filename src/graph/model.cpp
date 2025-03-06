@@ -36,7 +36,7 @@ std::tuple<Message, std::optional<char>> Model::createNode(const sf::Text& text)
     }
 
     auto& node = nodes.emplace_back(key);
-    if (checkTypeChange()) {
+    if (isTypeChanged()) {
         return { Message::RESET_GRAPH, node.key };
     }
     return { Message::OK, node.key };
@@ -138,7 +138,7 @@ std::vector<NodeGui>& Model::getNodes()
 }
 
 
-std::optional<char> Model::getSelectedNode()
+std::optional<char> Model::getSelectedNodeKey()
 {
     if (countSelectedNodes() != 1) {
         return std::nullopt;
@@ -148,7 +148,7 @@ std::optional<char> Model::getSelectedNode()
 }
 
 
-std::tuple<std::optional<char>, std::optional<char>> Model::getTwoSelectedNodes()
+std::tuple<std::optional<char>, std::optional<char>> Model::getTwoSelectedNodesKeys()
 {
     if (countSelectedNodes() != 2) {
         return { std::nullopt, std::nullopt };
@@ -181,8 +181,8 @@ std::vector<Connection>& Model::getConnections()
 void Model::colorPath(const std::vector<char>& path)
 {
     for (size_t i = 0; i < path.size() - 1; i++) {
-        auto it = std::ranges::find_if(connections, [src = path[i], dst = path[i + 1]](const auto& con)
-                                      { return con.isMatch(src, dst); });
+        auto it = std::ranges::find_if(connections, [src = path[i], dst = path[i + 1]](const auto& conn)
+                                      { return conn.isMatch(src, dst); });
         if (it != connections.end()) {
             it->colorConnection();
         }
@@ -193,8 +193,8 @@ void Model::colorPath(const std::vector<char>& path)
 void Model::colorEdges(const std::vector<std::tuple<char, char>>& edges)
 {
     for (const auto& edge : edges) {
-        auto it = std::ranges::find_if(connections, [src = std::get<0>(edge), dst = std::get<1>(edge)](const auto& con)
-                                      { return con.isMatch(src, dst); });
+        auto it = std::ranges::find_if(connections, [src = std::get<0>(edge), dst = std::get<1>(edge)](const auto& conn)
+                                      { return conn.isMatch(src, dst); });
         if (it != connections.end()) {
             it->colorConnection();
         }
@@ -221,11 +221,9 @@ void Model::removeAll()
 std::tuple<int, float, float> Model::isMouseOverNode(const sf::Vector2i& mousePos)
 {
     for (size_t i = 0; i < nodes.size(); i++) {
-        const auto& shape = nodes[i].circle;
-        float radius = shape.getRadius();
-        sf::Vector2f circlePos = shape.getPosition();
-        float shiftX = mousePos.x - circlePos.x - radius;
-        float shiftY = mousePos.y - circlePos.y - radius;
+        float radius = nodes[i].circle.getRadius();
+        float shiftX = mousePos.x - nodes[i].getPositionX() - radius;
+        float shiftY = mousePos.y - nodes[i].getPositionY() - radius;
         int distance = sqrt(pow(shiftX, 2) + pow(shiftY, 2));
         if (distance <= radius) {
             return { i, shiftX, shiftY };
@@ -235,16 +233,14 @@ std::tuple<int, float, float> Model::isMouseOverNode(const sf::Vector2i& mousePo
 }
 
 
-void Model::checkMouseOverConnection(const sf::Vector2i& mousePos)
+void Model::isMouseOverConnection(const sf::Vector2i& mousePos)
 {
     for (auto& conn : connections) {
-        const auto& shape = conn.line;
-        sf::FloatRect rect = shape.getGlobalBounds();
-        if (rect.contains({ (float)mousePos.x, (float)mousePos.y })) {
-            if (matchAngles(shape.getRotation().asDegrees(), rect, mousePos.x, mousePos.y)) {
+        sf::FloatRect rect = conn.line.getGlobalBounds();
+        if (rect.contains({ (float) mousePos.x, (float) mousePos.y }) && 
+            matchAngles(conn.line.getRotation().asDegrees(), rect, mousePos.x, mousePos.y)) {
                 conn.changeSelect();
                 return;
-            }
         }
     }
 }
@@ -256,7 +252,7 @@ void Model::setDirected(bool isDirected)
 }
 
 
-bool Model::isDirected()
+bool Model::isDirected() const
 {
     return directed;
 }
@@ -278,18 +274,15 @@ void Model::moveConnection(Connection& connection)
     auto srcNode = std::find_if(nodes.begin(), nodes.end(), [src](const auto& node) { return node.key == src; });
     auto dstNode = std::find_if(nodes.begin(), nodes.end(), [dst](const auto& node) { return node.key == dst; });
 
-    sf::Vector2f srcPos = srcNode->circle.getPosition();
-    sf::Vector2f dstPos = dstNode->circle.getPosition();
+    sf::Vector2f srcPos{ srcNode->getPositionX(), srcNode->getPositionY() };
+    sf::Vector2f dstPos{ dstNode->getPositionX(), dstNode->getPositionY() };
     float length  = calculateConnectionLength(srcPos, dstPos);
-
-    auto& connectionLine = connection.line;
-    connectionLine.setSize({ length, 3 });
-
+    connection.setSize(length);
     connection.setCoordinates(srcPos, dstPos);
 }
 
 
-bool Model::checkTypeChange()
+bool Model::isTypeChanged()
 {
     if (nodes.size() == 1 && directed != Directed::isDirected()) {
         directed = !directed;

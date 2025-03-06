@@ -25,8 +25,8 @@ public:
     std::unique_ptr<std::vector<std::tuple<char, char>>> removeConnections();
 
     std::vector<NodeGui>& getNodes();
-    std::optional<char> getSelectedNode();
-    std::tuple<std::optional<char>, std::optional<char>> getTwoSelectedNodes();
+    std::optional<char> getSelectedNodeKey();
+    std::tuple<std::optional<char>, std::optional<char>> getTwoSelectedNodesKeys();
     std::vector<Connection>& getConnections();
 
     void moveNodeConnections(char key);
@@ -38,15 +38,15 @@ public:
     void removeAll();
 
     std::tuple<int, float, float> isMouseOverNode(const sf::Vector2i& position);
-    void checkMouseOverConnection(const sf::Vector2i& position);
+    void isMouseOverConnection(const sf::Vector2i& position);
 
     void setDirected(bool isDirected);
-    bool isDirected();
+    bool isDirected() const; 
 
 private:
     void moveConnection(Connection&);
     size_t countSelectedNodes();
-    bool checkTypeChange();
+    bool isTypeChanged();
 
     std::vector<NodeGui> nodes;
     std::vector<Connection> connections;

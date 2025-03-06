@@ -61,6 +61,12 @@ void Connection::setCoordinates(sf::Vector2f& srcPos, sf::Vector2f& dstPos)
 }
 
 
+void Connection::setSize(float length)
+{
+    line.setSize({ length, LINE_WIDTH });
+}
+
+
 bool Connection::isMatch(char key_1, char key_2) const
 {
     return (key_1 == srcKey && key_2 == dstKey) || (key_1 == dstKey && key_2 == srcKey);

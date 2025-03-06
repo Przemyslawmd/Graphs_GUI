@@ -24,12 +24,13 @@ public:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     void setCoordinates(sf::Vector2f& srcPos, sf::Vector2f& dstPos);
+    void setSize(float length);
 
     void colorConnection();
     void resetColor();
     bool isColor() const;
 
-    bool isMatch(char node_1, char node_2) const;
+    bool isMatch(char key_1, char key_2) const;
 
     void changeSelect();
 
