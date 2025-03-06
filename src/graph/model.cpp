@@ -91,14 +91,14 @@ std::tuple<Message, std::optional<ConnectionData>> Model::createConnection(const
         return { result, std::nullopt };
     }
 
-    sf::Vector2f srcPos = src->circle.getPosition();
-    sf::Vector2f dstPos = dst->circle.getPosition();
+    sf::Vector2f srcPos{ src->getPositionX(), src->getPositionY() };
+    sf::Vector2f dstPos{ dst->getPositionX(), dst->getPositionY() };
     float length = calculateConnectionLength(srcPos, dstPos);
 
     auto& connection = connections.emplace_back(length, srcKey, dstKey, directed);
     connection.setCoordinates(srcPos, dstPos);
     connection.text.setString(text.getString());
-    return { Message::OK, {{ srcKey, dstKey, weight }} };
+    return { Message::OK, {{ srcKey, dstKey, weight }}};
 }
 
 
@@ -107,8 +107,8 @@ void Model::createConnectionFromFile(char src, char dst, size_t weight)
     auto srcNode = std::find_if(nodes.begin(), nodes.end(), [src](const auto& node) { return node.key == src; });
     auto dstNode = std::find_if(nodes.begin(), nodes.end(), [dst](const auto& node) { return node.key == dst; });
 
-    sf::Vector2f srcPos = srcNode->circle.getPosition();
-    sf::Vector2f dstPos = dstNode->circle.getPosition();
+    sf::Vector2f srcPos{ srcNode->getPositionX(), srcNode->getPositionY() };
+    sf::Vector2f dstPos{ dstNode->getPositionX(), dstNode->getPositionY() };
     float length = calculateConnectionLength(srcPos, dstPos);
     auto& connection = connections.emplace_back(length, srcNode->key, dstNode->key, directed);
     connection.setCoordinates(srcPos, dstPos);
