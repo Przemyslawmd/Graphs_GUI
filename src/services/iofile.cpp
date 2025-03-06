@@ -7,14 +7,16 @@
 constexpr char delimiter = ',';
 
 
-bool IOFile::saveGraph(const std::vector<NodeGui>& nodes, const std::vector<Connection>& connections, const std::string& fileName)
+bool IOFile::saveGraph(const std::vector<NodeGui>& nodes, const std::vector<Connection>& connections, const std::string& fileName, bool isDirected)
 {
     std::fstream ofs;
     ofs.open(std::filesystem::current_path().append(fileName), std::ios::out);
     if (!ofs) {
         return false;
     }
-    
+
+    ofs << ((isDirected) ? "DIRECTED" : "UNDIRECTED") << "\n";
+
     for (const auto& node : nodes) {
         const auto& circle = node.circle;
         ofs << "N" << "," << node.key << "," << circle.getPosition().x << "," << circle.getPosition().y << "\n"; 
@@ -41,6 +43,17 @@ bool IOFile::readGraph(const std::string& fileName)
     ifs.close();
 
     std::string line;
+    std::getline(sstr, line);
+    if (line.compare("DIRECTED") == 0) {
+        directed = true;
+    }
+    else if (line.compare("UNDIRECTED") == 0) {
+        directed = false;
+    }
+    else {
+        return false;
+    }
+
     while (std::getline(sstr, line)) {
         char type = line[0]; 
         line.erase(0, 2);
@@ -124,5 +137,11 @@ const std::vector<NodeData>& IOFile::getNodesData()
 const std::vector<ConnectionData>& IOFile::getConnectionsData()
 {
     return connectionsData;
+}
+
+
+bool IOFile::isDirected()
+{
+    return directed;
 }
 

@@ -335,7 +335,7 @@ void Window::saveGraph()
         return;
     }
     IOFile iofile;
-    if (!iofile.saveGraph(model->getNodes(), model->getConnections(), text.getString())) {
+    if (!iofile.saveGraph(model->getNodes(), model->getConnections(), text.getString(), model->isDirected())) {
         setMessage(MessageStr.at(Message::WRITE_FILE_ERROR));
     }
 }
@@ -348,12 +348,22 @@ void Window::readGraph()
         setMessage(MessageStr.at(Message::NO_FILE_NAME));
         return;
     }
-    removeGraph();
+
     IOFile iofile;
     if (!iofile.readGraph(text.getString())) {
         setMessage(MessageStr.at(Message::READ_FILE_ERROR));
         return;
     }
+
+    bool directed = iofile.isDirected();
+    model->setDirected(directed);
+
+    model->removeAll();
+    model->setDirected(directed);
+    menu->setRadioSelect(directed);
+    Directed::setDirected(directed);
+    client->resetGraph(directed);
+
     const auto& nodesData = iofile.getNodesData();
     for (const auto& data : nodesData) {
         model->createNodeFromFile(data.key, data.posX, data.posY);

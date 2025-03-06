@@ -19,14 +19,14 @@ void Radio::draw(sf::RenderTarget& target, sf::RenderStates states) const
 }
 
 
-void Radio::changeSelect()
+void Radio::setSelect(bool newSelect)
 {
-    if (!selected) {
+    if (newSelect) {
         radio.setFillColor({ 00, 0xCC, 00 });
     }
     else {
         radio.setFillColor(sf::Color::White);
     }
-    selected = !selected;
+    selected = newSelect;
 }
 

@@ -17,7 +17,7 @@ public:
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-    void changeSelect();
+    void setSelect(bool);
 
     sf::RectangleShape radio;
     sf::Text text;

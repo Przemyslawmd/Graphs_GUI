@@ -41,6 +41,7 @@ public:
     void checkMouseOverConnection(const sf::Vector2i& position);
 
     void setDirected(bool isDirected);
+    bool isDirected();
 
 private:
     void moveConnection(Connection&);

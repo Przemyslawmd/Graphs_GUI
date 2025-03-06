@@ -29,7 +29,7 @@ void Menu::prepareMenu()
             radio.at(key).text.setPosition({ value.posTitle, value.posY + 2.f });
         }
     }
-    radio.at(Action::RADIO_UNDIRECTED).changeSelect();
+    radio.at(Action::RADIO_UNDIRECTED).setSelect(true);
 }
 
 
@@ -106,14 +106,14 @@ Action Menu::isOverActionMenu(const sf::Vector2i& pos)
         return READ_GRAPH;
     }
     if (isOverMenu(pos, actionData.at(RADIO_UNDIRECTED))) {
-        radio.at(RADIO_UNDIRECTED).changeSelect();
-        radio.at(RADIO_DIRECTED).changeSelect();
+        radio.at(RADIO_UNDIRECTED).setSelect(true);
+        radio.at(RADIO_DIRECTED).setSelect(false);
         Directed::setDirected(false);
         return NO_ACTION;
     }
     if (isOverMenu(pos, actionData.at(RADIO_DIRECTED))) {
-        radio.at(RADIO_DIRECTED).changeSelect();
-        radio.at(RADIO_UNDIRECTED).changeSelect();
+        radio.at(RADIO_DIRECTED).setSelect(true);
+        radio.at(RADIO_UNDIRECTED).setSelect(false);
         Directed::setDirected(true);
         return NO_ACTION;
     }
@@ -148,5 +148,13 @@ void Menu::checkTextEvent(char letter)
     else if (inputs.at(FILE_INPUT).focus) {
         inputs.at(FILE_INPUT).updateText(letter);
     }
+}
+
+
+void Menu::setRadioSelect(bool isDirected)
+{
+    radio.at(Action::RADIO_DIRECTED).setSelect(isDirected);
+    radio.at(Action::RADIO_UNDIRECTED).setSelect(!isDirected);
+    Directed::setDirected(isDirected);
 }
 

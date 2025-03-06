@@ -83,6 +83,8 @@ public:
     sf::Text& getInputText(Action);
     void checkTextEvent(char letter);
 
+    void setRadioSelect(bool isDirected);
+
 private:
     std::vector<Button> buttons;
     std::map<Action, Input> inputs;

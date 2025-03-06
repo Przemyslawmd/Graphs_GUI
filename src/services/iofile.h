@@ -19,16 +19,18 @@ struct NodeData
 class IOFile
 {
 public:
-    bool saveGraph(const std::vector<NodeGui>&, const std::vector<Connection>&, const std::string& fileName);
+    bool saveGraph(const std::vector<NodeGui>&, const std::vector<Connection>&, const std::string& fileName, bool isDirected);
     bool readGraph(const std::string& fileName);
 
     const std::vector<NodeData>& getNodesData();
     const std::vector<ConnectionData>& getConnectionsData();
+    bool isDirected();
 
 private:
     bool fillNodeData(std::string&);
     bool fillConnectionData(std::string&);
 
+    bool directed;
     std::vector<NodeData> nodesData;
     std::vector<ConnectionData> connectionsData;
 };
