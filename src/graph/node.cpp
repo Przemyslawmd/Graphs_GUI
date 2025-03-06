@@ -33,6 +33,18 @@ void NodeGui::setPosition(const sf::Vector2f& position)
 };
 
 
+float NodeGui::getPositionX() const
+{
+    return circle.getPosition().x;
+}
+
+
+float NodeGui::getPositionY() const
+{
+    return circle.getPosition().y;
+}
+
+
 void NodeGui::changeSelect()
 {
     if (!selected) {

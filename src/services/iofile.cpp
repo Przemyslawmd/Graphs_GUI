@@ -4,10 +4,15 @@
 #include <fstream>
 #include <filesystem>
 
-constexpr char delimiter = ',';
+constexpr char COMMA = ',';
+constexpr std::string_view DIRECTED = "DIRECTED";
+constexpr std::string_view UNDIRECTED = "UNDIRECTED";
 
 
-bool IOFile::saveGraph(const std::vector<NodeGui>& nodes, const std::vector<Connection>& connections, const std::string& fileName, bool isDirected)
+bool IOFile::saveGraph(const std::vector<NodeGui>& nodes, 
+                       const std::vector<Connection>& connections, 
+                       bool isDirected, 
+                       const std::string& fileName)
 {
     std::fstream ofs;
     ofs.open(std::filesystem::current_path().append(fileName), std::ios::out);
@@ -15,15 +20,14 @@ bool IOFile::saveGraph(const std::vector<NodeGui>& nodes, const std::vector<Conn
         return false;
     }
 
-    ofs << ((isDirected) ? "DIRECTED" : "UNDIRECTED") << "\n";
+    ofs << ((isDirected) ? DIRECTED : UNDIRECTED) << "\n";
 
     for (const auto& node : nodes) {
-        const auto& circle = node.circle;
-        ofs << "N" << "," << node.key << "," << circle.getPosition().x << "," << circle.getPosition().y << "\n"; 
+        ofs << 'N' << COMMA << node.key << COMMA << node.getPositionX() << COMMA << node.getPositionY() << "\n"; 
     }
     for (const auto& conn : connections) {
         const auto& weight = conn.text.getString().isEmpty() ? "1" : conn.text.getString().toAnsiString();
-        ofs << "C" << "," << conn.srcKey << "," << conn.dstKey << "," << weight << "\n"; 
+        ofs << 'C' << COMMA << conn.srcKey << COMMA << conn.dstKey << COMMA << weight << "\n"; 
     }
     ofs.close();
     return true;
@@ -44,10 +48,10 @@ bool IOFile::readGraph(const std::string& fileName)
 
     std::string line;
     std::getline(sstr, line);
-    if (line.compare("DIRECTED") == 0) {
+    if (line.compare(DIRECTED) == 0) {
         directed = true;
     }
-    else if (line.compare("UNDIRECTED") == 0) {
+    else if (line.compare(UNDIRECTED) == 0) {
         directed = false;
     }
     else {
@@ -80,7 +84,7 @@ bool IOFile::fillNodeData(std::string& line)
     char key = line[0];
     line.erase(0, 2);
 
-    size_t linePos = line.find(delimiter);
+    size_t linePos = line.find(COMMA);
     if (linePos == std::string::npos) {
         return false;
     }
@@ -92,7 +96,7 @@ bool IOFile::fillNodeData(std::string& line)
     }
     line.erase(0, linePos + 1);
 
-    linePos = line.find(delimiter);
+    linePos = line.find(COMMA);
     size_t nodePosY;
     try {
         nodePosY = stoi(line.substr(0, linePos));
@@ -110,7 +114,7 @@ bool IOFile::fillConnectionData(std::string& line)
     char src = line[0];
     line.erase(0, 2);
 
-    size_t posLine = line.find(delimiter);
+    size_t posLine = line.find(COMMA);
     if (posLine == std::string::npos) {
         return false;
     }
@@ -128,19 +132,19 @@ bool IOFile::fillConnectionData(std::string& line)
 }
 
 
-const std::vector<NodeData>& IOFile::getNodesData()
+const std::vector<NodeData>& IOFile::getNodesData() const
 {
     return nodesData;
 }
 
 
-const std::vector<ConnectionData>& IOFile::getConnectionsData()
+const std::vector<ConnectionData>& IOFile::getConnectionsData() const
 {
     return connectionsData;
 }
 
 
-bool IOFile::isDirected()
+bool IOFile::isDirected() const
 {
     return directed;
 }

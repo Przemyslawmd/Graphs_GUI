@@ -9,6 +9,14 @@
 #include <SFML/Graphics/Text.hpp>
 
 
+struct NodeData
+{
+    char key;
+    size_t posX;
+    size_t posY;
+};
+
+
 class NodeGui : public sf::Drawable
 {
 public:
@@ -17,6 +25,9 @@ public:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     void setPosition(const sf::Vector2f& position);
+    float getPositionX() const;
+    float getPositionY() const;
+
     void changeSelect();
 
     sf::CircleShape circle;

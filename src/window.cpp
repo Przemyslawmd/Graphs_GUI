@@ -335,7 +335,7 @@ void Window::saveGraph()
         return;
     }
     IOFile iofile;
-    if (!iofile.saveGraph(model->getNodes(), model->getConnections(), text.getString(), model->isDirected())) {
+    if (!iofile.saveGraph(model->getNodes(), model->getConnections(), model->isDirected(), text.getString())) {
         setMessage(MessageStr.at(Message::WRITE_FILE_ERROR));
     }
 }
@@ -356,8 +356,6 @@ void Window::readGraph()
     }
 
     bool directed = iofile.isDirected();
-    model->setDirected(directed);
-
     model->removeAll();
     model->setDirected(directed);
     menu->setRadioSelect(directed);
