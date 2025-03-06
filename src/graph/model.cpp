@@ -9,7 +9,7 @@
 #include "services/directed.h"
 
 
-Model::Model()
+Model::Model() : directed{ false }
 {
     keys = std::make_unique<Keys>();
 }
@@ -36,8 +36,8 @@ std::tuple<Message, std::optional<char>> Model::createNode(const sf::Text& text)
     }
 
     auto& node = nodes.emplace_back(key);
-    if (nodes.size() == 1) {
-        directed = Directed::isDirected();
+    if (checkTypeChange()) {
+        return { Message::RESET_GRAPH, node.key };
     }
     return { Message::OK, node.key };
 };
@@ -249,6 +249,13 @@ void Model::checkMouseOverConnection(const sf::Vector2i& mousePos)
     }
 }
 
+
+void Model::setDirected(bool isDirected)
+{
+    directed = isDirected;
+}
+
+
 /*****************************************************************************************************/
 /***************************************** PRIVATE ***************************************************/
 
@@ -273,5 +280,15 @@ void Model::moveConnection(Connection& connection)
     connectionLine.setSize({ length, 3 });
 
     connection.setCoordinates(srcPos, dstPos);
+}
+
+
+bool Model::checkTypeChange()
+{
+    if (nodes.size() == 1 && directed != Directed::isDirected()) {
+        directed = !directed;
+        return true;
+    }
+    return false;
 }
 

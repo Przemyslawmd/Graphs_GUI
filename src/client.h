@@ -22,7 +22,7 @@ public:
     void addEdge(char src, char dst, size_t weight = 1);
     void removeEdges(std::unique_ptr<std::vector<std::tuple<char, char>>> edges);
 
-    void removeGraph();
+    void resetGraph(bool isDirected);
 
     std::unique_ptr<std::vector<char>> BFS(char key);
     std::unique_ptr<std::vector<char>> DFS(char key);

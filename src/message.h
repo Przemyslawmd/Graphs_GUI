@@ -20,6 +20,7 @@ enum class Message
     NODE_SELECT_TWO,
     NO_FILE_NAME,
     READ_FILE_ERROR,
+    RESET_GRAPH,
     WRITE_FILE_ERROR,
 };
 

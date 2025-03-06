@@ -40,9 +40,12 @@ public:
     std::tuple<int, float, float> isMouseOverNode(const sf::Vector2i& position);
     void checkMouseOverConnection(const sf::Vector2i& position);
 
+    void setDirected(bool isDirected);
+
 private:
     void moveConnection(Connection&);
     size_t countSelectedNodes();
+    bool checkTypeChange();
 
     std::vector<NodeGui> nodes;
     std::vector<Connection> connections;

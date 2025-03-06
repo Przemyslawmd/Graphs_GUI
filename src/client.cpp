@@ -34,9 +34,9 @@ void Client::removeEdges(std::unique_ptr<std::vector<std::tuple<char, char>>> ed
 }
 
 
-void Client::removeGraph()
+void Client::resetGraph(bool isDirected)
 {
-    graphClient->resetGraph(false);
+    graphClient->resetGraph(isDirected);
 }
 
 

@@ -6,6 +6,7 @@
 
 #include <SFML/System/Vector2.hpp>
 
+#include "services/directed.h"
 #include "services/font.h"
 #include "services/iofile.h"
 
@@ -195,6 +196,12 @@ void Window::createNode()
         client->addNode(key.value());
         return;
     }
+    if (result == Message::RESET_GRAPH) {
+        bool isDirected = Directed::isDirected();
+        client->resetGraph(isDirected);
+        client->addNode(key.value());
+        return;
+    }
     setMessage(MessageStr.at(result));
 }
 
@@ -213,7 +220,8 @@ void Window::removeNodes()
 void Window::removeGraph()
 {
     model->removeAll();
-    client->removeGraph();
+    bool isDirected = Directed::isDirected();
+    client->resetGraph(isDirected);
 }
 
 
