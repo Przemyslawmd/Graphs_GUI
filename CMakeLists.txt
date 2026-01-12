@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.20)
 project(GRAPHS_GUI)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -9,7 +9,7 @@ configure_file(${PROJECT_SOURCE_DIR}/src/config.h.in ${PROJECT_SOURCE_DIR}/src/c
 include(FetchContent)
 FetchContent_Declare(SFML
     GIT_REPOSITORY https://github.com/SFML/SFML.git
-    GIT_TAG 3.0.0
+    GIT_TAG 3.0.2
     GIT_SHALLOW ON
     EXCLUDE_FROM_ALL
     SYSTEM)

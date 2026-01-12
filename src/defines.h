@@ -35,6 +35,7 @@ enum class Line
 
 enum class Action
 {
+    COLOR,
     CONNECTION_ADD,
     CONNECTION_INPUT,
     CONNECTION_REMOVE,
@@ -47,6 +48,7 @@ enum class Action
     REMOVE_ALL,
     RADIO_DIRECTED,
     RADIO_UNDIRECTED,
+    RESET_COLOR,
     RESET_PATH,
     RESET_TREE,
     SAVE_GRAPH,
