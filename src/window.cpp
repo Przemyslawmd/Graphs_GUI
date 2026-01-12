@@ -178,6 +178,9 @@ void Window::invokeAction(Action action)
         case RESET_TREE:
             model->resetPath();
             break;
+        case COLOR:
+            colorGraph();
+            break;
         case SAVE_GRAPH:
             saveGraph();
             break;
@@ -248,18 +251,11 @@ void Window::removeConnection()
 }
 
 
-void Window::callClientBFS(char key)
-{
-    auto sequence = client->BFS(key);
-    setMessage("BFS sequence: " + std::string(sequence->begin(), sequence->end()));
-}
-
-
 void Window::traverseBFS()
 {
     const auto key = model->getSelectedNodeKey();
     if (key.has_value()) {
-        std::thread th(&Window::callClientBFS, this, key.value());
+        std::thread th(&Window::callBFS, this, key.value());
         th.detach();
         return;
     }
@@ -267,10 +263,10 @@ void Window::traverseBFS()
 }
 
 
-void Window::callClientDFS(char key)
+void Window::callBFS(char key)
 {
-    auto sequence = client->DFS(key);
-    setMessage("DFS sequence: " + std::string(sequence->begin(), sequence->end()));
+    auto sequence = client->BFS(key);
+    setMessage("BFS sequence: " + std::string(sequence->begin(), sequence->end()));
 }
 
 
@@ -278,7 +274,7 @@ void Window::traverseDFS()
 {
     const auto key = model->getSelectedNodeKey();
     if (key.has_value()) {
-        std::thread th(&Window::callClientDFS, this, key.value());
+        std::thread th(&Window::callDFS, this, key.value());
         th.detach();
         return;
     }
@@ -286,14 +282,10 @@ void Window::traverseDFS()
 }
 
 
-void Window::callClientShortestPath(char src, char dst)
+void Window::callDFS(char key)
 {
-    auto sequence = client->shortestPath(src, dst);
-    if (sequence == nullptr) {
-        setMessage(client->getLastErrorMessage());
-        return;
-    }
-    model->colorPath(*sequence);
+    auto sequence = client->DFS(key);
+    setMessage("DFS sequence: " + std::string(sequence->begin(), sequence->end()));
 }
 
 
@@ -304,12 +296,30 @@ void Window::shortestPath()
         setMessage(MessageStr.at(Message::NODE_SELECT_TWO));
         return;
     }
-    std::thread th(&Window::callClientShortestPath, this, src.value(), dst.value());
+    std::thread th(&Window::callShortestPath, this, src.value(), dst.value());
     th.detach();
 };
 
 
-void Window::callClientMinSpanningTree()
+void Window::callShortestPath(char src, char dst)
+{
+    auto sequence = client->shortestPath(src, dst);
+    if (sequence == nullptr) {
+        setMessage(client->getLastErrorMessage());
+        return;
+    }
+    model->colorPath(*sequence);
+}
+
+
+void Window::minSpanningTree()
+{
+    std::thread th(&Window::callMinSpanningTree, this);
+    th.detach();
+};
+
+
+void Window::callMinSpanningTree()
 {
     auto edges = client->minSpanningTree();
     if (edges == nullptr) {
@@ -320,11 +330,16 @@ void Window::callClientMinSpanningTree()
 }
 
 
-void Window::minSpanningTree()
+void Window::colorGraph()
 {
-    std::thread th(&Window::callClientMinSpanningTree, this);
+    std::thread th(&Window::callColorGraph, this);
     th.detach();
 };
+
+
+void Window::callColorGraph()
+{
+}
 
 
 void Window::saveGraph()

@@ -40,17 +40,21 @@ private:
     void removeGraph();
     void createConnection();
     void removeConnection();
+
     void traverseBFS();
     void traverseDFS();
     void shortestPath();
     void minSpanningTree();
+    void colorGraph();
+
     void saveGraph();
     void readGraph();
 
-    void callClientBFS(char key);
-    void callClientDFS(char key);
-    void callClientShortestPath(char src, char dst);
-    void callClientMinSpanningTree();
+    void callBFS(char key);
+    void callDFS(char key);
+    void callShortestPath(char src, char dst);
+    void callMinSpanningTree();
+    void callColorGraph();
 
     std::unique_ptr<sf::RenderWindow> window;
     std::unique_ptr<Menu> menu;
