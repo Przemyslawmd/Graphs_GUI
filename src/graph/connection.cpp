@@ -2,11 +2,13 @@
 #include "connection.h"
 
 #include "utils.h"
+#include "colors.h"
 #include "defines.h"
 #include "services/font.h"
 
 constexpr size_t LINE_WIDTH = 3;
 constexpr size_t ARROW_RADIUS = 10;
+constexpr size_t DEFAULT_COLOR = 0;
 
 
 Connection::Connection(float length, char src, char dst, bool isDirected) : line{ sf::Vector2f{ length, LINE_WIDTH }}, 
@@ -16,9 +18,9 @@ Connection::Connection(float length, char src, char dst, bool isDirected) : line
                                                                             selected{ false },
                                                                             directed{ isDirected }
 {
-    line.setFillColor({ RED, GREEN, BLUE });
+    line.setFillColor({ colors.at(DEFAULT_COLOR).R, colors.at(DEFAULT_COLOR).G, colors.at(DEFAULT_COLOR).B });
     line.setOutlineColor(sf::Color::Black);
-    arrow.setFillColor({ RED, GREEN, BLUE });
+    arrow.setFillColor({ colors.at(DEFAULT_COLOR).R, colors.at(DEFAULT_COLOR).G, colors.at(DEFAULT_COLOR).B });
     arrow.setOutlineColor(sf::Color::Black);
     text.setFillColor(sf::Color::Black);
     text.setCharacterSize(14);
@@ -84,9 +86,9 @@ void Connection::colorConnection()
 
 void Connection::resetColor()
 {
-    line.setFillColor({ RED, GREEN, BLUE });
+    line.setFillColor({ colors.at(DEFAULT_COLOR).R, colors.at(DEFAULT_COLOR).G, colors.at(DEFAULT_COLOR).B });
     if (directed) {
-        arrow.setFillColor({ RED, GREEN, BLUE });
+        arrow.setFillColor({ colors.at(DEFAULT_COLOR).R, colors.at(DEFAULT_COLOR).G, colors.at(DEFAULT_COLOR).B });
     }
 }
 

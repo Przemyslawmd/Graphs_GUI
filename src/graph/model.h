@@ -34,6 +34,7 @@ public:
     void colorPath(const std::vector<char>& path);
     void colorEdges(const std::vector<std::tuple<char, char>>& edges);
     void colorNodes(const std::vector<std::tuple<char, uint16_t>>& colors);
+    void resetColorNodes();
 
     void resetPath();
 

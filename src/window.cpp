@@ -181,6 +181,9 @@ void Window::invokeAction(Action action)
         case COLOR:
             colorGraph();
             break;
+        case RESET_COLOR:
+            resetColors();
+            break;
         case SAVE_GRAPH:
             saveGraph();
             break;
@@ -345,6 +348,20 @@ void Window::callColorGraph()
         return;
     }
     model->colorNodes(*colors);
+}
+
+
+void Window::resetColors()
+{
+    std::thread th(&Window::callResetColorGraph, this);
+    th.detach();
+}
+
+
+void Window::callResetColorGraph()
+{
+    client->resetColorNodes();
+    model->resetColorNodes();
 }
 
 

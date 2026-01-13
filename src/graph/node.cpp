@@ -8,10 +8,12 @@ constexpr size_t INITIAL_NODE_X = 30;
 constexpr size_t INITIAL_NODE_Y = 75;
 constexpr size_t CIRCLE_POINTS = 100;
 
+constexpr size_t DEFAULT_COLOR = 0;
+
 
 NodeGui::NodeGui(char key) : circle{ NODE_RADIUS, 100 }, selected{ false }, text{ FontStore::getFont() }, key{ key }
 {
-    circle.setFillColor({ RED, GREEN, BLUE });
+    circle.setFillColor({ colors.at(DEFAULT_COLOR).R, colors.at(DEFAULT_COLOR).G, colors.at(DEFAULT_COLOR).B });
     text.setFillColor(sf::Color::Black);
     text.setCharacterSize(14);
     setPosition({ INITIAL_NODE_X, INITIAL_NODE_Y });
@@ -47,7 +49,7 @@ float NodeGui::getPositionY() const
 
 void NodeGui::fillColor(uint8_t id)
 {
-    circle.setFillColor({ colors.at(id).Red, colors.at(id).Green, colors.at(id).Blue });
+    circle.setFillColor({ colors.at(id).R, colors.at(id).G, colors.at(id).B });
 }
 
 

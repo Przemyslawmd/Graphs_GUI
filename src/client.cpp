@@ -68,6 +68,12 @@ std::unique_ptr<std::vector<std::tuple<char, uint16_t>>> Client::colorNodes()
 }
 
 
+void Client::resetColorNodes()
+{
+    graphClient->resetColors();
+}
+
+
 const std::string Client::getLastErrorMessage()
 {
     return (graphClient->getLastErrorMessage() != std::nullopt) ? graphClient->getLastErrorMessage().value() : "Graph client unknown error"; 

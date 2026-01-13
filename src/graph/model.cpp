@@ -213,6 +213,14 @@ void Model::colorNodes(const std::vector<std::tuple<char, uint16_t>>& colors)
 }
 
 
+void Model::resetColorNodes()
+{
+    for (auto& node : nodes) {
+        node.fillColor(0);
+    }
+}
+
+
 void Model::resetPath()
 {
     for (auto& conn : connections | std::views::filter([](const auto& conn) { return conn.isColor(); })) {

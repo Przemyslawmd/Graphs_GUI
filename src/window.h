@@ -46,6 +46,7 @@ private:
     void shortestPath();
     void minSpanningTree();
     void colorGraph();
+    void resetColors();
 
     void saveGraph();
     void readGraph();
@@ -55,6 +56,7 @@ private:
     void callShortestPath(char src, char dst);
     void callMinSpanningTree();
     void callColorGraph();
+    void callResetColorGraph();
 
     std::unique_ptr<sf::RenderWindow> window;
     std::unique_ptr<Menu> menu;
