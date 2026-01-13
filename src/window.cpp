@@ -339,6 +339,12 @@ void Window::colorGraph()
 
 void Window::callColorGraph()
 {
+    auto colors = client->colorNodes();
+    if (colors == nullptr) {
+        setMessage(client->getLastErrorMessage());
+        return;
+    }
+    model->colorNodes(*colors);
 }
 
 

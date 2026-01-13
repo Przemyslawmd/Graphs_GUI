@@ -95,6 +95,12 @@ Action Menu::isOverActionMenu(const sf::Vector2i& pos)
     if (isOverMenu(pos, actionData.at(RESET_TREE))) {
         return RESET_TREE;
     }
+    if (isOverMenu(pos, actionData.at(COLOR))) {
+        return COLOR;
+    }
+    if (isOverMenu(pos, actionData.at(RESET_COLOR))) {
+        return RESET_COLOR;
+    }
     if (isOverMenu(pos, actionData.at(FILE_INPUT))) {
         setInputFocus(FILE_INPUT);
         return NO_ACTION;

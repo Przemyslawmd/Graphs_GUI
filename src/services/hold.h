@@ -5,7 +5,8 @@
 
 struct Hold
 {
-    void reset() {
+    void reset()
+    {
         isHeld = false;
         isMoved = false;
         index = -1;
@@ -13,7 +14,8 @@ struct Hold
         shiftY = 0;
     }
 
-    void activate(size_t index_, float shiftX_, float shiftY_) {
+    void activate(size_t index_, float shiftX_, float shiftY_)
+    {
         isHeld = true;
         isMoved = false;
         index = index_;

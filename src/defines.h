@@ -2,6 +2,8 @@
 #ifndef GUI_GRAPHS_DEFINES_H
 #define GUI_GRAPHS_DEFINES_H
 
+#include <cstddef>
+
 
 constexpr float MARGIN_X = 20.f;
 constexpr float MARGIN_UP_GRAPHS = 70.f;

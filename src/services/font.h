@@ -24,6 +24,5 @@ private:
     inline static sf::Font font;
 };
 
-
 #endif
 

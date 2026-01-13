@@ -1,5 +1,4 @@
 
-
 #ifndef GUI_GRAPHS_DIRECTED_H
 #define GUI_GRAPHS_DIRECTED_H
 
@@ -20,7 +19,6 @@ public:
 private:
     inline static bool directed;
 };
-
 
 #endif
 

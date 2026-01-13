@@ -1,8 +1,6 @@
 
 #include "client.h"
 
-#include <memory>
-
 
 Client::Client()
 {
@@ -61,6 +59,12 @@ std::unique_ptr<std::vector<char>> Client::shortestPath(char src, char dst)
 std::unique_ptr<std::vector<std::tuple<char, char>>> Client::minSpanningTree()
 {
     return graphClient->findMinSpanningTree();
+}
+
+
+std::unique_ptr<std::vector<std::tuple<char, uint16_t>>> Client::colorNodes()
+{
+    return graphClient->colorGraph();
 }
 
 

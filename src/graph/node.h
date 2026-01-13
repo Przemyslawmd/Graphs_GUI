@@ -3,6 +3,7 @@
 #define GUI_GRAPHS_NODE_H
 
 #include <time.h>
+#include "colors.h"
 
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -30,6 +31,8 @@ public:
     sf::Vector2f& getPosition() const;
 
     void changeSelect();
+
+    void fillColor(uint8_t colorID);
 
     sf::CircleShape circle;
     sf::Text text;

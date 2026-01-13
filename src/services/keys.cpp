@@ -2,6 +2,7 @@
 #include "keys.h"
 
 #include <algorithm>
+#include <ranges>
 
 
 char Keys::getKey()

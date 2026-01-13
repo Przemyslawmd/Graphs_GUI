@@ -3,7 +3,6 @@
 #define GUI_GRAPHS_KEYS_H
 
 #include <array>
-#include <vector>
 
 #include "defines.h"
 

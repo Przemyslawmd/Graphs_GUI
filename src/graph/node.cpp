@@ -45,6 +45,12 @@ float NodeGui::getPositionY() const
 }
 
 
+void NodeGui::fillColor(uint8_t id)
+{
+    circle.setFillColor({ colors.at(id).Red, colors.at(id).Green, colors.at(id).Blue });
+}
+
+
 void NodeGui::changeSelect()
 {
     if (!selected) {
