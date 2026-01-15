@@ -31,7 +31,7 @@ public:
 
     std::unique_ptr<std::vector<std::tuple<char, char>>> minSpanningTree();
 
-    std::unique_ptr<std::vector<std::tuple<char, uint16_t>>> colorNodes();
+    std::unique_ptr<std::vector<std::tuple<char, uint8_t>>> colorNodes();
     void resetColorNodes();
 
     const std::string getLastErrorMessage();

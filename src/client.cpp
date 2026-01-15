@@ -62,7 +62,7 @@ std::unique_ptr<std::vector<std::tuple<char, char>>> Client::minSpanningTree()
 }
 
 
-std::unique_ptr<std::vector<std::tuple<char, uint16_t>>> Client::colorNodes()
+std::unique_ptr<std::vector<std::tuple<char, uint8_t>>> Client::colorNodes()
 {
     return graphClient->colorGraph();
 }

@@ -202,9 +202,9 @@ void Model::colorEdges(const std::vector<std::tuple<char, char>>& edges)
 }
 
 
-void Model::colorNodes(const std::vector<std::tuple<char, uint16_t>>& colors)
+void Model::colorNodes(std::unique_ptr<std::vector<std::tuple<char, uint8_t>>> colors)
 {
-    for (auto& [key, color] : colors) {
+    for (auto& [key, color] : *colors) {
         auto it = std::ranges::find_if(nodes, [key](auto& node) { return node.key == key; });
         if (it != nodes.end()) {
             it->fillColor(color);
