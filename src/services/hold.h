@@ -23,8 +23,8 @@ struct Hold
         shiftY = shiftY_;
     }
 
-    bool isHeld;    // is mouse button pressed
-    bool isMoved;   // is there move between mouse button press and release, to recognize click without moving
+    bool isHeld;    // true if mouse button is being pressed
+    bool isMoved;   // true if there is move between mouse button press and release, to recognize click without moving
     int index;      // index of held object in its container
     float shiftX;   // distance between the mouse X position and the center of held object
     float shiftY;   // distance between the mouse Y position and the center of held object

@@ -37,30 +37,32 @@ void GraphWindow::init()
 
 void GraphWindow::run()
 {
+    using namespace sf;
+
     while(window->isOpen()) {
         while(const std::optional event = window->pollEvent()) {
-            if (event->is<sf::Event::Closed>()) {
+            if (event->is<Event::Closed>()) {
                 window->close();
             }
-            else if (event->is<sf::Event::MouseButtonPressed>()) {
+            else if (event->is<Event::MouseButtonPressed>() && Mouse::isButtonPressed(Mouse::Button::Left)) {
                 handleMousePress();
             }
-            else if (event->is<sf::Event::MouseButtonReleased>() && hold->isHeld) {
+            else if (event->is<Event::MouseButtonReleased>() && hold->isHeld) {
                 handleMouseRelease();
                 hold->reset();
             }
-            else if (event->is<sf::Event::MouseMoved>() && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && hold->isHeld) {
-                handleMouseMove(event->getIf<sf::Event::MouseMoved>());
+            else if (event->is<Event::MouseMoved>() && hold->isHeld) {
+                handleMouseMove(event->getIf<Event::MouseMoved>());
             }
-            else if (event->is<sf::Event::Resized>()) {
+            else if (event->is<Event::Resized>()) {
                 resize();
             }
-            else if (event->is<sf::Event::TextEntered>()) {
-                const auto* textEvent = event->getIf<sf::Event::TextEntered>();
+            else if (event->is<Event::TextEntered>()) {
+                const auto* textEvent = event->getIf<Event::TextEntered>();
                 menu->checkTextEvent(static_cast<char>(textEvent->unicode));
             }
         }
-        window->clear(sf::Color::White);
+        window->clear(Color::White);
 
         for (const auto& connection : model->getConnections()) {
             window->draw(connection);
