@@ -17,10 +17,10 @@
 #include "services/hold.h"
 
 
-class Window
+class GraphWindow
 {
 public:
-    Window();
+    GraphWindow();
 
     void init();
     void run();

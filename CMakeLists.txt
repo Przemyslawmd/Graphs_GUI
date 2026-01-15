@@ -23,7 +23,7 @@ FetchContent_MakeAvailable(SFML Graphs)
 add_executable(GraphsGui 
     "src/main.cpp"
     "src/client.cpp"
-    "src/window.cpp"
+    "src/graphWindow.cpp"
     "src/graph/connection.cpp"
     "src/graph/model.cpp"
     "src/graph/node.cpp"

@@ -1,5 +1,5 @@
 
-#include "window.h"
+#include "graphWindow.h"
 
 #include <ranges>
 #include <thread>
@@ -11,7 +11,7 @@
 #include "services/iofile.h"
 
 
-Window::Window()
+GraphWindow::GraphWindow()
 {
     sf::ContextSettings settings;
     settings.antiAliasingLevel = 8;
@@ -24,7 +24,7 @@ Window::Window()
 }
 
 
-void Window::init()
+void GraphWindow::init()
 {
     if (FontStore::createFont() == false) {
         return;
@@ -35,7 +35,7 @@ void Window::init()
 }
 
 
-void Window::run()
+void GraphWindow::run()
 {
     while(window->isOpen()) {
         while(const std::optional event = window->pollEvent()) {
@@ -49,7 +49,7 @@ void Window::run()
                 handleMouseRelease();
                 hold->reset();
             }
-            else if (event->is<sf::Event::MouseMoved>() && hold->isHeld) {
+            else if (event->is<sf::Event::MouseMoved>() && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && hold->isHeld) {
                 handleMouseMove(event->getIf<sf::Event::MouseMoved>());
             }
             else if (event->is<sf::Event::Resized>()) {
@@ -89,7 +89,7 @@ void Window::run()
 }
 
 
-void Window::handleMousePress()
+void GraphWindow::handleMousePress()
 {
     message.release();
     menu->setInputFocus(Action::NO_ACTION);
@@ -109,7 +109,7 @@ void Window::handleMousePress()
 }
 
 
-void Window::handleMouseRelease()
+void GraphWindow::handleMouseRelease()
 {
     if (hold->isMoved) {
         return;
@@ -119,7 +119,7 @@ void Window::handleMouseRelease()
 }
 
 
-void Window::handleMouseMove(const sf::Event::MouseMoved* event)
+void GraphWindow::handleMouseMove(const sf::Event::MouseMoved* event)
 {
     float x = event->position.x;
     float y = event->position.y;
@@ -140,7 +140,7 @@ void Window::handleMouseMove(const sf::Event::MouseMoved* event)
 }
 
 
-void Window::invokeAction(Action action)
+void GraphWindow::invokeAction(Action action)
 {
     using enum Action;
     switch(action)
@@ -194,7 +194,7 @@ void Window::invokeAction(Action action)
 }
 
 
-void Window::createNode()
+void GraphWindow::createNode()
 {
     const auto& text = menu->getInputText(Action::NODE_INPUT);
     const auto [result, key] = model->createNode(text);
@@ -212,7 +212,7 @@ void Window::createNode()
 }
 
 
-void Window::removeNodes()
+void GraphWindow::removeNodes()
 {
     auto keys = model->removeNodes();
     if (keys == nullptr) {
@@ -223,7 +223,7 @@ void Window::removeNodes()
 }
 
 
-void Window::removeGraph()
+void GraphWindow::removeGraph()
 {
     model->removeAll();
     bool isDirected = Directed::isDirected();
@@ -231,7 +231,7 @@ void Window::removeGraph()
 }
 
 
-void Window::createConnection()
+void GraphWindow::createConnection()
 {
     const auto& text = menu->getInputText(Action::CONNECTION_INPUT);
     const auto [result, connData] = model->createConnection(text);
@@ -243,7 +243,7 @@ void Window::createConnection()
 }
 
 
-void Window::removeConnection()
+void GraphWindow::removeConnection()
 {
     auto edges = model->removeConnections();
     if (edges == nullptr) {
@@ -254,11 +254,11 @@ void Window::removeConnection()
 }
 
 
-void Window::traverseBFS()
+void GraphWindow::traverseBFS()
 {
     const auto key = model->getSelectedNodeKey();
     if (key.has_value()) {
-        std::thread th(&Window::callBFS, this, key.value());
+        std::thread th(&GraphWindow::callBFS, this, key.value());
         th.detach();
         return;
     }
@@ -266,18 +266,18 @@ void Window::traverseBFS()
 }
 
 
-void Window::callBFS(char key)
+void GraphWindow::callBFS(char key)
 {
     auto sequence = client->BFS(key);
     setMessage("BFS sequence: " + std::string(sequence->begin(), sequence->end()));
 }
 
 
-void Window::traverseDFS()
+void GraphWindow::traverseDFS()
 {
     const auto key = model->getSelectedNodeKey();
     if (key.has_value()) {
-        std::thread th(&Window::callDFS, this, key.value());
+        std::thread th(&GraphWindow::callDFS, this, key.value());
         th.detach();
         return;
     }
@@ -285,26 +285,26 @@ void Window::traverseDFS()
 }
 
 
-void Window::callDFS(char key)
+void GraphWindow::callDFS(char key)
 {
     auto sequence = client->DFS(key);
     setMessage("DFS sequence: " + std::string(sequence->begin(), sequence->end()));
 }
 
 
-void Window::shortestPath()
+void GraphWindow::shortestPath()
 {
     const auto [src, dst] = model->getTwoSelectedNodesKeys();
     if (!src.has_value() || !dst.has_value()) {
         setMessage(MessageStr.at(Message::NODE_SELECT_TWO));
         return;
     }
-    std::thread th(&Window::callShortestPath, this, src.value(), dst.value());
+    std::thread th(&GraphWindow::callShortestPath, this, src.value(), dst.value());
     th.detach();
 };
 
 
-void Window::callShortestPath(char src, char dst)
+void GraphWindow::callShortestPath(char src, char dst)
 {
     auto sequence = client->shortestPath(src, dst);
     if (sequence == nullptr) {
@@ -315,14 +315,14 @@ void Window::callShortestPath(char src, char dst)
 }
 
 
-void Window::minSpanningTree()
+void GraphWindow::minSpanningTree()
 {
-    std::thread th(&Window::callMinSpanningTree, this);
+    std::thread th(&GraphWindow::callMinSpanningTree, this);
     th.detach();
 };
 
 
-void Window::callMinSpanningTree()
+void GraphWindow::callMinSpanningTree()
 {
     auto edges = client->minSpanningTree();
     if (edges == nullptr) {
@@ -333,39 +333,39 @@ void Window::callMinSpanningTree()
 }
 
 
-void Window::colorGraph()
+void GraphWindow::colorGraph()
 {
-    std::thread th(&Window::callColorGraph, this);
+    std::thread th(&GraphWindow::callColorGraph, this);
     th.detach();
 };
 
 
-void Window::callColorGraph()
+void GraphWindow::callColorGraph()
 {
     auto colors = client->colorNodes();
     if (colors == nullptr) {
         setMessage(client->getLastErrorMessage());
         return;
     }
-    model->colorNodes(*colors);
+    model->colorNodes(std::move(colors));
 }
 
 
-void Window::resetColors()
+void GraphWindow::resetColors()
 {
-    std::thread th(&Window::callResetColorGraph, this);
+    std::thread th(&GraphWindow::callResetColorGraph, this);
     th.detach();
 }
 
 
-void Window::callResetColorGraph()
+void GraphWindow::callResetColorGraph()
 {
     client->resetColorNodes();
     model->resetColorNodes();
 }
 
 
-void Window::saveGraph()
+void GraphWindow::saveGraph()
 {
     const auto& text = menu->getInputText(Action::FILE_INPUT);
     if (text.getString().isEmpty()) {
@@ -379,7 +379,7 @@ void Window::saveGraph()
 }
 
 
-void Window::readGraph()
+void GraphWindow::readGraph()
 {
     const auto& text = menu->getInputText(Action::FILE_INPUT);
     if (text.getString().isEmpty()) {
@@ -413,7 +413,7 @@ void Window::readGraph()
 }
 
 
-void Window::resize()
+void GraphWindow::resize()
 {
     sf::Vector2u size = { window->getSize().x, window->getSize().y };
     sf::FloatRect newView({ 0, 0 }, { (float) size.x, (float) size.y });
@@ -428,7 +428,7 @@ void Window::resize()
 }
 
 
-void Window::setMessage(const std::string& text)
+void GraphWindow::setMessage(const std::string& text)
 {
     auto& font = FontStore::getFont();
     message = std::make_unique<sf::Text>(font, text, 15);

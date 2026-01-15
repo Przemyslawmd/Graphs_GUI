@@ -1,10 +1,10 @@
 
-#include "window.h"
+#include "graphWindow.h"
 
 
 int main(void)
 {
-    Window window;
+    GraphWindow window;
     window.init();
     window.run();
 }
