@@ -47,11 +47,11 @@ void GraphWindow::run()
             else if (event->is<Event::MouseButtonPressed>() && Mouse::isButtonPressed(Mouse::Button::Left)) {
                 handleMousePress();
             }
-            else if (event->is<Event::MouseButtonReleased>() && hold->isHeld) {
+            else if (event->is<Event::MouseButtonReleased>() && hold->isLeftPress()) {
                 handleMouseRelease();
                 hold->reset();
             }
-            else if (event->is<Event::MouseMoved>() && hold->isHeld) {
+            else if (event->is<Event::MouseMoved>() && hold->isLeftPress()) {
                 handleMouseMove(event->getIf<Event::MouseMoved>());
             }
             else if (event->is<Event::Resized>()) {

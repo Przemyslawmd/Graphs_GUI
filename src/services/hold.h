@@ -3,11 +3,20 @@
 #define GUI_GRAPHS_HOLD_H
 
 
-struct Hold
+enum class Press
 {
+    NO_PRESS,
+    LEFT,
+    RIGHT
+};
+
+
+class Hold
+{
+public:
     void reset()
     {
-        isHeld = false;
+        press = Press::NO_PRESS;
         isMoved = false;
         index = -1;
         shiftX = 0;
@@ -16,18 +25,25 @@ struct Hold
 
     void activate(size_t index_, float shiftX_, float shiftY_)
     {
-        isHeld = true;
+        press = Press::LEFT;
         isMoved = false;
         index = index_;
         shiftX = shiftX_;
         shiftY = shiftY_;
     }
 
-    bool isHeld;    // true if mouse button is being pressed
+    bool isLeftPress()
+    {
+        return press == Press::LEFT;
+    }
+
     bool isMoved;   // true if there is move between mouse button press and release, to recognize click without moving
-    int index;      // index of held object in its container
+    size_t index;   // index of held object in its container
     float shiftX;   // distance between the mouse X position and the center of held object
     float shiftY;   // distance between the mouse Y position and the center of held object
+
+private:
+    Press press;
 };
 
 #endif
