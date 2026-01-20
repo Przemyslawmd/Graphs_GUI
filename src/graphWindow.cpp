@@ -221,7 +221,7 @@ void GraphWindow::removeNodes()
         setMessage(MessageStr.at(Message::NODE_NOT_SELECTED));
         return;
     }
-    client->removeNodes(std::move(keys));
+    client->removeNodes(*keys);
 }
 
 
@@ -252,7 +252,7 @@ void GraphWindow::removeConnection()
         setMessage(MessageStr.at(Message::CONNECTION_NOT_SELECTED));
         return;
     }
-    client->removeEdges(std::move(edges));
+    client->removeEdges(*edges);
 }
 
 

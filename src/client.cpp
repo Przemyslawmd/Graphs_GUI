@@ -14,7 +14,7 @@ void Client::addNode(char key)
 }
 
 
-void Client::removeNodes(std::unique_ptr<std::vector<char>> nodes)
+void Client::removeNodes(const std::vector<char>& nodes)
 {
     graphClient->removeNodes(nodes);
 }
@@ -26,9 +26,9 @@ void Client::addEdge(char srcKey, char dstKey, size_t weight)
 }
 
 
-void Client::removeEdges(std::unique_ptr<std::vector<std::tuple<char, char>>> edges)
+void Client::removeEdges(const std::vector<std::tuple<char, char>>& edges)
 {
-    graphClient->removeEdges(std::move(edges));
+    graphClient->removeEdges(edges);
 }
 
 

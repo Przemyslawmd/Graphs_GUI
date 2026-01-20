@@ -17,10 +17,10 @@ public:
     Client();
 
     void addNode(char key);
-    void removeNodes(std::unique_ptr<std::vector<char>> keys);
+    void removeNodes(const std::vector<char>& keys);
 
     void addEdge(char src, char dst, size_t weight = 1);
-    void removeEdges(std::unique_ptr<std::vector<std::tuple<char, char>>> edges);
+    void removeEdges(const std::vector<std::tuple<char, char>>& edges);
 
     void resetGraph(bool isDirected);
 
