@@ -45,7 +45,7 @@ void GraphWindow::run()
                 window->close();
             }
             else if (event->is<Event::MouseButtonPressed>() && Mouse::isButtonPressed(Mouse::Button::Left)) {
-                handleMousePress();
+                handleMousePressLeft();
             }
             else if (event->is<Event::MouseButtonReleased>() && hold->isLeftPress()) {
                 handleMouseRelease();
@@ -91,7 +91,7 @@ void GraphWindow::run()
 }
 
 
-void GraphWindow::handleMousePress()
+void GraphWindow::handleMousePressLeft()
 {
     message.release();
     menu->setInputFocus(Action::NO_ACTION);
@@ -104,10 +104,24 @@ void GraphWindow::handleMousePress()
     }
     auto [index, shiftX, shiftY] = model->isMouseOverNode(position);
     if (index >= 0) {
-        hold->activate(index, shiftX, shiftY);
+        hold->activateLeft(index, shiftX, shiftY);
         return;
     }
     model->isMouseOverConnection(position);
+}
+
+
+void GraphWindow::handleMousePressRight()
+{
+    message.release();
+    menu->setInputFocus(Action::NO_ACTION);
+
+    sf::Vector2i position = sf::Mouse::getPosition(*window);
+    auto [index, shiftX, shiftY] = model->isMouseOverNode(position);
+    if (index >= 0) {
+        hold->activateRight(index, shiftX, shiftY);
+        return;
+    }
 }
 
 
@@ -116,7 +130,7 @@ void GraphWindow::handleMouseRelease()
     if (hold->isMoved) {
         return;
     }
-    auto& node = model->getNodes()[hold->index];
+    auto& node = model->getNodes()[hold->index.value()];
     node.changeSelect();
 }
 
@@ -134,7 +148,7 @@ void GraphWindow::handleMouseMove(const sf::Event::MouseMoved* event)
         return;
     }
 
-    auto& heldNode = model->getNodes()[hold->index];
+    auto& heldNode = model->getNodes()[hold->index.value()];
     float radius = heldNode.circle.getRadius();
     heldNode.setPosition({ x - radius - hold->shiftX, y - radius - hold->shiftY });
     model->moveNodeConnections(heldNode.key);

@@ -18,18 +18,21 @@ public:
     {
         press = Press::NO_PRESS;
         isMoved = false;
-        index = -1;
+        index = std::nullopt;
         shiftX = 0;
         shiftY = 0;
     }
 
-    void activate(size_t index_, float shiftX_, float shiftY_)
+    void activateLeft(size_t index_, float shiftX_, float shiftY_)
     {
         press = Press::LEFT;
-        isMoved = false;
-        index = index_;
-        shiftX = shiftX_;
-        shiftY = shiftY_;
+        activate(index_, shiftX_, shiftY_);
+    }
+
+    void activateRight(size_t index_, float shiftX_, float shiftY_)
+    {
+        press = Press::RIGHT;
+        activate(index_, shiftX_, shiftY_);
     }
 
     bool isLeftPress()
@@ -37,13 +40,21 @@ public:
         return press == Press::LEFT;
     }
 
-    bool isMoved;   // true if there is move between mouse button press and release, to recognize click without moving
-    size_t index;   // index of held object in its container
-    float shiftX;   // distance between the mouse X position and the center of held object
-    float shiftY;   // distance between the mouse Y position and the center of held object
+    bool isMoved;                   // true if there is move between mouse button press and release, to recognize click without moving
+    std::optional<size_t> index;    // index of held object in its container
+    float shiftX;                   // distance between the mouse X position and the center of held object
+    float shiftY;                   // distance between the mouse Y position and the center of held object
 
 private:
     Press press;
+
+    void activate(size_t index_, float shiftX_, float shiftY_)
+    {
+        isMoved = false;
+        index = index_;
+        shiftX = shiftX_;
+        shiftY = shiftY_;
+    }
 };
 
 #endif

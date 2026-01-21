@@ -29,7 +29,8 @@ private:
     void resize();
     void setMessage(const std::string& message);
 
-    void handleMousePress();
+    void handleMousePressLeft();
+    void handleMousePressRight();
     void handleMouseRelease();
     void handleMouseMove(const sf::Event::MouseMoved*);
 
