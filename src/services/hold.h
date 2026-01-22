@@ -40,6 +40,11 @@ public:
         return press == Press::LEFT;
     }
 
+    bool isRightPress()
+    {
+        return press == Press::RIGHT;
+    }
+
     bool isMoved;                   // true if there is move between mouse button press and release, to recognize click without moving
     std::optional<size_t> index;    // index of held object in its container
     float shiftX;                   // distance between the mouse X position and the center of held object

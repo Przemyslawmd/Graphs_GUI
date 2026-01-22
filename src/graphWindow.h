@@ -15,6 +15,7 @@
 #include "gui/menu.h"
 #include "graph/model.h"
 #include "services/hold.h"
+#include "services/tempConnection.h"
 
 
 class GraphWindow
@@ -31,7 +32,8 @@ private:
 
     void handleMousePressLeft();
     void handleMousePressRight();
-    void handleMouseRelease();
+    void handleMouseReleaseLeft();
+    void handleMouseReleaseRight();
     void handleMouseMove(const sf::Event::MouseMoved*);
 
     void invokeAction(Action);
@@ -66,6 +68,7 @@ private:
     std::unique_ptr<Client> client;
     std::unique_ptr<Hold> hold;
     std::unique_ptr<sf::Text> message;
+    std::unique_ptr<TempConnection> tempConnection;
 };
 
 #endif 

@@ -47,8 +47,15 @@ void GraphWindow::run()
             else if (event->is<Event::MouseButtonPressed>() && Mouse::isButtonPressed(Mouse::Button::Left)) {
                 handleMousePressLeft();
             }
+            else if (event->is<Event::MouseButtonPressed>() && Mouse::isButtonPressed(Mouse::Button::Right)) {
+                handleMousePressRight();
+            }
             else if (event->is<Event::MouseButtonReleased>() && hold->isLeftPress()) {
-                handleMouseRelease();
+                handleMouseReleaseLeft();
+                hold->reset();
+            }
+            else if (event->is<Event::MouseButtonReleased>() && hold->isRightPress()) {
+                handleMouseReleaseRight();
                 hold->reset();
             }
             else if (event->is<Event::MouseMoved>() && hold->isLeftPress()) {
@@ -86,6 +93,9 @@ void GraphWindow::run()
         if (message) {
             window->draw(*message);
         }
+        if (tempConnection) {
+            window->draw(*tempConnection);
+        }
         window->display();
     }
 }
@@ -120,18 +130,25 @@ void GraphWindow::handleMousePressRight()
     auto [index, shiftX, shiftY] = model->isMouseOverNode(position);
     if (index >= 0) {
         hold->activateRight(index, shiftX, shiftY);
+        tempConnection = std::make_unique<TempConnection>();
         return;
     }
 }
 
 
-void GraphWindow::handleMouseRelease()
+void GraphWindow::handleMouseReleaseLeft()
 {
     if (hold->isMoved) {
         return;
     }
     auto& node = model->getNodes()[hold->index.value()];
     node.changeSelect();
+}
+
+
+void GraphWindow::handleMouseReleaseRight()
+{
+    tempConnection.reset();
 }
 
 
