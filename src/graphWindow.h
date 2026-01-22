@@ -14,8 +14,8 @@
 #include "gui/lines.h"
 #include "gui/menu.h"
 #include "graph/model.h"
+#include "graph/tempConnection.h"
 #include "services/hold.h"
-#include "services/tempConnection.h"
 
 
 class GraphWindow
@@ -34,7 +34,8 @@ private:
     void handleMousePressRight();
     void handleMouseReleaseLeft();
     void handleMouseReleaseRight();
-    void handleMouseMove(const sf::Event::MouseMoved*);
+    void handleMouseMoveLeft(const sf::Event::MouseMoved*);
+    void handleMouseMoveRight(const sf::Event::MouseMoved*);
 
     void invokeAction(Action);
 

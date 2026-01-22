@@ -59,7 +59,10 @@ void GraphWindow::run()
                 hold->reset();
             }
             else if (event->is<Event::MouseMoved>() && hold->isLeftPress()) {
-                handleMouseMove(event->getIf<Event::MouseMoved>());
+                handleMouseMoveLeft(event->getIf<Event::MouseMoved>());
+            }
+            else if (event->is<Event::MouseMoved>() && hold->isRightPress()) {
+                handleMouseMoveRight(event->getIf<Event::MouseMoved>());
             }
             else if (event->is<Event::Resized>()) {
                 resize();
@@ -130,7 +133,7 @@ void GraphWindow::handleMousePressRight()
     auto [index, shiftX, shiftY] = model->isMouseOverNode(position);
     if (index >= 0) {
         hold->activateRight(index, shiftX, shiftY);
-        tempConnection = std::make_unique<TempConnection>();
+        tempConnection = std::make_unique<TempConnection>(position.x, position.y);
         return;
     }
 }
@@ -152,7 +155,7 @@ void GraphWindow::handleMouseReleaseRight()
 }
 
 
-void GraphWindow::handleMouseMove(const sf::Event::MouseMoved* event)
+void GraphWindow::handleMouseMoveLeft(const sf::Event::MouseMoved* event)
 {
     float x = event->position.x;
     float y = event->position.y;
@@ -170,6 +173,23 @@ void GraphWindow::handleMouseMove(const sf::Event::MouseMoved* event)
     heldNode.setPosition({ x - radius - hold->shiftX, y - radius - hold->shiftY });
     model->moveNodeConnections(heldNode.key);
     hold->isMoved = true;
+}
+
+
+void GraphWindow::handleMouseMoveRight(const sf::Event::MouseMoved* event)
+{
+    float x = event->position.x;
+    float y = event->position.y;
+
+    sf::Vector2u size = { window->getSize().x, window->getSize().y };
+    if (x > size.x - MARGIN_X - 20 || 
+        x < MARGIN_X + 20 || 
+        y > size.y - MARGIN_BOTTOM_GRAPHS - 20 ||
+        y < MARGIN_UP_GRAPHS + 20) {
+        return;
+    }
+
+    tempConnection->adjustLine(x, y);
 }
 
 

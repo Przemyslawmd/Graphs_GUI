@@ -54,7 +54,7 @@ static bool matchAngles(const float connectionAngle, const sf::FloatRect& rect, 
 }
 
 
-static float calculateConnectionLength(sf::Vector2f& pos_1, sf::Vector2f& pos_2)
+static float calculateConnectionLength(const sf::Vector2f& pos_1, const sf::Vector2f& pos_2)
 {
     float distance_x = pos_1.x - pos_2.x;
     float distance_y = pos_1.y - pos_2.y;
