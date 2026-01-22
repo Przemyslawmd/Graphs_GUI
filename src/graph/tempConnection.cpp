@@ -4,7 +4,7 @@
 #include "utils.h"
 
 
-TempConnection::TempConnection(float x, float y) : line{ sf::Vector2f{ 0.0f, LINE_WIDTH }}, srcX{ x }, srcY{ y } 
+TempConnection::TempConnection(float x, float y, size_t srcNode) : line{ sf::Vector2f{ 0.0f, LINE_WIDTH }}, srcX{ x }, srcY{ y }, srcNodeIndex{ srcNode } 
 {
     line.setPosition({ x, y });
     line.setFillColor({ colors.at(DEFAULT_COLOR).R, colors.at(DEFAULT_COLOR).G, colors.at(DEFAULT_COLOR).B });

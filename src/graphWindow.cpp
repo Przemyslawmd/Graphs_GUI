@@ -133,7 +133,7 @@ void GraphWindow::handleMousePressRight()
     auto [index, shiftX, shiftY] = model->isMouseOverNode(position);
     if (index >= 0) {
         hold->activateRight(index, shiftX, shiftY);
-        tempConnection = std::make_unique<TempConnection>(position.x, position.y);
+        tempConnection = std::make_unique<TempConnection>(position.x, position.y, index);
         return;
     }
 }
@@ -148,10 +148,26 @@ void GraphWindow::handleMouseReleaseLeft()
     node.changeSelect();
 }
 
+#include <iostream>
 
 void GraphWindow::handleMouseReleaseRight()
 {
+    size_t srcNode = tempConnection->getSrcNodeIndex();
     tempConnection.reset();
+
+    sf::Vector2i position = sf::Mouse::getPosition(*window);
+    auto [dstNode, shiftX, shiftY] = model->isMouseOverNode(position);
+    if (dstNode < 0 || srcNode == dstNode) {
+        return;
+    }
+
+    const auto& text = menu->getInputText(Action::CONNECTION_INPUT);
+    const auto [result, connData] = model->createConnection(srcNode, dstNode, text);
+    if (result == Message::OK) {
+        client->addEdge(connData.value().src, connData.value().dst, connData.value().weight);
+        return;
+    }
+    setMessage(MessageStr.at(result));
 }
 
 

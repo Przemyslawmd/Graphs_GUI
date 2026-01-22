@@ -15,14 +15,18 @@ constexpr size_t LINE_WIDTH = 3;
 class TempConnection : public sf::Drawable
 {
 public:
-    TempConnection(float x, float y);
+    TempConnection(float x, float y, size_t srcNode);
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
     void adjustLine(float x, float y);
 
-    int index;
-    char key;
+    size_t getSrcNodeIndex() const 
+    {
+        return srcNodeIndex;
+    }
+
+    size_t srcNodeIndex;
     float srcX;
     float srcY;
 

@@ -102,6 +102,36 @@ std::tuple<Message, std::optional<ConnectionData>> Model::createConnection(const
 }
 
 
+std::tuple<Message, std::optional<ConnectionData>> Model::createConnection(size_t nodeIndex_1, size_t nodeIndex_2, const sf::Text& text)
+{
+    auto node_1 = nodes[nodeIndex_1];
+    auto node_2 = nodes[nodeIndex_2];
+
+    auto src = node_1; 
+    auto dst = node_2;
+
+    char srcKey = src.key;
+    char dstKey = dst.key;
+    if (std::any_of(connections.begin(), connections.end(), [srcKey, dstKey](const auto& conn) { return conn.isMatch(srcKey, dstKey); })) {
+        return { Message::CONNECTION_EXISTS, std::nullopt };
+    }
+
+    const auto [result, weight] = getWeightFromString(text.getString());
+    if (result != Message::OK) {
+        return { result, std::nullopt };
+    }
+
+    sf::Vector2f srcPos{ src.getPositionX(), src.getPositionY() };
+    sf::Vector2f dstPos{ dst.getPositionX(), dst.getPositionY() };
+    float length = calculateConnectionLength(srcPos, dstPos);
+
+    auto& connection = connections.emplace_back(length, srcKey, dstKey, directed);
+    connection.setCoordinates(srcPos, dstPos);
+    connection.text.setString(text.getString());
+    return { Message::OK, {{ srcKey, dstKey, weight }}};
+}
+
+
 void Model::createConnectionFromFile(char src, char dst, size_t weight)
 {
     auto srcNode = std::find_if(nodes.begin(), nodes.end(), [src](const auto& node) { return node.key == src; });
