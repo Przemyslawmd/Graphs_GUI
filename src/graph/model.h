@@ -22,6 +22,7 @@ public:
 
     std::tuple<Message, std::optional<ConnectionData>> createConnection(const sf::Text&);
     std::tuple<Message, std::optional<ConnectionData>> createConnection(size_t, size_t, const sf::Text&);
+    void setupConnection(const NodeGui&, const NodeGui&, const sf::Text&);
     void createConnectionFromFile(char src, char dst, size_t weight);
     std::unique_ptr<std::vector<std::tuple<char, char>>> removeConnections();
 
