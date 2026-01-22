@@ -72,7 +72,7 @@ std::unique_ptr<std::vector<char>> Model::removeNodes()
 std::tuple<Message, std::optional<ConnectionData>> Model::createConnection(const sf::Text& text)
 {
     if (countSelectedNodes() != 2) {
-        return { Message::NODE_SELECT_TWO, std::nullopt };
+        return { Message::CONNECTION_REQUIREMENT, std::nullopt };
     }
     auto node_1 = std::find_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.selected; });
     auto node_2 = (std::find_if(nodes.rbegin(), nodes.rend(), [](const auto& node) { return node.selected; }) + 1).base();

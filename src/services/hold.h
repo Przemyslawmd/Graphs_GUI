@@ -23,16 +23,16 @@ public:
         shiftY = 0;
     }
 
-    void activateLeft(size_t index_, float shiftX_, float shiftY_)
+    void activateLeft(size_t index, float shiftX, float shiftY)
     {
         press = Press::LEFT;
-        activate(index_, shiftX_, shiftY_);
+        activate(index, shiftX, shiftY);
     }
 
-    void activateRight(size_t index_, float shiftX_, float shiftY_)
+    void activateRight(size_t index)
     {
         press = Press::RIGHT;
-        activate(index_, shiftX_, shiftY_);
+        activate(index);
     }
 
     bool isLeftPress()
@@ -53,7 +53,7 @@ public:
 private:
     Press press;
 
-    void activate(size_t index_, float shiftX_, float shiftY_)
+    void activate(size_t index_, float shiftX_ = 0, float shiftY_ = 0)
     {
         isMoved = false;
         index = index_;

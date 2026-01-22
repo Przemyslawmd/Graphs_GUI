@@ -59,10 +59,10 @@ void GraphWindow::run()
                 hold->reset();
             }
             else if (event->is<Event::MouseMoved>() && hold->isLeftPress()) {
-                handleMouseMoveLeft(event->getIf<Event::MouseMoved>());
+                handleMovePressLeft();
             }
             else if (event->is<Event::MouseMoved>() && hold->isRightPress()) {
-                handleMouseMoveRight(event->getIf<Event::MouseMoved>());
+                handleMovePressRight();
             }
             else if (event->is<Event::Resized>()) {
                 resize();
@@ -132,9 +132,8 @@ void GraphWindow::handleMousePressRight()
     sf::Vector2i position = sf::Mouse::getPosition(*window);
     auto [index, shiftX, shiftY] = model->isMouseOverNode(position);
     if (index >= 0) {
-        hold->activateRight(index, shiftX, shiftY);
+        hold->activateRight(index);
         tempConnection = std::make_unique<TempConnection>(position.x, position.y, index);
-        return;
     }
 }
 
@@ -148,7 +147,6 @@ void GraphWindow::handleMouseReleaseLeft()
     node.changeSelect();
 }
 
-#include <iostream>
 
 void GraphWindow::handleMouseReleaseRight()
 {
@@ -171,16 +169,10 @@ void GraphWindow::handleMouseReleaseRight()
 }
 
 
-void GraphWindow::handleMouseMoveLeft(const sf::Event::MouseMoved* event)
+void GraphWindow::handleMovePressLeft()
 {
-    float x = event->position.x;
-    float y = event->position.y;
-
-    sf::Vector2u size = { window->getSize().x, window->getSize().y };
-    if (x > size.x - MARGIN_X - 20 || 
-        x < MARGIN_X + 20 || 
-        y > size.y - MARGIN_BOTTOM_GRAPHS - 20 ||
-        y < MARGIN_UP_GRAPHS + 20) {
+    auto [isValid, x, y] = checkMove();
+    if (!isValid) {
         return;
     }
 
@@ -192,20 +184,30 @@ void GraphWindow::handleMouseMoveLeft(const sf::Event::MouseMoved* event)
 }
 
 
-void GraphWindow::handleMouseMoveRight(const sf::Event::MouseMoved* event)
+void GraphWindow::handleMovePressRight()
 {
-    float x = event->position.x;
-    float y = event->position.y;
+    auto [isValid, x, y] = checkMove();
+    if (!isValid) {
+        return;
+    }
+    tempConnection->adjustLine(x, y);
+}
+
+
+std::tuple<bool, float, float> GraphWindow::checkMove()
+{
+    auto position = sf::Mouse::getPosition(*window);
+    float x = position.x;
+    float y = position.y;
 
     sf::Vector2u size = { window->getSize().x, window->getSize().y };
     if (x > size.x - MARGIN_X - 20 || 
         x < MARGIN_X + 20 || 
         y > size.y - MARGIN_BOTTOM_GRAPHS - 20 ||
         y < MARGIN_UP_GRAPHS + 20) {
-        return;
+        return { false, 0.0, 0.0 };
     }
-
-    tempConnection->adjustLine(x, y);
+    return { true, x, y };
 }
 
 

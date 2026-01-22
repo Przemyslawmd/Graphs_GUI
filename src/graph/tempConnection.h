@@ -8,14 +8,13 @@
 
 #include "../graph/colors.h"
 
-constexpr size_t DEFAULT_COLOR = 0;
 constexpr size_t LINE_WIDTH = 3;
 
 
 class TempConnection : public sf::Drawable
 {
 public:
-    TempConnection(float x, float y, size_t srcNode);
+    TempConnection(float srcX, float srcY, size_t srcNode);
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
@@ -26,11 +25,11 @@ public:
         return srcNodeIndex;
     }
 
-    size_t srcNodeIndex;
-    float srcX;
-    float srcY;
-
+private:
     sf::RectangleShape line;
+
+    size_t srcNodeIndex;
+    sf::Vector2f srcPos;
 };
 
 #endif

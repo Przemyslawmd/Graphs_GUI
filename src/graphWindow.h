@@ -32,10 +32,13 @@ private:
 
     void handleMousePressLeft();
     void handleMousePressRight();
+
     void handleMouseReleaseLeft();
     void handleMouseReleaseRight();
-    void handleMouseMoveLeft(const sf::Event::MouseMoved*);
-    void handleMouseMoveRight(const sf::Event::MouseMoved*);
+
+    void handleMovePressLeft();
+    void handleMovePressRight();
+    std::tuple<bool, float, float> checkMove();
 
     void invokeAction(Action);
 

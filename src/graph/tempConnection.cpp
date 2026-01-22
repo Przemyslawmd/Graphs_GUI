@@ -4,10 +4,11 @@
 #include "utils.h"
 
 
-TempConnection::TempConnection(float x, float y, size_t srcNode) : line{ sf::Vector2f{ 0.0f, LINE_WIDTH }}, srcX{ x }, srcY{ y }, srcNodeIndex{ srcNode } 
+TempConnection::TempConnection(float srcX, float srcY, size_t srcNode) :
+    line{ sf::Vector2f{ 0.0f, LINE_WIDTH }}, srcPos{ srcX, srcY }, srcNodeIndex{ srcNode }
 {
-    line.setPosition({ x, y });
-    line.setFillColor({ colors.at(DEFAULT_COLOR).R, colors.at(DEFAULT_COLOR).G, colors.at(DEFAULT_COLOR).B });
+    line.setPosition(srcPos);
+    line.setFillColor({ colors.at(DEFAULT_COL).R, colors.at(DEFAULT_COL).G, colors.at(DEFAULT_COL).B });
     line.setOutlineColor(sf::Color::Black);
 }
 
@@ -18,11 +19,11 @@ void TempConnection::draw(sf::RenderTarget& target, sf::RenderStates states) con
 }
 
 
-void TempConnection::adjustLine(float x, float y)
+void TempConnection::adjustLine(float dstX, float dstY)
 {
-    float angle = calculateAngle({ srcX, srcY }, { x, y });
+    float angle = calculateAngle( srcPos, { dstX, dstY });
     line.setRotation(sf::degrees(angle));
-    float length = calculateConnectionLength({ srcX, srcY }, { x, y });
+    float length = calculateConnectionLength( srcPos, { dstX, dstY });
     line.setSize({ length, LINE_WIDTH });
 }
 
