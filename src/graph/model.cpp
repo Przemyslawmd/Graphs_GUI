@@ -82,7 +82,7 @@ std::tuple<Message, std::optional<ConnectionData>> Model::createConnection(const
 
     char srcKey = src->key;
     char dstKey = dst->key;
-    if (std::any_of(connections.begin(), connections.end(), [srcKey, dstKey](const auto& conn) { return conn.isMatch(srcKey, dstKey); })) {
+    if (std::ranges::any_of(connections, [srcKey, dstKey](const auto& conn) { return conn.isMatch(srcKey, dstKey); })) {
         return { Message::CONNECTION_EXISTS, std::nullopt };
     }
 
@@ -90,59 +90,54 @@ std::tuple<Message, std::optional<ConnectionData>> Model::createConnection(const
     if (result != Message::OK) {
         return { result, std::nullopt };
     }
+    setupConnection(*src, *dst, text);
+    return { Message::OK, {{ srcKey, dstKey, weight }}};
+}
+
+
+std::tuple<Message, std::optional<ConnectionData>> Model::createConnection(size_t index_1, size_t index_2, const sf::Text& text)
+{
+    auto src = nodes[index_1];
+    auto dst = nodes[index_2];
+
+    char srcKey = src.key;
+    char dstKey = dst.key;
+    if (std::ranges::any_of(connections, [srcKey, dstKey](const auto& conn) { return conn.isMatch(srcKey, dstKey); })) {
+        return { Message::CONNECTION_EXISTS, std::nullopt };
+    }
+
+    const auto [result, weight] = getWeightFromString(text.getString());
+    if (result != Message::OK) {
+        return { result, std::nullopt };
+    }
+    setupConnection(src, dst, text);
+    return { Message::OK, {{ srcKey, dstKey, weight }}};
+}
+
+
+void Model::createConnectionFromFile(char srcKey, char dstKey, size_t weight)
+{
+    auto src = std::ranges::find_if(nodes, [srcKey](const auto& node) { return node.key == srcKey; });
+    auto dst = std::ranges::find_if(nodes, [dstKey](const auto& node) { return node.key == dstKey; });
 
     sf::Vector2f srcPos{ src->getPositionX(), src->getPositionY() };
     sf::Vector2f dstPos{ dst->getPositionX(), dst->getPositionY() };
     float length = calculateConnectionLength(srcPos, dstPos);
-
-    auto& connection = connections.emplace_back(length, srcKey, dstKey, directed);
+    auto& connection = connections.emplace_back(length, src->key, dst->key, directed);
     connection.setCoordinates(srcPos, dstPos);
-    connection.text.setString(text.getString());
-    return { Message::OK, {{ srcKey, dstKey, weight }}};
+    connection.text.setString(std::to_string(weight));
 }
 
 
-std::tuple<Message, std::optional<ConnectionData>> Model::createConnection(size_t nodeIndex_1, size_t nodeIndex_2, const sf::Text& text)
+void Model::setupConnection(const NodeGui& src, const NodeGui& dst, const sf::Text& text)
 {
-    auto node_1 = nodes[nodeIndex_1];
-    auto node_2 = nodes[nodeIndex_2];
-
-    auto src = node_1; 
-    auto dst = node_2;
-
-    char srcKey = src.key;
-    char dstKey = dst.key;
-    if (std::any_of(connections.begin(), connections.end(), [srcKey, dstKey](const auto& conn) { return conn.isMatch(srcKey, dstKey); })) {
-        return { Message::CONNECTION_EXISTS, std::nullopt };
-    }
-
-    const auto [result, weight] = getWeightFromString(text.getString());
-    if (result != Message::OK) {
-        return { result, std::nullopt };
-    }
-
     sf::Vector2f srcPos{ src.getPositionX(), src.getPositionY() };
     sf::Vector2f dstPos{ dst.getPositionX(), dst.getPositionY() };
     float length = calculateConnectionLength(srcPos, dstPos);
 
-    auto& connection = connections.emplace_back(length, srcKey, dstKey, directed);
+    auto& connection = connections.emplace_back(length, src.key, dst.key, directed);
     connection.setCoordinates(srcPos, dstPos);
     connection.text.setString(text.getString());
-    return { Message::OK, {{ srcKey, dstKey, weight }}};
-}
-
-
-void Model::createConnectionFromFile(char src, char dst, size_t weight)
-{
-    auto srcNode = std::find_if(nodes.begin(), nodes.end(), [src](const auto& node) { return node.key == src; });
-    auto dstNode = std::find_if(nodes.begin(), nodes.end(), [dst](const auto& node) { return node.key == dst; });
-
-    sf::Vector2f srcPos{ srcNode->getPositionX(), srcNode->getPositionY() };
-    sf::Vector2f dstPos{ dstNode->getPositionX(), dstNode->getPositionY() };
-    float length = calculateConnectionLength(srcPos, dstPos);
-    auto& connection = connections.emplace_back(length, srcNode->key, dstNode->key, directed);
-    connection.setCoordinates(srcPos, dstPos);
-    connection.text.setString(std::to_string(weight));
 }
 
 
@@ -173,7 +168,7 @@ std::optional<char> Model::getSelectedNodeKey()
     if (countSelectedNodes() != 1) {
         return std::nullopt;
     }
-    auto node = std::find_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.selected; });
+    auto node = std::ranges::find_if(nodes, [](const auto& node) { return node.selected; });
     return node->key;
 }
 
@@ -246,7 +241,7 @@ void Model::colorNodes(std::unique_ptr<std::vector<std::tuple<char, uint8_t>>> c
 void Model::resetColorNodes()
 {
     for (auto& node : nodes) {
-        node.fillColor(0);
+        node.fillColor(DEFAULT_COL);
     }
 }
 
@@ -312,7 +307,7 @@ bool Model::isDirected() const
 
 size_t Model::countSelectedNodes()
 {
-    return std::count_if(nodes.begin(), nodes.end(), [](const auto& node) { return node.selected; });
+    return std::ranges::count_if(nodes, [](const auto& node) { return node.selected; });
 };
 
 
@@ -320,8 +315,8 @@ void Model::moveConnection(Connection& connection)
 {
     char src = connection.srcKey;
     char dst = connection.dstKey;
-    auto srcNode = std::find_if(nodes.begin(), nodes.end(), [src](const auto& node) { return node.key == src; });
-    auto dstNode = std::find_if(nodes.begin(), nodes.end(), [dst](const auto& node) { return node.key == dst; });
+    auto srcNode = std::ranges::find_if(nodes, [src](const auto& node) { return node.key == src; });
+    auto dstNode = std::ranges::find_if(nodes, [dst](const auto& node) { return node.key == dst; });
 
     sf::Vector2f srcPos{ srcNode->getPositionX(), srcNode->getPositionY() };
     sf::Vector2f dstPos{ dstNode->getPositionX(), dstNode->getPositionY() };

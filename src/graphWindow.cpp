@@ -501,7 +501,7 @@ void GraphWindow::resize()
 
 void GraphWindow::setMessage(const std::string& text)
 {
-    auto& font = FontStore::getFont();
+    const auto& font = FontStore::getFont();
     message = std::make_unique<sf::Text>(font, text, 15);
     const auto& pos = lines->getMessageLine();
     message->setPosition({ pos.x + 10, pos.y + 10 });
