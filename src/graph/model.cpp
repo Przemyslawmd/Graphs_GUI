@@ -82,6 +82,7 @@ std::tuple<Message, std::optional<ConnectionData>> Model::createConnection(const
 
     char srcKey = src->key;
     char dstKey = dst->key;
+
     if (std::ranges::any_of(connections, [srcKey, dstKey](const auto& conn) { return conn.isMatch(srcKey, dstKey); })) {
         return { Message::CONNECTION_EXISTS, std::nullopt };
     }
@@ -91,6 +92,10 @@ std::tuple<Message, std::optional<ConnectionData>> Model::createConnection(const
         return { result, std::nullopt };
     }
     setupConnection(*src, *dst, text);
+    if (directed && std::ranges::any_of(connections, [srcKey, dstKey](const auto& conn) { return conn.isMatch(dstKey, srcKey); })) {
+        changeConnectionLevel(srcKey, dstKey, Level::LOWER);
+        changeConnectionLevel(dstKey, srcKey, Level::UPPER);
+    }
     return { Message::OK, {{ srcKey, dstKey, weight }}};
 }
 
@@ -102,6 +107,7 @@ std::tuple<Message, std::optional<ConnectionData>> Model::createConnection(size_
 
     char srcKey = src.key;
     char dstKey = dst.key;
+
     if (std::ranges::any_of(connections, [srcKey, dstKey](const auto& conn) { return conn.isMatch(srcKey, dstKey); })) {
         return { Message::CONNECTION_EXISTS, std::nullopt };
     }
@@ -111,7 +117,25 @@ std::tuple<Message, std::optional<ConnectionData>> Model::createConnection(size_
         return { result, std::nullopt };
     }
     setupConnection(src, dst, text);
+
+    if (directed && std::ranges::any_of(connections, [srcKey, dstKey](const auto& conn) { return conn.isMatch(dstKey, srcKey); })) {
+        changeConnectionLevel(srcKey, dstKey, Level::LOWER);
+        changeConnectionLevel(dstKey, srcKey, Level::UPPER);
+    }
     return { Message::OK, {{ srcKey, dstKey, weight }}};
+}
+
+
+void Model::changeConnectionLevel(char srcKey,char dstKey, Level level)
+{
+    auto src = std::ranges::find_if(nodes, [srcKey](const auto& node) { return node.key == srcKey; });
+    auto dst = std::ranges::find_if(nodes, [dstKey](const auto& node) { return node.key == dstKey; });
+    sf::Vector2f srcPos{ src->getPositionX(), src->getPositionY() };
+    sf::Vector2f dstPos{ dst->getPositionX(), dst->getPositionY() };
+
+    auto current = std::ranges::find_if(connections, [srcKey, dstKey](const auto& conn) { return conn.srcKey == srcKey && conn.dstKey == dstKey; });
+    current->level = level;
+    moveConnection(*current);
 }
 
 
@@ -322,6 +346,15 @@ void Model::moveConnection(Connection& connection)
     sf::Vector2f dstPos{ dstNode->getPositionX(), dstNode->getPositionY() };
     float length  = calculateConnectionLength(srcPos, dstPos);
     connection.setSize(length);
+
+    if (connection.level == Level::UPPER) {
+        connection.setCoordinates({ srcPos.x, srcPos.y - 10 }, { dstPos.x, dstPos.y - 10 } );
+        return;
+    }
+    if (connection.level == Level::LOWER) {
+        connection.setCoordinates({ srcPos.x, srcPos.y + 10 }, { dstPos.x, dstPos.y + 10 } );
+        return;
+    }
     connection.setCoordinates(srcPos, dstPos);
 }
 

@@ -15,7 +15,8 @@ Connection::Connection(float length, char src, char dst, bool isDirected) : line
                                                                             text{ FontStore::getFont() }, 
                                                                             arrow{ ARROW_RADIUS, 3 },
                                                                             selected{ false },
-                                                                            directed{ isDirected }
+                                                                            directed{ isDirected },
+                                                                            level{ Level::BASE }
 {
     line.setFillColor({ colors.at(DEFAULT_COL).R, colors.at(DEFAULT_COL).G, colors.at(DEFAULT_COL).B });
     line.setOutlineColor(sf::Color::Black);
@@ -36,7 +37,7 @@ void Connection::draw(sf::RenderTarget& target, sf::RenderStates states) const
 }
 
 
-void Connection::setCoordinates(sf::Vector2f& srcPos, sf::Vector2f& dstPos)
+void Connection::setCoordinates(const sf::Vector2f& srcPos, const sf::Vector2f& dstPos)
 {
     line.setPosition({ srcPos.x + NODE_RADIUS, srcPos.y + NODE_RADIUS });
     float angle = calculateAngle(srcPos, dstPos);
@@ -71,9 +72,9 @@ void Connection::setSize(float length)
 bool Connection::isMatch(char src, char dst) const
 {
     if (directed) {
-        return (src == srcKey && dst == dstKey);
+        return src == srcKey && dst == dstKey;
     }
-    return (src == srcKey && src == dstKey) || (src == dstKey && dst == srcKey);
+    return (src == srcKey && dst == dstKey) || (src == dstKey && dst == srcKey);
 }
 
 

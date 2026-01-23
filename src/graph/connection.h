@@ -16,6 +16,14 @@ struct ConnectionData
 };
 
 
+enum class Level
+{
+    BASE,
+    LOWER,
+    UPPER
+};
+
+
 class Connection : public sf::Drawable
 {
 public:
@@ -23,7 +31,7 @@ public:
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-    void setCoordinates(sf::Vector2f& srcPos, sf::Vector2f& dstPos);
+    void setCoordinates(const sf::Vector2f& srcPos, const sf::Vector2f& dstPos);
     void setSize(float length);
 
     void colorConnection();
@@ -40,6 +48,7 @@ public:
     char dstKey;
     bool selected;
     bool directed;
+    Level level;
 
 private:
     sf::CircleShape arrow;
