@@ -30,17 +30,19 @@ public:
     void resetColor();
     bool isColor() const;
 
-    bool isMatch(char key_1, char key_2) const;
+    bool isMatch(char srcKey, char dstKey) const;
 
     void changeSelect();
 
     sf::RectangleShape line;
-    sf::CircleShape arrow;
     sf::Text text;
     char srcKey;
     char dstKey;
     bool selected;
     bool directed;
+
+private:
+    sf::CircleShape arrow;
 };
 
 #endif

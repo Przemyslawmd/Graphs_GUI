@@ -68,9 +68,12 @@ void Connection::setSize(float length)
 }
 
 
-bool Connection::isMatch(char key_1, char key_2) const
+bool Connection::isMatch(char src, char dst) const
 {
-    return (key_1 == srcKey && key_2 == dstKey) || (key_1 == dstKey && key_2 == srcKey);
+    if (directed) {
+        return (src == srcKey && dst == dstKey);
+    }
+    return (src == srcKey && src == dstKey) || (src == dstKey && dst == srcKey);
 }
 
 

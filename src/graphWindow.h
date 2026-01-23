@@ -30,11 +30,11 @@ private:
     void resize();
     void setMessage(const std::string& message);
 
-    void handleMousePressLeft();
-    void handleMousePressRight();
+    void handlePressLeft();
+    void handlePressRight();
 
-    void handleMouseReleaseLeft();
-    void handleMouseReleaseRight();
+    void handleReleaseLeft();
+    void handleReleaseRight();
 
     void handleMovePressLeft();
     void handleMovePressRight();

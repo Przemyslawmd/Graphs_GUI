@@ -45,17 +45,17 @@ void GraphWindow::run()
                 window->close();
             }
             else if (event->is<Event::MouseButtonPressed>() && Mouse::isButtonPressed(Mouse::Button::Left)) {
-                handleMousePressLeft();
+                handlePressLeft();
             }
             else if (event->is<Event::MouseButtonPressed>() && Mouse::isButtonPressed(Mouse::Button::Right)) {
-                handleMousePressRight();
+                handlePressRight();
             }
             else if (event->is<Event::MouseButtonReleased>() && hold->isLeftPress()) {
-                handleMouseReleaseLeft();
+                handleReleaseLeft();
                 hold->reset();
             }
             else if (event->is<Event::MouseButtonReleased>() && hold->isRightPress()) {
-                handleMouseReleaseRight();
+                handleReleaseRight();
                 hold->reset();
             }
             else if (event->is<Event::MouseMoved>() && hold->isLeftPress()) {
@@ -104,7 +104,7 @@ void GraphWindow::run()
 }
 
 
-void GraphWindow::handleMousePressLeft()
+void GraphWindow::handlePressLeft()
 {
     message.release();
     menu->setInputFocus(Action::NO_ACTION);
@@ -124,7 +124,7 @@ void GraphWindow::handleMousePressLeft()
 }
 
 
-void GraphWindow::handleMousePressRight()
+void GraphWindow::handlePressRight()
 {
     message.release();
     menu->setInputFocus(Action::NO_ACTION);
@@ -138,7 +138,7 @@ void GraphWindow::handleMousePressRight()
 }
 
 
-void GraphWindow::handleMouseReleaseLeft()
+void GraphWindow::handleReleaseLeft()
 {
     if (hold->isMoved) {
         return;
@@ -148,19 +148,19 @@ void GraphWindow::handleMouseReleaseLeft()
 }
 
 
-void GraphWindow::handleMouseReleaseRight()
+void GraphWindow::handleReleaseRight()
 {
-    size_t srcNode = tempConnection->getSrcNodeIndex();
+    size_t srcIndex = tempConnection->getSrcNodeIndex();
     tempConnection.reset();
 
     sf::Vector2i position = sf::Mouse::getPosition(*window);
-    auto [dstNode, shiftX, shiftY] = model->isMouseOverNode(position);
-    if (dstNode < 0 || srcNode == dstNode) {
+    auto [dstIndex, shiftX, shiftY] = model->isMouseOverNode(position);
+    if (dstIndex < 0 || srcIndex == dstIndex) {
         return;
     }
 
     const auto& text = menu->getInputText(Action::CONNECTION_INPUT);
-    const auto [result, connData] = model->createConnection(srcNode, dstNode, text);
+    const auto [result, connData] = model->createConnection(srcIndex, dstIndex, text);
     if (result == Message::OK) {
         client->addEdge(connData.value().src, connData.value().dst, connData.value().weight);
         return;
