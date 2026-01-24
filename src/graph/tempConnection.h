@@ -14,7 +14,7 @@ constexpr size_t LINE_WIDTH = 3;
 class TempConnection : public sf::Drawable
 {
 public:
-    TempConnection(float srcX, float srcY, size_t srcNode);
+    TempConnection(float srcX, float srcY, size_t srcIndex);
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
@@ -22,13 +22,13 @@ public:
 
     size_t getSrcNodeIndex() const 
     {
-        return srcNodeIndex;
+        return srcIndex;
     }
 
 private:
     sf::RectangleShape line;
 
-    size_t srcNodeIndex;
+    size_t srcIndex;
     sf::Vector2f srcPos;
 };
 

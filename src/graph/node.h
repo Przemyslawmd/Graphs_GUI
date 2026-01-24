@@ -28,7 +28,6 @@ public:
     void setPosition(const sf::Vector2f& position);
     float getPositionX() const;
     float getPositionY() const;
-    sf::Vector2f& getPosition() const;
 
     void changeSelect();
 

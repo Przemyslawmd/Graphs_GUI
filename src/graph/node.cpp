@@ -1,6 +1,7 @@
 
 #include "node.h"
 
+#include "colors.h"
 #include "defines.h"
 #include "services/font.h"
 
@@ -8,12 +9,10 @@ constexpr size_t INITIAL_NODE_X = 30;
 constexpr size_t INITIAL_NODE_Y = 75;
 constexpr size_t CIRCLE_POINTS = 100;
 
-constexpr size_t DEFAULT_COLOR = 0;
-
 
 NodeGui::NodeGui(char key) : circle{ NODE_RADIUS, 100 }, selected{ false }, text{ FontStore::getFont() }, key{ key }
 {
-    circle.setFillColor({ colors.at(DEFAULT_COLOR).R, colors.at(DEFAULT_COLOR).G, colors.at(DEFAULT_COLOR).B });
+    circle.setFillColor({ colors.at(DEFAULT_COL).R, colors.at(DEFAULT_COL).G, colors.at(DEFAULT_COL).B });
     text.setFillColor(sf::Color::Black);
     text.setCharacterSize(14);
     setPosition({ INITIAL_NODE_X, INITIAL_NODE_Y });
