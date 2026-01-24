@@ -3,7 +3,6 @@
 
 #include "ranges"
 
-#include "services/directed.h"
 #include "services/font.h"
 
 
@@ -112,16 +111,10 @@ Action Menu::isOverActionMenu(const sf::Vector2i& pos)
         return READ_GRAPH;
     }
     if (isOverMenu(pos, actionData.at(RADIO_UNDIRECTED))) {
-        radio.at(RADIO_UNDIRECTED).setSelect(true);
-        radio.at(RADIO_DIRECTED).setSelect(false);
-        Directed::setDirected(false);
-        return NO_ACTION;
+        return radio.at(RADIO_UNDIRECTED).isSelected() ? NO_ACTION : SET_GRAPH_UNDIRECTED;
     }
     if (isOverMenu(pos, actionData.at(RADIO_DIRECTED))) {
-        radio.at(RADIO_DIRECTED).setSelect(true);
-        radio.at(RADIO_UNDIRECTED).setSelect(false);
-        Directed::setDirected(true);
-        return NO_ACTION;
+        return radio.at(RADIO_DIRECTED).isSelected() ? NO_ACTION : SET_GRAPH_DIRECTED;
     }
 
     return NO_ACTION;
@@ -157,10 +150,9 @@ void Menu::checkTextEvent(char letter)
 }
 
 
-void Menu::setRadioSelect(bool isDirected)
+void Menu::setRadioGraphType(bool isDirected)
 {
     radio.at(Action::RADIO_DIRECTED).setSelect(isDirected);
     radio.at(Action::RADIO_UNDIRECTED).setSelect(!isDirected);
-    Directed::setDirected(isDirected);
 }
 

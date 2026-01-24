@@ -6,7 +6,6 @@
 
 #include <SFML/System/Vector2.hpp>
 
-#include "services/directed.h"
 #include "services/font.h"
 #include "services/iofile.h"
 
@@ -261,6 +260,13 @@ void GraphWindow::invokeAction(Action action)
         case READ_GRAPH:
             readGraph();
             break;
+        case SET_GRAPH_DIRECTED:
+            setGraphType(true);
+            break;
+        case SET_GRAPH_UNDIRECTED:
+            setGraphType(false);
+            break;
+
     }
 }
 
@@ -274,8 +280,7 @@ void GraphWindow::createNode()
         return;
     }
     if (result == Message::RESET_GRAPH) {
-        bool isDirected = Directed::isDirected();
-        client->resetGraph(isDirected);
+        client->resetGraph(model->isDirected());
         client->addNode(key.value());
         return;
     }
@@ -297,8 +302,7 @@ void GraphWindow::removeNodes()
 void GraphWindow::removeGraph()
 {
     model->removeAll();
-    bool isDirected = Directed::isDirected();
-    client->resetGraph(isDirected);
+    client->resetGraph(model->isDirected());
 }
 
 
@@ -467,8 +471,7 @@ void GraphWindow::readGraph()
     bool directed = iofile.isDirected();
     model->removeAll();
     model->setDirected(directed);
-    menu->setRadioSelect(directed);
-    Directed::setDirected(directed);
+    menu->setRadioGraphType(directed);
     client->resetGraph(directed);
 
     const auto& nodesData = iofile.getNodesData();
@@ -481,6 +484,18 @@ void GraphWindow::readGraph()
         model->createConnectionFromFile(conn.src, conn.dst, conn.weight);
         client->addEdge(conn.src, conn.dst, conn.weight);
     }
+}
+
+
+void GraphWindow::setGraphType(bool isDirected)
+{
+    if (!model->getNodes().empty()) {
+        setMessage(MessageStr.at(Message::GRAPH_SET_TYPE));
+        return;
+    }
+    model->setDirected(isDirected);
+    client->resetGraph(isDirected);
+    menu->setRadioGraphType(isDirected);
 }
 
 

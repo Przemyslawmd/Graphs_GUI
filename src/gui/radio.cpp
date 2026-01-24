@@ -30,3 +30,9 @@ void Radio::setSelect(bool newSelect)
     selected = newSelect;
 }
 
+
+bool Radio::isSelected()
+{
+    return selected;
+}
+

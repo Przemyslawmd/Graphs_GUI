@@ -6,7 +6,6 @@
 
 #include "utils.h"
 #include "defines.h"
-#include "services/directed.h"
 
 
 Model::Model() : directed{ false }
@@ -34,11 +33,7 @@ std::tuple<Message, std::optional<char>> Model::createNode(const sf::Text& text)
             return { Message::NODE_KEY_EXISTS, std::nullopt };
         }
     }
-
     auto& node = nodes.emplace_back(key);
-    if (isTypeChanged()) {
-        return { Message::RESET_GRAPH, node.key };
-    }
     return { Message::OK, node.key };
 };
 
@@ -357,15 +352,5 @@ void Model::moveConnection(Connection& connection)
         return;
     }
     connection.setCoordinates(srcPos, dstPos);
-}
-
-
-bool Model::isTypeChanged()
-{
-    if (nodes.size() == 1 && directed != Directed::isDirected()) {
-        directed = !directed;
-        return true;
-    }
-    return false;
 }
 

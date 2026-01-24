@@ -18,9 +18,12 @@ public:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     void setSelect(bool);
+    bool isSelected();
 
     sf::RectangleShape radio;
     sf::Text text;
+
+private:
     bool selected;
 };
 

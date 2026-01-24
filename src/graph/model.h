@@ -52,7 +52,6 @@ public:
 private:
     void moveConnection(Connection&);
     size_t countSelectedNodes();
-    bool isTypeChanged();
 
     std::vector<NodeGui> nodes;
     std::vector<Connection> connections;

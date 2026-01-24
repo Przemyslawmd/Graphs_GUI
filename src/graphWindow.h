@@ -57,6 +57,7 @@ private:
 
     void saveGraph();
     void readGraph();
+    void setGraphType(bool isDirected);
 
     void callBFS(char key);
     void callDFS(char key);
