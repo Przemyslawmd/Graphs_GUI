@@ -386,6 +386,7 @@ void GraphWindow::callShortestPath(char src, char dst)
         setMessage(client->getLastErrorMessage());
         return;
     }
+    model->resetPath();
     model->colorPath(*sequence);
 }
 
@@ -404,6 +405,7 @@ void GraphWindow::callMinSpanningTree()
         setMessage(client->getLastErrorMessage());
         return;
     }
+    model->resetPath();
     model->colorEdges(*edges);
 }
 
