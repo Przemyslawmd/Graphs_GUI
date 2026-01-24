@@ -30,26 +30,26 @@ static float calculateAngle(const sf::Vector2f& pos_1, const sf::Vector2f& pos_2
 
 static bool matchAngles(const float connectionAngle, const sf::FloatRect& rect, const float posX, const float posY)
 {
-    float xCorner = 0.0f;
-    float yCorner = 0.0f;
+    float cornerX = 0.0f;
+    float cornerY = 0.0f;
 
     if (connectionAngle <= 90 ){ 
-        xCorner = rect.position.x + rect.size.x;
-        yCorner = rect.position.y + rect.size.y;
+        cornerX = rect.position.x + rect.size.x;
+        cornerY = rect.position.y + rect.size.y;
     }
     else if (connectionAngle > 90 && connectionAngle <= 180) {
-        xCorner = rect.position.x;
-        yCorner = rect.position.y + rect.size.y;
+        cornerX = rect.position.x;
+        cornerY = rect.position.y + rect.size.y;
     }
     else if (connectionAngle > 180 && connectionAngle <= 270) {
-        xCorner = rect.position.x;
-        yCorner = rect.position.y;
+        cornerX = rect.position.x;
+        cornerY = rect.position.y;
     }
     else {
-        xCorner = rect.position.x + rect.size.x;
-        yCorner = rect.position.y;
+        cornerX = rect.position.x + rect.size.x;
+        cornerY = rect.position.y;
     }
-    auto posAngle = calculateAngle({ posX, posY }, { xCorner, yCorner });
+    auto posAngle = calculateAngle({ posX, posY }, { cornerX, cornerY });
     return abs(connectionAngle - posAngle) < 2;
 }
 
@@ -64,7 +64,7 @@ static float calculateConnectionLength(const sf::Vector2f& pos_1, const sf::Vect
 
 static std::tuple<Message, size_t> getWeightFromString(const std::string& text)
 {
-    if (text.size() == 0) {
+    if (text.empty()) {
         return { Message::OK, 1 };
     }
     if (text.size() > 3) {
@@ -77,6 +77,10 @@ static std::tuple<Message, size_t> getWeightFromString(const std::string& text)
             return { Message::CONNECTION_INPUT_ERROR, 0 }; 
         }
         weight = weight * 10 + c - '0';
+    }
+
+    if (weight == 0) {
+        return { Message::CONNECTION_INPUT_ERROR, 0 };
     }
     return { Message::OK, weight };
 }

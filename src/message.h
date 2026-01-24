@@ -30,7 +30,7 @@ enum class Message
 static const std::map<Message, std::string> MessageStr = 
 {
     { Message::CONNECTION_EXISTS,            { "Connection exists for selected nodes" }},
-    { Message::CONNECTION_INPUT_ERROR,       { "Connection value must be empty or an integer with a maximum of three digits" }},
+    { Message::CONNECTION_INPUT_ERROR,       { "Connection value must be empty (for default weight 1) or an integer greater than zero with a maximum of three digits" }},
     { Message::CONNECTION_NOT_SELECTED,      { "Select at least one connection to perform an action" }},
     { Message::CONNECTION_REQUIREMENT,       { "Select two nodes to create a conection or use a right mouse button" }},
     { Message::GRAPH_SET_TYPE,               { "Remove graph to change type of graph" }},
