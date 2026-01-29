@@ -3,11 +3,14 @@
 #define GUI_GRAPHS_NODE_H
 
 #include <time.h>
-#include "colors.h"
 
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Text.hpp>
+
+#include "colors.h"
+#include "defines.h"
+#include "services/font.h"
 
 
 struct NodeData
@@ -33,10 +36,10 @@ public:
 
     void fillColor(uint8_t colorID);
 
-    sf::CircleShape circle;
-    sf::Text text;
+    sf::CircleShape circle{ NODE_RADIUS, 100 };
+    sf::Text text{ FontStore::getFont() };
     char key;
-    bool selected;
+    bool selected{ false };
     time_t selectTime;
 };
 

@@ -7,9 +7,9 @@
 
 char Keys::getKey()
 {
-    auto key = std::ranges::find_if(keys, [](const auto& k) { return k.used == false; });
-    key->used = true;
-    return key->key;
+    auto it = std::ranges::find_if(keys, [](const auto& k) { return k.used == false; });
+    it->used = true;
+    return it->key;
 }
 
 

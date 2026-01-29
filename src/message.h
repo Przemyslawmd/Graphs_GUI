@@ -36,7 +36,7 @@ static const std::map<Message, std::string> MessageStr =
     { Message::GRAPH_SET_TYPE,               { "Remove graph to change type of graph" }},
     { Message::NODE_VALUE_ERROR,             { "Choose only one letter or digit for node value" }},
     { Message::NODE_KEY_EXISTS,              { "There is a node with provided key" }},
-    { Message::NODE_LIMIT,                   { "Maximum number of nodes is 30" }},
+    { Message::NODE_LIMIT,                   { "Maximum number of nodes is 35" }},
     { Message::NODE_SELECT_ONE,              { "Select only one node to perform an action" }},
     { Message::NODE_NOT_SELECTED,            { "Select at least one node to perform an action" }},
     { Message::NODE_SELECT_TWO,              { "Select two nodes to perform an action" }},

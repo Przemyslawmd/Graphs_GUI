@@ -8,12 +8,6 @@
 #include "defines.h"
 
 
-Model::Model() : directed{ false }
-{
-    keys = std::make_unique<Keys>();
-}
-
-
 std::tuple<Message, std::optional<char>> Model::createNode(const sf::Text& text)
 {
     if (nodes.size() == MAX_NODES) {

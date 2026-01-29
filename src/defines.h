@@ -13,7 +13,7 @@ constexpr float MESSAGE_AREA_HEIGHT = 40.f;
 constexpr float MESSAGES_UP = 60.f;
 constexpr float MESSAGES_MARGIN_BOTTOM = 20.f;
 
-constexpr size_t MAX_NODES = 30;
+constexpr size_t MAX_NODES = 35;
 
 constexpr float NODE_RADIUS = 20.f;
 

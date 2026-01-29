@@ -15,11 +15,6 @@ GraphWindow::GraphWindow()
     sf::ContextSettings settings;
     settings.antiAliasingLevel = 8;
     window = std::make_unique<sf::RenderWindow>(sf::VideoMode({ 1600, 900 }, sf::Style::Titlebar ), "", sf::State::Windowed, settings);
-    client = std::make_unique<Client>();
-    model = std::make_unique<Model>();
-    hold = std::make_unique<Hold>();
-    menu = std::make_unique<Menu>();
-    lines = std::make_unique<Lines>();
 }
 
 

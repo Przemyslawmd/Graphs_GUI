@@ -7,6 +7,11 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Text.hpp>
 
+#include "defines.h"
+#include "services/font.h"
+
+constexpr size_t ARROW_RADIUS = 10;
+
 
 struct ConnectionData
 {
@@ -43,15 +48,15 @@ public:
     void changeSelect();
 
     sf::RectangleShape line;
-    sf::Text text;
+    sf::Text text{ FontStore::getFont() };
     char srcKey;
     char dstKey;
-    bool selected;
+    bool selected{ false };
     bool directed;
-    Level level;
+    Level level{ Level::BASE };
 
 private:
-    sf::CircleShape arrow;
+    sf::CircleShape arrow{ ARROW_RADIUS, 3 };
 };
 
 #endif

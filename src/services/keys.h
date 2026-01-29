@@ -9,7 +9,7 @@
 
 struct KeyStore
 {
-    char key;
+    const char key;
     bool used;
 };
 
@@ -32,7 +32,8 @@ private:
         { 'K', false }, { 'L', false }, { 'M', false }, { 'N', false }, { 'O', false },
         { 'P', false }, { 'Q', false }, { 'R', false }, { 'S', false }, { 'T', false },
         { 'V', false }, { 'W', false }, { 'X', false }, { 'Y', false }, { 'Z', false },
-        { '1', false }, { '2', false }, { '3', false }, { '4', false }, { '5', false }
+        { '0', false }, { '1', false }, { '2', false }, { '3', false }, { '4', false },
+        { '5', false }, { '6', false }, { '7', false }, { '8', false }, { '9', false }
     }};
 };
 

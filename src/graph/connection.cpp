@@ -3,20 +3,13 @@
 
 #include "utils.h"
 #include "colors.h"
-#include "defines.h"
-#include "services/font.h"
 
 constexpr size_t LINE_WIDTH = 3;
-constexpr size_t ARROW_RADIUS = 10;
 
 
 Connection::Connection(float length, char src, char dst, bool isDirected) : line{ sf::Vector2f{ length, LINE_WIDTH }}, 
                                                                             srcKey{ src }, dstKey{ dst }, 
-                                                                            text{ FontStore::getFont() }, 
-                                                                            arrow{ ARROW_RADIUS, 3 },
-                                                                            selected{ false },
-                                                                            directed{ isDirected },
-                                                                            level{ Level::BASE }
+                                                                            directed{ isDirected }
 {
     line.setFillColor({ colors.at(DEFAULT_COL).R, colors.at(DEFAULT_COL).G, colors.at(DEFAULT_COL).B });
     line.setOutlineColor(sf::Color::Black);
@@ -24,7 +17,7 @@ Connection::Connection(float length, char src, char dst, bool isDirected) : line
     arrow.setOutlineColor(sf::Color::Black);
     text.setFillColor(sf::Color::Black);
     text.setCharacterSize(14);
-};
+}
 
 
 void Connection::draw(sf::RenderTarget& target, sf::RenderStates states) const

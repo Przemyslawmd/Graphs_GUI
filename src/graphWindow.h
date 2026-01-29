@@ -67,11 +67,11 @@ private:
     void callResetColorGraph();
 
     std::unique_ptr<sf::RenderWindow> window;
-    std::unique_ptr<Menu> menu;
-    std::unique_ptr<Lines> lines;
-    std::unique_ptr<Model> model;
-    std::unique_ptr<Client> client;
-    std::unique_ptr<Hold> hold;
+    std::unique_ptr<Menu> menu{ std::make_unique<Menu>() };;
+    std::unique_ptr<Lines> lines{ std::make_unique<Lines>() };;
+    std::unique_ptr<Model> model{ std::make_unique<Model>() };;
+    std::unique_ptr<Client> client{ std::make_unique<Client>() };
+    std::unique_ptr<Hold> hold{ std::make_unique<Hold>() };;
     std::unique_ptr<sf::Text> message;
     std::unique_ptr<TempConnection> tempConnection;
 };

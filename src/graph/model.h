@@ -14,7 +14,7 @@
 class Model
 {
 public:
-    Model();
+    Model() = default;
 
     std::tuple<Message, std::optional<char>> createNode(const sf::Text&);
     void createNodeFromFile(char key, size_t posX, size_t posY);
@@ -55,10 +55,9 @@ private:
 
     std::vector<NodeGui> nodes;
     std::vector<Connection> connections;
+    std::unique_ptr<Keys> keys{ std::make_unique<Keys>() };
 
-    std::unique_ptr<Keys> keys;
-
-    bool directed;
+    bool directed{ false };
 };
 
 #endif 
